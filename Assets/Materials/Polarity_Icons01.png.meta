@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: f11aaab8064ed69459b89099c5fe911b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7643549337690211280
+    second: Polarity_Icons01_0
+  - first:
+      213: 3250092120280501227
+    second: Polarity_Icons01_1
+  - first:
+      213: 7500609553681121146
+    second: Polarity_Icons01_2
+  - first:
+      213: 1800215985203151143
+    second: Polarity_Icons01_3
+  - first:
+      213: 5944326648751050096
+    second: Polarity_Icons01_4
+  - first:
+      213: 4830861149478686108
+    second: Polarity_Icons01_5
+  - first:
+      213: 4269848542375642191
+    second: Polarity_Icons01_6
+  - first:
+      213: -6387220582399803414
+    second: Polarity_Icons01_7
+  - first:
+      213: -6597112700603686779
+    second: Polarity_Icons01_8
+  - first:
+      213: -7943525257820771095
+    second: Polarity_Icons01_9
+  - first:
+      213: -8306392836392231957
+    second: Polarity_Icons01_10
+  - first:
+      213: -7172455203924767604
+    second: Polarity_Icons01_11
+  - first:
+      213: -1618623471350448214
+    second: Polarity_Icons01_12
+  - first:
+      213: 8890890159703356134
+    second: Polarity_Icons01_13
+  - first:
+      213: -3962276898333681161
+    second: Polarity_Icons01_14
+  - first:
+      213: -681850395089618812
+    second: Polarity_Icons01_15
+  - first:
+      213: 6135084424556407985
+    second: Polarity_Icons01_16
+  - first:
+      213: -1203313590937987452
+    second: Polarity_Icons01_17
+  - first:
+      213: -5608410086839951929
+    second: Polarity_Icons01_18
+  - first:
+      213: 5516927099327613602
+    second: Polarity_Icons01_19
+  - first:
+      213: 6810154323825781078
+    second: Polarity_Icons01_20
+  - first:
+      213: 6055588185945992940
+    second: Polarity_Icons01_21
+  - first:
+      213: 133695955204044053
+    second: Polarity_Icons01_22
+  - first:
+      213: -6993257218868367243
+    second: Polarity_Icons01_23
+  - first:
+      213: -4967151136497656932
+    second: Polarity_Icons01_24
+  - first:
+      213: -1485021785627437604
+    second: Polarity_Icons01_25
+  - first:
+      213: 7539424162336152886
+    second: Polarity_Icons01_26
+  - first:
+      213: -6146618062453905678
+    second: Polarity_Icons01_27
+  - first:
+      213: 1147524244488631730
+    second: Polarity_Icons01_28
+  - first:
+      213: 1829242146453789612
+    second: Polarity_Icons01_29
+  - first:
+      213: -2955935432982550727
+    second: Polarity_Icons01_30
+  - first:
+      213: -5362917641839064835
+    second: Polarity_Icons01_31
+  - first:
+      213: -5023528615427983370
+    second: Polarity_Icons01_32
+  - first:
+      213: -8507066057192427669
+    second: Polarity_Icons01_33
+  - first:
+      213: 2148834466001957410
+    second: Polarity_Icons01_34
+  - first:
+      213: 4228024100874574238
+    second: Polarity_Icons01_35
+  - first:
+      213: 4464727842039806464
+    second: Polarity_Icons01_36
+  - first:
+      213: 1830775580440792048
+    second: Polarity_Icons01_37
+  - first:
+      213: -732606938547430539
+    second: Polarity_Icons01_38
+  - first:
+      213: 2317715325344380247
+    second: Polarity_Icons01_39
+  - first:
+      213: 2640071909969902119
+    second: Polarity_Icons01_40
+  - first:
+      213: -7795128989961744992
+    second: Polarity_Icons01_41
+  - first:
+      213: -2832470364782851180
+    second: Polarity_Icons01_42
+  - first:
+      213: 3435849249261887486
+    second: Polarity_Icons01_43
+  - first:
+      213: -5350629747497001884
+    second: Polarity_Icons01_44
+  - first:
+      213: 5547822471344282864
+    second: Polarity_Icons01_45
+  - first:
+      213: -3206868970611717211
+    second: Polarity_Icons01_46
+  - first:
+      213: 1474072409015345778
+    second: Polarity_Icons01_47
+  - first:
+      213: -2349603416854796980
+    second: Polarity_Icons01_48
+  - first:
+      213: 5705147688233536891
+    second: Polarity_Icons01_49
+  - first:
+      213: -8578703176210725152
+    second: Polarity_Icons01_50
+  - first:
+      213: 2749182343478842322
+    second: Polarity_Icons01_51
+  - first:
+      213: -1835614495846088681
+    second: Polarity_Icons01_52
+  - first:
+      213: -8015016638398321987
+    second: Polarity_Icons01_53
+  - first:
+      213: -7127281234046893582
+    second: Polarity_Icons01_54
+  - first:
+      213: 5237070218509113198
+    second: Polarity_Icons01_55
+  - first:
+      213: -5753561671315982529
+    second: Polarity_Icons01_56
+  - first:
+      213: 8482664979913725396
+    second: Polarity_Icons01_57
+  - first:
+      213: -6405251641183986791
+    second: Polarity_Icons01_58
+  - first:
+      213: 6098550005198479313
+    second: Polarity_Icons01_59
+  - first:
+      213: 504755701367626196
+    second: Polarity_Icons01_60
+  - first:
+      213: 3351042227765414276
+    second: Polarity_Icons01_61
+  - first:
+      213: -1276200951436136719
+    second: Polarity_Icons01_62
+  - first:
+      213: 217308939492958900
+    second: Polarity_Icons01_63
+  - first:
+      213: -6403693845619490717
+    second: Polarity_Icons01_64
+  - first:
+      213: -6530588457622229319
+    second: Polarity_Icons01_65
+  - first:
+      213: -6934262181210908593
+    second: Polarity_Icons01_66
+  - first:
+      213: 2914147984016245057
+    second: Polarity_Icons01_67
+  - first:
+      213: -2004519826179637247
+    second: Polarity_Icons01_68
+  - first:
+      213: 954660774260937785
+    second: Polarity_Icons01_69
+  - first:
+      213: -2280237997776952817
+    second: Polarity_Icons01_70
+  - first:
+      213: -1501543427673661634
+    second: Polarity_Icons01_71
+  - first:
+      213: -5895743190628772413
+    second: Polarity_Icons01_72
+  - first:
+      213: -4148614046178992026
+    second: Polarity_Icons01_73
+  - first:
+      213: 7789660562540228242
+    second: Polarity_Icons01_74
+  - first:
+      213: 627817983880061271
+    second: Polarity_Icons01_75
+  - first:
+      213: 1497803956841363678
+    second: Polarity_Icons01_76
+  - first:
+      213: -5167588536091410653
+    second: Polarity_Icons01_77
+  - first:
+      213: -7865673573407079154
+    second: Polarity_Icons01_78
+  - first:
+      213: -6724655359134230458
+    second: Polarity_Icons01_79
+  - first:
+      213: -4539257045404758105
+    second: Polarity_Icons01_80
+  - first:
+      213: 7820541840942641502
+    second: Polarity_Icons01_81
+  - first:
+      213: -3382699640729692403
+    second: Polarity_Icons01_82
+  - first:
+      213: 3296578732408223268
+    second: Polarity_Icons01_83
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 2
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Polarity_Icons01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d3823810a7531a60800000000000000
+      internalID: 7643549337690211280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Polarity_Icons01_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: beb8d9c4095aa1d20800000000000000
+      internalID: 3250092120280501227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Polarity_Icons01_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7f701e26a4871860800000000000000
+      internalID: 7500609553681121146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Polarity_Icons01_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 721830d86e6abf810800000000000000
+      internalID: 1800215985203151143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Polarity_Icons01_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07dc1b7b79d7e7250800000000000000
+      internalID: 5944326648751050096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Polarity_Icons01_5
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9d89e5de9aaa0340800000000000000
+      internalID: 4830861149478686108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 45561aed69cdb314d9b818eaa0832b9f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
