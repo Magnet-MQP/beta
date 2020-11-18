@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance; // singleton
-
-    private InputController controls;
-
+    private PlayerInput m_PlayerInput;
     // Pause settings
     GameObject[] pauseObjects;
     GameObject[] toHideObjects;
@@ -26,13 +25,15 @@ public class GameManager : MonoBehaviour
         return Instance;
     }
 
+    public void setPlayerInput(PlayerInput playerInput) {
+        m_PlayerInput = playerInput;
+    }
+
    // called first
     void OnEnable()
     {
         //Debug.Log("OnEnable called");
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        controls.Enable();
     }
 
     // called second
@@ -54,8 +55,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        controls = new InputController();
-        controls.player.Menu.performed += ctx => Pause();
 
         // singleton insurance
         if(Instance == null) {
@@ -66,13 +65,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-    }
-
-    void Pause()
-    {
-        if (enablePause && pauseWait <= 0) {
-            switchPause();
-        }
     }
     void Start() {
         //SceneManager.sceneLoaded += onSceneLoad;
@@ -89,7 +81,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("OnDisable");
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-        controls.Disable();
+        //controls.Disable();
     }
 
     // Update is called once per frame
@@ -98,6 +90,13 @@ public class GameManager : MonoBehaviour
         if (pauseWait > 0)
         {
             pauseWait -= Time.unscaledDeltaTime;
+        }
+        if (m_PlayerInput.actions["menu"].ReadValue<float>() == 1)
+        {
+            // TODO: should unpause if already paused
+            if (enablePause && pauseWait <= 0) {
+                switchPause();
+            }
         }
     }
 

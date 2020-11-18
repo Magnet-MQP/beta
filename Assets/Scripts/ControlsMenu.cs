@@ -9,7 +9,6 @@ public class ControlsMenu : MonoBehaviour
     void Start()
     {
         manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
-        
     }
 
     // Update is called once per frame

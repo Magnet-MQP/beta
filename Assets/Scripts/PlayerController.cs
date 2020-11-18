@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
     private float dRight = 0;
     [Tooltip("Distance to target")]
     private float targetDistance = 0;
-
+    private PlayerInput m_PlayerInput;
     // Audio
     public AudioSource AudioSourceBoots;
     public AudioClip AudioBootsOn;
@@ -178,57 +178,33 @@ public class PlayerController : MonoBehaviour
     private float gloveTargetVolume = 0;
     private float gloveChangeTimer = 0;
     private float gloveChangeTimerMax = 0.2f;
-
-    private float gamepadFactor = 0;
-    
+    public float gamepadFactor = 1;
     // For opening sequence
     private float openingTimer = 17f;
     private float openingFreePoint = 4f; // how much time should be left on the clock when the player gains input
 
     void Awake() 
     {
-        controls = new InputController();
-        moveAction = controls.player.Movement;
-        lookAction = controls.player.Camera;
-
-        controls.player.Camera.started += ctx => Look(ctx.ReadValue<Vector2>(), ctx.control); 
-        controls.player.Boots.performed += ctx => Boots(ctx.ReadValue<float>()); 
-        controls.player.Gloves.performed += ctx => Gloves(ctx.ReadValue<float>()); 
-        controls.player.Interact.performed += _ => Interact(); 
+        m_PlayerInput = GetComponent<PlayerInput>();
     }
 
-    void OnEnable() 
-    { 
-        controls.Enable();
-        moveAction.Enable();
-        lookAction.Enable();
-    }
-
-    void OnDisable() 
-    { 
-        controls.Disable(); 
-        moveAction.Disable();
-        lookAction.Disable();
-    }
-
-    void Look(Vector2 direction, InputControl control) 
+    void Look(Vector2 direction) 
     {
-        if (control.name == "rightStick")
+        if ( m_PlayerInput.currentControlScheme == "Gamepad")
         {
-            gamepadFactor = 8;
+            gamepadFactor = 15;
         }
         else {
             gamepadFactor = 1;
         }
     }
 
-    void Boots(float value) 
+    void Boots() 
     {
-        if (GM.isPaused || (value != 1 && value != -1) || openingTimer > 0) 
+        if (GM.isPaused || openingTimer > 0) 
         {
             return;
         }
-        // Q --> -1 E --> 1
         Charge targetCharge = GetPolarity(ReticleTarget);
         //
         Charge newCharge = Charge.Neutral;
@@ -387,6 +363,7 @@ public class PlayerController : MonoBehaviour
         RB = GetComponent<Rigidbody>();
         
         GM = GameManager.getGameManager();
+        GM.setPlayerInput(m_PlayerInput);
 
         // opening sequence (hard-coded for now)
         SM.QueueSubtitle(new SubtitleData("[ INITIALIZING SYSTEMS... ]", 5000, 4f));
@@ -397,6 +374,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
+        var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
+        Look(look);
+
+        if (m_PlayerInput.actions["boots"].triggered) {
+            Boots();
+        }
+        if (m_PlayerInput.actions["gloves"].triggered) {
+            var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
+            Gloves(gloves);
+        }
+        if (m_PlayerInput.actions["interact"].triggered) {
+            Interact();
+        }
 
         // opening sequence (hard-coded for now)
         if (openingTimer > 0) 
@@ -424,12 +415,11 @@ public class PlayerController : MonoBehaviour
 
         if (!GM.isPaused) 
         {
-            dForward = moveAction.ReadValue<Vector2>().y;
-            dRight = moveAction.ReadValue<Vector2>().x;
+            dForward = move.y;
+            dRight = move.x;
 
-            float dLookRight = lookAction.ReadValue<Vector2>().x*LookSpeed * gamepadFactor;
-            float dLookUp = lookAction.ReadValue<Vector2>().y*LookSpeed * gamepadFactor;
-            //Debug.Log("right: "+ dLookRight + " up: " + dLookUp);
+            float dLookRight = look.x*LookSpeed * gamepadFactor;
+            float dLookUp = look.y*LookSpeed * gamepadFactor;
 
             //Look and change facing direction
             transform.RotateAround(transform.position, transform.up, dLookRight);
