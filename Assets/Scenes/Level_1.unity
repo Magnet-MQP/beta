@@ -344,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 715757793303321835, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.59
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 715757793303321835, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -390,6 +390,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4258792244529254548, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
+      propertyPath: UICanvas
+      value: 
+      objectReference: {fileID: 859157454}
     - target: {fileID: 6592746666652031262, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
@@ -405,6 +409,10 @@ PrefabInstance:
     - target: {fileID: 6592746666652031262, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092018364128694686, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
@@ -11877,6 +11885,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 125
   m_LocalEulerAnglesHint: {x: 0.048, y: 211.8, z: 0.097}
+--- !u!223 &859157454 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3167361695052545202, guid: 57e299ba5535d7641abcc4eea2966afc, type: 3}
+  m_PrefabInstance: {fileID: 4078586}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &860984628 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7e0015bd53f4c0b449875b01cacb0850, type: 3}
@@ -16339,9 +16352,9 @@ GameObject:
   - component: {fileID: 1219716138}
   - component: {fileID: 1219716137}
   - component: {fileID: 1219716136}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SignText
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

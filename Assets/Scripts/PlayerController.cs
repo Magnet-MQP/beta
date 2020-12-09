@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
     private float gloveChangeTimerMax = 0.2f;
     public float gamepadFactor = 1;
     // For opening sequence
-    private float openingTimer = 0f; //17f;
+    private float openingTimer = 5f; //17f;
     private float openingFreePoint = 4f; // how much time should be left on the clock when the player gains input
 
     void Awake() 
@@ -374,21 +374,28 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Test00");
+        // IT CAN'T PROCEED FROM HERE
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
         Look(look);
-
+        Debug.Log("Test01");
         if (m_PlayerInput.actions["boots"].triggered) {
             Boots();
         }
+        Debug.Log("Test02");
         if (m_PlayerInput.actions["gloves"].triggered) {
             var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
             Gloves(gloves);
         }
+        Debug.Log("Test03");
         if (m_PlayerInput.actions["interact"].triggered) {
             Interact();
         }
 
+        Debug.Log("Test04");
+        Debug.Log("Um, hello folks?");
+        Debug.Log(openingTimer);
         // opening sequence (hard-coded for now)
         if (openingTimer > 0) 
         {
@@ -411,7 +418,6 @@ public class PlayerController : MonoBehaviour
             gloveChangeTimer = Mathf.Min(gloveChangeTimer + Time.deltaTime, gloveChangeTimerMax);
             AudioSourceGloves.volume = Mathf.Lerp(AudioSourceGloves.volume, gloveTargetVolume, gloveChangeTimer/gloveChangeTimerMax);
         }
-
 
         if (!GM.isPaused) 
         {
