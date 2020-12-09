@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
     private float gloveChangeTimerMax = 0.2f;
     public float gamepadFactor = 1;
     // For opening sequence
-    private float openingTimer = 17f;
+    private float openingTimer = 0f; //17f;
     private float openingFreePoint = 4f; // how much time should be left on the clock when the player gains input
 
     void Awake() 
