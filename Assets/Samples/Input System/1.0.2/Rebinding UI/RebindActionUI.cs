@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 ////TODO: localization support
@@ -245,11 +246,13 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 var firstPartIndex = bindingIndex + 1;
                 if (firstPartIndex < action.bindings.Count && action.bindings[firstPartIndex].isPartOfComposite)
+                Debug.Log("hiiiiii");
                     PerformInteractiveRebind(action, firstPartIndex, allCompositeParts: true);
             }
             else
             {
                 PerformInteractiveRebind(action, bindingIndex);
+                action.Enable();
             }
         }
 
@@ -263,7 +266,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 m_RebindOperation = null;
             }
 
+            action.Disable();
+
             // Configure the rebind.
+            Debug.Log("cries");
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
                 .OnCancel(
                     operation =>
