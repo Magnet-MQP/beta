@@ -6,16 +6,16 @@
             "id": "f6ecca02-9a73-4bc4-ac6a-2fc4a53f27ab",
             "actions": [
                 {
-                    "name": "Movement",
-                    "type": "Button",
+                    "name": "Move",
+                    "type": "Value",
                     "id": "3db7ccf8-80ea-46ac-82db-e81cb6f90baa",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "Boots",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "93650c66-1eee-45b5-b729-d0f9eb2ddbfc",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -23,15 +23,15 @@
                 },
                 {
                     "name": "Camera",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "0386882f-6750-456d-a25b-297681dcce25",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "Gloves",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "e6a6c4df-a9bc-4215-bf44-6d984167c6b8",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -47,7 +47,7 @@
                 },
                 {
                     "name": "Menu",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "d7142a33-4cb6-473f-bd6a-d5d653533fde",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -56,13 +56,24 @@
             ],
             "bindings": [
                 {
-                    "name": "wasd",
+                    "name": "",
+                    "id": "e97ab751-fa50-476f-9311-39a7ca3757cf",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
                     "id": "f563bbe4-ffd0-4561-933a-43940cbb482d",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -73,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -84,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -95,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -106,7 +117,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -127,7 +138,7 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "Gamepad",
                     "action": "Boots",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -171,19 +182,8 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "Gamepad",
                     "action": "Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e97ab751-fa50-476f-9311-39a7ca3757cf",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad",
-                    "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -204,7 +204,7 @@
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "Gamepad",
                     "action": "Gloves",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -215,7 +215,7 @@
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "Gamepad",
                     "action": "Gloves",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -270,7 +270,7 @@
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "Gamepad",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -292,7 +292,7 @@
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "Gamepad",
                     "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -304,12 +304,29 @@
         {
             "name": "Keyboard",
             "bindingGroup": "Keyboard",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         },
         {
-            "name": "GamePad",
-            "bindingGroup": "GamePad",
-            "devices": []
+            "name": "Gamepad",
+            "bindingGroup": "Gamepad",
+            "devices": [
+                {
+                    "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }
