@@ -8,11 +8,20 @@ using UnityEngine.InputSystem;
 /// Handles all of the player's movement
 /// </summary>
 
+public enum PlayerState
+{
+    Neutral, // Full regular input and movement. Transitions to: Pulling
+    Pulling, // Pulling self to a surface. Move along coordinate path with collisions disabled. Transitions to: Attached
+    Attached, // Attached to a surface. Bounded movement. Transitions to: Neutral, Pulling
+}
+
+
 public class PlayerController : MonoBehaviour
 {
 
     /*
     TODO
+    - player can sometimes clip through 
     - fix collision issues
     -> stuttery descent down sloped wall
     -> fix floor clipping issues (to replicate: target adjacent wall & switch/disable polarity mid-flight)
@@ -73,8 +82,10 @@ public class PlayerController : MonoBehaviour
     public Color BootPolarityColor { get {return PolarityColors[1 + (int) BootPolarity];} }
 
     // Movement and Orientation
+    [Header("Movement and Orientation")] // this has to be below the first tooltip for dumb reasons
+    [SerializeField]
+    private PlayerState m_CurrentPlayerState = PlayerState.Neutral;
     [Tooltip("The player's movement speed")]
-    [Header("Movement and Orientation")]
     public float MoveSpeed = 50f;
     [Tooltip("The amount of acceleration to apply")]
     public float GravityIntensity = 1f;
@@ -87,8 +98,41 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The direction the player percieves as up (should match the normal of the surface they're standing on or falling towards)")]
     private Vector3 targetUpDirection = Vector3.up;
     private Vector3 nextTargetUpDirection = Vector3.up;
+    [Tooltip("The path the player pulls themselves along when using boots")]
+    [SerializeField]
+    private List<Vector3> PullPath = new List<Vector3>();
     [Tooltip("Offset used to ensure player doesn't clip through objects")]
     private const float COLLISION_OFFSET = 0.01f;
+    /// <summary>
+    /// Get and Set the player's state, automatically changing the appropriate collision settings
+    /// </summary>
+    public PlayerState CurrentPlayerState {
+        // TODO: Add and apply PLAYER and MAGNETFIELD layers!!!
+        get {return m_CurrentPlayerState;}
+        set {
+            // determine collision settings based on new state
+            bool disableFieldCollision = true;
+            bool enableCollider = true;
+            switch (value)
+            {
+                case PlayerState.Neutral:
+                    targetUpDirection = Vector3.up;
+                    break;
+                case PlayerState.Pulling:
+                    enableCollider = false;
+                    break;
+                case PlayerState.Attached:
+                    disableFieldCollision = false;
+                    break;
+            }
+            // update whether collider is active
+            Collider.enabled = enableCollider;
+            // update physics collision with Magnet Fields
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),LayerMask.NameToLayer("MagnetField"), disableFieldCollision);
+            // apply new state
+            m_CurrentPlayerState = value;
+            } 
+        }
     
     // Camera
     [Tooltip("The upper bound of the player's vertical visual range")]
@@ -185,9 +229,24 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GetComponent<PlayerInput>();
     }
 
+<<<<<<< HEAD
+=======
+    void ScaleLook() 
+    {
+        if ( m_PlayerInput.currentControlScheme == "Gamepad")
+        {
+            gamepadFactor = 15;
+        }
+        else {
+            gamepadFactor = 1;
+        }
+    }
+
+>>>>>>> main
     void Boots() 
     {
-        if (GM.isPaused || openingTimer > 0) 
+        // skip if paused, in intro, or pulling
+        if (GM.isPaused || openingTimer > 0 || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -212,13 +271,15 @@ public class PlayerController : MonoBehaviour
             bootTargetChanged = true;
         }
         // - disable boots if without target
-        else if (BootPolarity != Charge.Neutral)
+        else if (BootPolarity != Charge.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
             nextBootPolarity = Charge.Neutral;
             nextBootMagnetTarget = null;
             nextBootTargetPosition = transform.position;
             nextTargetUpDirection = targetUpDirection;   // unchanged
             bootTargetChanged = true;
+            CurrentPlayerState = PlayerState.Neutral;
+            Debug.Log("Disabled boots");
         }
         
         
@@ -289,7 +350,7 @@ public class PlayerController : MonoBehaviour
 
     void Gloves(float value) 
     {
-        if (GM.isPaused || openingTimer > 0) 
+        if (GM.isPaused || openingTimer > 0 || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -342,6 +403,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When colliding with a magnet field while Attached, orient to its normal
+    /// </summary> 
+    void OnCollisionEnter(Collision col)
+    {
+        if (CurrentPlayerState == PlayerState.Attached && col.gameObject.layer == LayerMask.NameToLayer("MagnetField"))
+        {
+            targetUpDirection = col.gameObject.transform.up;
+        }
+        Debug.Log("Hit!");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -362,9 +435,14 @@ public class PlayerController : MonoBehaviour
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
+<<<<<<< HEAD
 
         if (m_PlayerInput.actions["boots"].triggered) 
         {
+=======
+        ScaleLook();
+        if (m_PlayerInput.actions["boots"].triggered) {
+>>>>>>> main
             Boots();
         }
         if (m_PlayerInput.actions["gloves"].triggered) 
@@ -399,7 +477,6 @@ public class PlayerController : MonoBehaviour
             gloveChangeTimer = Mathf.Min(gloveChangeTimer + Time.deltaTime, gloveChangeTimerMax);
             AudioSourceGloves.volume = Mathf.Lerp(AudioSourceGloves.volume, gloveTargetVolume, gloveChangeTimer/gloveChangeTimerMax);
         }
-
 
         if (!GM.isPaused) 
         {
@@ -484,21 +561,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // /// Handle physics and movement
+    /// <summary>
+    /// Handle physics and movement
+    /// </summary>
     void FixedUpdate()
     {
         bool sliding = false;
 
         // Update boot target if landed
-        if (Landed && bootTargetChanged)
+        if ((CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached) && bootTargetChanged)
         {
             BootPolarity = nextBootPolarity;
             BootMagnetTarget = nextBootMagnetTarget;
             BootTargetPosition = nextBootTargetPosition;
             targetUpDirection = nextTargetUpDirection;
             bootTargetChanged = false;
-            if (BootMagnetTarget != null)
+            if (BootMagnetTarget != null && CanStickTo(BootMagnetTarget))
             {
+                // Change state to Pulling
+                CurrentPlayerState = PlayerState.Pulling;
+                // Generate movement path
+                PullPath.Clear();
+                // - end 1 unit above target surface
+                PullPath.Add(BootTargetPosition + targetUpDirection.normalized*Collider.radius);
+                // TODO - GENERATE FULL PATH
+//TODO!
                 // Apply launch force
                 RB.AddForce(transform.up*200f, ForceMode.Force);
                 // Play boots activate sound
@@ -507,6 +594,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                // Detach from surfaces
+                CurrentPlayerState = PlayerState.Neutral;
                 // Play boots disable sound
                 AudioSourceBoots.clip = AudioBootsOff;
                 AudioSourceBoots.Play();
@@ -523,8 +612,8 @@ public class PlayerController : MonoBehaviour
 
         // Apply Physics
         Vector3 gravityDirection = -transform.up;
-        // - move (skip if pulling to surface)
-        if (BootMagnetTarget == null)
+        // - move (if Neutral or Attached to surface)
+        if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
             if (dForward != 0 || dRight != 0)
             {
@@ -538,12 +627,25 @@ public class PlayerController : MonoBehaviour
                 RB.velocity = RB.velocity - Vector3.ProjectOnPlane(RB.velocity/2, -gravityDirection);
             }
         }
-        // - apply gravity OR pull self to target
-        if (BootMagnetTarget != null && CanStickTo(BootMagnetTarget))
+        // - apply gravity OR pull self along target path
+        if (CurrentPlayerState == PlayerState.Pulling)
         {
-            // pull self to spot one unit above target
-            gravityDirection = BootTargetPosition + targetUpDirection.normalized*Collider.radius - transform.position;
-            FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
+            // advance to next path node if at end
+            if (PullPath.Count > 0 && Vector3.Distance(transform.position, PullPath[0]) < Collider.radius)
+            {
+                PullPath.RemoveAt(0); 
+            }
+            // if further nodes still present, pull towards next
+            if (PullPath.Count > 0)
+            {
+                gravityDirection = PullPath[0] - transform.position;
+                FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
+            }
+            // otherwise, attach to surface
+            else
+            {
+                CurrentPlayerState = PlayerState.Attached;
+            }
         }
         else
         {
@@ -551,83 +653,79 @@ public class PlayerController : MonoBehaviour
             FallSpeed = Mathf.Min(FallSpeed + GravityIntensity, TerminalVelocity);
         }
         // - detect floor
-        //   detects Wall and Interactable objects - must set the appropriate layer first!
+        //   detects Wall and Interactable objects - you must set them to the appropriate layer first!
         Vector3 fallOffset = gravityDirection.normalized * FallSpeed * Time.deltaTime;
-        RaycastHit floorHit;
-        Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
-        if (floorHit.collider)
+        if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
-            // if floor can't be stuck to, switch back to normal gravity
-            if (targetUpDirection.normalized != Vector3.up && BootMagnetTarget == null && !CanStickTo(floorHit.collider.gameObject))
+            RaycastHit floorHit;
+            Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+            if (floorHit.collider)
             {
-                targetUpDirection = Vector3.up;
-                FallSpeed = 0f;
-                fallOffset = Vector3.zero;
-            }
-            // if floor is metal or opposite polarity and within slope tolerance, stick to it
-            else if (Vector3.Angle(transform.up, floorHit.normal) < SlopeTolerance)
-            {
-                // floor detected
-                if (BootMagnetTarget == null)
+                /*
+                // if floor can't be stuck to, switch back to normal gravity
+                if (targetUpDirection.normalized != Vector3.up && BootMagnetTarget == null && !CanStickTo(floorHit.collider.gameObject))
                 {
-                    Landed = true;
+                    targetUpDirection = Vector3.up;
                     FallSpeed = 0f;
-                }
-                fallOffset = fallOffset.normalized * (floorHit.distance-COLLISION_OFFSET);
-                // stop targetting landing point once reached
-                if (floorHit.collider.gameObject == BootMagnetTarget)
-                {
-                    BootMagnetTarget = null;
-                    Landed = true;
-                    FallSpeed = 0f;
+                    fallOffset = Vector3.zero;
                 }
                 else
+                */
+
+                // if floor is metal or opposite polarity and within slope tolerance, stick to it
+                if (Vector3.Angle(transform.up, floorHit.normal) < SlopeTolerance)
                 {
-                    // force gravity reset timer to still continue
+                    // floor detected
+                    if (BootMagnetTarget == null)
+                    {
+                        Landed = true;
+                        FallSpeed = 0f;
+                    }
+                    fallOffset = fallOffset.normalized * (floorHit.distance-COLLISION_OFFSET);
+                    // stop targetting landing point once reached
+                    if (floorHit.collider.gameObject == BootMagnetTarget)
+                    {
+                        BootMagnetTarget = null;
+                        Landed = true;
+                        FallSpeed = 0f;
+                    }
+                    else
+                    {
+                        // force gravity reset timer to still continue
+                        sliding = true;
+                    }
+                }
+                // fall or slide if no floor detected
+                else
+                {
+                    // no floor, slide instead
+                    RB.AddForce(Vector3.ProjectOnPlane(floorHit.normal * FallSpeed * Time.deltaTime, -gravityDirection), ForceMode.VelocityChange);
+                    Landed = false;
                     sliding = true;
                 }
             }
-            // fall or slide if no floor detected
             else
             {
-                // no floor, slide instead
-                RB.AddForce(Vector3.ProjectOnPlane(floorHit.normal * FallSpeed * Time.deltaTime, -gravityDirection), ForceMode.VelocityChange);
+                // falling
                 Landed = false;
-                sliding = true;
-            }
-            // disable boots if can't stick to floor
-            if (!CanStickTo(floorHit.collider.gameObject))
-            {
-                // disable boots
-                BootPolarity = Charge.Neutral;
-            }
-        }
-        else
-        {
-            // falling
-            Landed = false;
-            // disable boots if falling without a target
-            if (BootMagnetTarget == null)
-            {
-                BootPolarity = Charge.Neutral;
+                // disable boots if falling without a target
+                if (BootMagnetTarget == null)
+                {
+                    BootPolarity = Charge.Neutral;
+                }
             }
         }
         // - update position (with extra check to prevent clipping)
         RaycastHit fallHit;
+        if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
+        {
         Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
-        if (fallHit.collider)
-        {
-            fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
+            if (fallHit.collider)
+            {
+                fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
+            }
         }
-        if (BootMagnetTarget != null)
-        {
-            RB.MovePosition(transform.position + fallOffset);
-        }
-        else
-        {
-            RB.MovePosition(transform.position + fallOffset);
-            //RB.AddForce(10f*fallOffset/Time.deltaTime, ForceMode.Force);
-        }
+        RB.MovePosition(transform.position + fallOffset);
 
         // Increment timer to reset boot target if stuck to invalid surface
         if ((Landed || sliding) && BootMagnetTarget != null)
@@ -647,7 +745,7 @@ public class PlayerController : MonoBehaviour
             bootResetTimer = 0;
         }
 
-        // Spherecast Crosshair
+        // Raycast Crosshair
         // detects Wall and Interactable objects - must set the appropriate layer first!)
         float castDistance = 500f;
         RaycastHit hit;
@@ -733,13 +831,13 @@ public class PlayerController : MonoBehaviour
 
         Ray ray = new Ray(m_CameraTransform.position, m_CameraTransform.forward);
 
-        if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
         //TODO add different options for pulling from far vs picking up.
             m_CanInteract = true;
             m_CanInteract_Far = false;
         }
 
-        else if (Physics.Raycast(ray, out m_RaycastFocus, PULL_RANGE) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        else if (Physics.Raycast(ray, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract_Far = true;
             m_CanInteract = false;
             
