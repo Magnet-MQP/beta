@@ -229,17 +229,6 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GetComponent<PlayerInput>();
     }
 
-    void ScaleLook() 
-    {
-        if ( m_PlayerInput.currentControlScheme == "Gamepad")
-        {
-            gamepadFactor = 15;
-        }
-        else {
-            gamepadFactor = 1;
-        }
-    }
-
     void Boots() 
     {
         // skip if paused, in intro, or pulling
@@ -276,7 +265,6 @@ public class PlayerController : MonoBehaviour
             nextTargetUpDirection = targetUpDirection;   // unchanged
             bootTargetChanged = true;
             CurrentPlayerState = PlayerState.Neutral;
-            Debug.Log("Disabled boots");
         }
         
         
@@ -409,7 +397,6 @@ public class PlayerController : MonoBehaviour
         {
             targetUpDirection = col.gameObject.transform.up;
         }
-        Debug.Log("Hit!");
     }
 
     // Start is called before the first frame update
@@ -432,7 +419,6 @@ public class PlayerController : MonoBehaviour
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
-        ScaleLook();
         if (m_PlayerInput.actions["boots"].triggered) {
             Boots();
         }
@@ -836,7 +822,7 @@ public class PlayerController : MonoBehaviour
         // Is interactable object detected in front of player?
         else {
             m_CanInteract = false;
-            m_CanInteract_Far = false;
+            m_CanInteract_Far = false;   
         }
 
         // Has interact button been pressed whilst interactable object is in front of player?
