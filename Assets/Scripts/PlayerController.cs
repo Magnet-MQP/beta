@@ -229,8 +229,6 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GetComponent<PlayerInput>();
     }
 
-<<<<<<< HEAD
-=======
     void ScaleLook() 
     {
         if ( m_PlayerInput.currentControlScheme == "Gamepad")
@@ -242,7 +240,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
->>>>>>> main
     void Boots() 
     {
         // skip if paused, in intro, or pulling
@@ -435,14 +432,8 @@ public class PlayerController : MonoBehaviour
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
-<<<<<<< HEAD
-
-        if (m_PlayerInput.actions["boots"].triggered) 
-        {
-=======
         ScaleLook();
         if (m_PlayerInput.actions["boots"].triggered) {
->>>>>>> main
             Boots();
         }
         if (m_PlayerInput.actions["gloves"].triggered) 
