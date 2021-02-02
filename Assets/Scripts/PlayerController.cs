@@ -561,8 +561,8 @@ public class PlayerController : MonoBehaviour
                 PullPath.Clear();
                 // - end 1 unit above target surface
                 PullPath.Add(BootTargetPosition + targetUpDirection.normalized*Collider.radius);
-                // TODO - GENERATE FULL PATH
-//TODO!
+                // GENERATE FULL PATH HERE
+                // (I currently skip this part because I'm actually just using a simpler avoidance system for now.)
                 // Apply launch force
                 RB.AddForce(transform.up*200f, ForceMode.Force);
                 // Play boots activate sound
@@ -617,6 +617,20 @@ public class PlayerController : MonoBehaviour
             {
                 gravityDirection = PullPath[0] - transform.position;
                 FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
+                // avoid obstacles via simple steering
+                float obstacleDistance = 10f;
+                for (int i = 0; i < 8; i++)
+                {
+                    float angle = Mathf.PI*i/4;
+                    Vector3 direction = gravityDirection + 3*transform.up*Mathf.Cos(angle) + 3*transform.right*Mathf.Sin(angle);
+                    RaycastHit obstacleHit;
+                    Physics.SphereCast(transform.position, Collider.radius, direction, out obstacleHit, obstacleDistance, LayerMask.GetMask("Wall"));
+                    if (obstacleHit.collider)
+                    {
+                        // apply force pushing player away from wall, which is stronger the closer they are to it
+                        RB.AddForce(-1.7f * Vector3.ProjectOnPlane(direction,-gravityDirection) * (1-(obstacleHit.distance/obstacleDistance)));
+                    }
+                }
             }
             // otherwise, attach to surface
             else
