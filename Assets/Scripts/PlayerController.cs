@@ -188,17 +188,6 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GetComponent<PlayerInput>();
     }
 
-    void Look(Vector2 direction) 
-    {
-        if ( m_PlayerInput.currentControlScheme == "Gamepad")
-        {
-            gamepadFactor = 15;
-        }
-        else {
-            gamepadFactor = 1;
-        }
-    }
-
     void Boots() 
     {
         if (GM.isPaused || openingTimer > 0) 
@@ -376,16 +365,18 @@ public class PlayerController : MonoBehaviour
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
-        Look(look);
 
-        if (m_PlayerInput.actions["boots"].triggered) {
+        if (m_PlayerInput.actions["boots"].triggered) 
+        {
             Boots();
         }
-        if (m_PlayerInput.actions["gloves"].triggered) {
+        if (m_PlayerInput.actions["gloves"].triggered) 
+        {
             var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
             Gloves(gloves);
         }
-        if (m_PlayerInput.actions["interact"].triggered) {
+        if (m_PlayerInput.actions["interact"].triggered) 
+        {
             Interact();
         }
 
@@ -418,8 +409,20 @@ public class PlayerController : MonoBehaviour
             dForward = move.y;
             dRight = move.x;
 
-            float dLookRight = look.x*LookSpeed * gamepadFactor;
-            float dLookUp = look.y*LookSpeed * gamepadFactor;
+            // potentially have different look speed values for mouse and controller?
+            float dLookRight = 0.0f;
+            float dLookUp = 0.0f;
+            if ( m_PlayerInput.currentControlScheme == "Gamepad")
+            {
+                dLookRight = look.x * LookSpeed * 30; 
+                dLookUp = look.y * LookSpeed * 30; 
+            }
+            else 
+            {
+                dLookRight = look.x * LookSpeed; 
+                dLookUp = look.y * LookSpeed; 
+            }
+
 
             //Look and change facing direction
             transform.RotateAround(transform.position, transform.up, dLookRight);

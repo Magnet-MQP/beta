@@ -246,7 +246,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 var firstPartIndex = bindingIndex + 1;
                 if (firstPartIndex < action.bindings.Count && action.bindings[firstPartIndex].isPartOfComposite)
-                Debug.Log("hiiiiii");
                     PerformInteractiveRebind(action, firstPartIndex, allCompositeParts: true);
             }
             else
@@ -269,7 +268,6 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             action.Disable();
 
             // Configure the rebind.
-            Debug.Log("cries");
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
                 .OnCancel(
                     operation =>
