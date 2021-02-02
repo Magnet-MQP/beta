@@ -202,8 +202,6 @@ public class PlayerController : MonoBehaviour
 
     private GameManager GM;
     private InputController controls;
-    private InputAction moveAction;
-    private InputAction lookAction;
     private InputControlScheme gamepad;
     [Tooltip("Foward Vector2 of player movement")]
     private float dForward = 0;
@@ -222,7 +220,6 @@ public class PlayerController : MonoBehaviour
     private float gloveTargetVolume = 0;
     private float gloveChangeTimer = 0;
     private float gloveChangeTimerMax = 0.2f;
-    public float gamepadFactor = 1;
     // For opening sequence
     private float openingTimer = 17f;
     private float openingFreePoint = 4f; // how much time should be left on the clock when the player gains input
@@ -232,6 +229,8 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GetComponent<PlayerInput>();
     }
 
+<<<<<<< HEAD
+=======
     void ScaleLook() 
     {
         if ( m_PlayerInput.currentControlScheme == "Gamepad")
@@ -243,6 +242,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+>>>>>>> main
     void Boots() 
     {
         // skip if paused, in intro, or pulling
@@ -435,15 +435,23 @@ public class PlayerController : MonoBehaviour
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
+<<<<<<< HEAD
+
+        if (m_PlayerInput.actions["boots"].triggered) 
+        {
+=======
         ScaleLook();
         if (m_PlayerInput.actions["boots"].triggered) {
+>>>>>>> main
             Boots();
         }
-        if (m_PlayerInput.actions["gloves"].triggered) {
+        if (m_PlayerInput.actions["gloves"].triggered) 
+        {
             var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
             Gloves(gloves);
         }
-        if (m_PlayerInput.actions["interact"].triggered) {
+        if (m_PlayerInput.actions["interact"].triggered) 
+        {
             Interact();
         }
 
@@ -475,8 +483,20 @@ public class PlayerController : MonoBehaviour
             dForward = move.y;
             dRight = move.x;
 
-            float dLookRight = look.x*LookSpeed * gamepadFactor;
-            float dLookUp = look.y*LookSpeed * gamepadFactor;
+            // potentially have different look speed values for mouse and controller?
+            float dLookRight = 0.0f;
+            float dLookUp = 0.0f;
+            if ( m_PlayerInput.currentControlScheme == "Gamepad")
+            {
+                dLookRight = look.x * LookSpeed * 30; 
+                dLookUp = look.y * LookSpeed * 30; 
+            }
+            else 
+            {
+                dLookRight = look.x * LookSpeed; 
+                dLookUp = look.y * LookSpeed; 
+            }
+
 
             //Look and change facing direction
             transform.RotateAround(transform.position, transform.up, dLookRight);

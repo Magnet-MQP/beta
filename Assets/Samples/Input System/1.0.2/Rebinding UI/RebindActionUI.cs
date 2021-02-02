@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 ////TODO: localization support
@@ -250,6 +251,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             else
             {
                 PerformInteractiveRebind(action, bindingIndex);
+                action.Enable();
             }
         }
 
@@ -262,6 +264,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 m_RebindOperation?.Dispose();
                 m_RebindOperation = null;
             }
+
+            action.Disable();
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
