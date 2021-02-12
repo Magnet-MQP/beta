@@ -258,7 +258,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void StartCutscene(CutsceneData newScene)
     {
-        Debug.Log("Starting Cutscene!");
         // load cutscene info
         ActiveCutscene = newScene;
         cutsceneTimer = newScene.FullDuration;
