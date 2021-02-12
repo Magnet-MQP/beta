@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     /*
     TODO
-    - player can sometimes clip through 
+    - player can sometimes clip through edges of magnet field
     - fix collision issues
     -> stuttery descent down sloped wall
     -> fix floor clipping issues (to replicate: target adjacent wall & switch/disable polarity mid-flight)
@@ -44,7 +44,10 @@ public class PlayerController : MonoBehaviour
     public SphereCollider Collider;
     [Tooltip("The camera attached to the player, acting as their head")]
     public Camera MainCamera;
+    [Tooltip("The Subtitle Manager for the game")]
     public SubtitleManager SM;
+    [Tooltip("The Bootup Controller, which handles the bootup animation.")]
+    public BootupController BC;
 
     // UI References
     [Tooltip("The top part of the crosshair, indicating glove polarity")]
@@ -220,19 +223,65 @@ public class PlayerController : MonoBehaviour
     private float gloveTargetVolume = 0;
     private float gloveChangeTimer = 0;
     private float gloveChangeTimerMax = 0.2f;
-    // For opening sequence
-    private float openingTimer = 17f;
-    private float openingFreePoint = 4f; // how much time should be left on the clock when the player gains input
+
+    [Tooltip("The current cutscene the player is in (if this is set, the player will immediately enter it on load)")]
+    [Header("Cutscenes")]
+    public CutsceneData ActiveCutscene = null;
+    [Tooltip("Whether the player is actively in a cutscene")]
+    public bool InCutscene = false;
+    private float cutsceneTimer = 0f;
+    private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
 
     void Awake() 
     {
         m_PlayerInput = GetComponent<PlayerInput>();
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        m_CameraTransform = GetComponentInChildren<Camera>().transform;
+        RB = GetComponent<Rigidbody>();
+        
+        GM = GameManager.getGameManager();
+        GM.setPlayerInput(m_PlayerInput);
+
+        // automatically start assigned cutscene, if present
+        if (ActiveCutscene != null)
+        {
+            StartCutscene(ActiveCutscene);
+        }
+    }
+
+    /// <summary>
+    /// Play a cutscene
+    /// </summary>
+    public void StartCutscene(CutsceneData newScene)
+    {
+        Debug.Log("Starting Cutscene!");
+        // load cutscene info
+        ActiveCutscene = newScene;
+        cutsceneTimer = newScene.FullDuration;
+        cutsceneUnlockPoint = cutsceneTimer - newScene.LockDuration;
+        if (newScene.ShowBootup)
+        {
+            BC.StartBootupSequence();
+        }
+
+        // load dialogue data
+        for (int i = 0; i < newScene.Dialogue.Length; i++)
+        {
+            SM.QueueSubtitle(newScene.Dialogue[i]);
+        }
+
+        // actually start cutscene
+        InCutscene = true;
+    }
+
     void Boots() 
     {
         // skip if paused, in intro, or pulling
-        if (GM.isPaused || openingTimer > 0 || CurrentPlayerState == PlayerState.Pulling) 
+        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -266,76 +315,11 @@ public class PlayerController : MonoBehaviour
             bootTargetChanged = true;
             CurrentPlayerState = PlayerState.Neutral;
         }
-        
-        
-        //*/
-        /* DEACTIVATED - OLD VERSION WITH MULTIPLE BOOT POLARITY BUTTONS
-        if (value == 1)
-        {
-            // Negative (Cyan)
-            // - always pull to opposite polarity
-            if (targetCharge == Charge.Positive && ReticleTarget != null && 
-                ReticleTarget.CompareTag("MagnetTarget") && targetDistance < SELF_PULL_RANGE)
-            {
-                nextBootPolarity = Charge.Negative;
-                nextBootMagnetTarget = ReticleTarget;
-                nextBootTargetPosition = ReticleHitPosition;
-                nextTargetUpDirection = ReticleHitNormal;
-            }
-            // - disable boots if on negative without target
-            else if (BootPolarity == Charge.Negative)
-            {
-                nextBootPolarity = Charge.Neutral;
-                nextBootMagnetTarget = null;
-                nextBootTargetPosition = transform.position;
-                nextTargetUpDirection = targetUpDirection;   // unchanged
-            }
-            // - switch to negative
-            else 
-            {
-                nextBootPolarity = Charge.Negative;
-                nextBootMagnetTarget = BootMagnetTarget;     // unchanged
-                nextBootTargetPosition = BootTargetPosition; // unchanged
-                nextTargetUpDirection = targetUpDirection;   // unchanged
-            }
-            bootTargetChanged = true;
-        }
-        if (value == -1)
-        {
-            // Positive (Red)
-            // - always pull to opposite polarity
-            if (targetCharge == Charge.Negative && ReticleTarget != null && 
-                ReticleTarget.CompareTag("MagnetTarget") && targetDistance < SELF_PULL_RANGE)
-            {
-                nextBootPolarity = Charge.Positive;
-                nextBootMagnetTarget = ReticleTarget;
-                nextBootTargetPosition = ReticleHitPosition;
-                nextTargetUpDirection = ReticleHitNormal;
-            }
-            // - disable boots if on positive without target
-            else if (BootPolarity == Charge.Positive)
-            {
-                nextBootPolarity = Charge.Neutral;
-                nextBootMagnetTarget = null;
-                nextBootTargetPosition = transform.position;
-                nextTargetUpDirection = targetUpDirection; // unchanged
-            }
-            // - switch to positive
-            else
-            {
-                nextBootPolarity = Charge.Positive;
-                nextBootMagnetTarget = BootMagnetTarget; // unchanged
-                nextBootTargetPosition = BootTargetPosition; // unchanged
-                nextTargetUpDirection = targetUpDirection; // unchanged
-            }
-            bootTargetChanged = true;
-        }
-        */
     }
 
     void Gloves(float value) 
     {
-        if (GM.isPaused || openingTimer > 0 || CurrentPlayerState == PlayerState.Pulling) 
+        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -399,22 +383,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        m_CameraTransform = GetComponentInChildren<Camera>().transform;
-        RB = GetComponent<Rigidbody>();
-        
-        GM = GameManager.getGameManager();
-        GM.setPlayerInput(m_PlayerInput);
-
-        // opening sequence (hard-coded for now)
-        SM.QueueSubtitle(new SubtitleData("[ INITIALIZING SYSTEMS... ]", 5000, 4f));
-        SM.QueueSubtitle(new SubtitleData("[ UNIT ID: FyED-OR ]", 4999, 8f));
-        SM.QueueSubtitle(new SubtitleData("[ ELECTROMAGNETS: ACTIVE ]", 4998, 12f));
-        SM.QueueSubtitle(new SubtitleData("[ OCULAR CAMERA: ACTIVE ]", 4997, 16f));
-    }
-
     void Update()
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
@@ -432,17 +400,17 @@ public class PlayerController : MonoBehaviour
             Interact();
         }
 
-        // opening sequence (hard-coded for now)
-        if (openingTimer > 0) 
+        // play cutscene
+        if (InCutscene) 
         {
-            openingTimer -= Time.deltaTime;
-            if (openingTimer <= 0)
+            cutsceneTimer -= Time.deltaTime;
+            // end cutscene at end of timer
+            if (cutsceneTimer <= 0)
             {
-                SM.QueueSubtitle(new SubtitleData("FyED-OR: \"Wait... where am I now?\"", 4996, 4f));
-                SM.QueueSubtitle(new SubtitleData("FyED-OR: \"THE TRASH COMPACTOR!?\"", 4995, 8f));
-                SM.QueueSubtitle(new SubtitleData("FyED-OR: \"I need to find a way out!\"", 4994, 12f));
+                InCutscene = false;
             }
-            if (openingTimer > openingFreePoint)
+            // disable other actions after this point if necessary
+            if (cutsceneTimer > cutsceneUnlockPoint)
             {
                 return;
             }
