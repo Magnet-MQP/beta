@@ -408,10 +408,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1212324371358310655, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8a9b8c5e16b83be4085cf9877c541cd1, type: 3}
     - target: {fileID: 6843941541086844045, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
       propertyPath: m_Colors.m_HighlightedColor.r
       value: 1
@@ -464,10 +460,6 @@ PrefabInstance:
       propertyPath: m_Colors.m_NormalColor.a
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6843941541259770252, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: c6dd1d08b474e6f489fb37c5e88bae70, type: 3}
     - target: {fileID: 6843941541313113197, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -556,15 +548,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main_Menu
       objectReference: {fileID: 0}
-    - target: {fileID: 6843941542024985382, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 6638f3797e1b4664181b624aa4dcb0a9, type: 3}
-    - target: {fileID: 8785396750654382760, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8a9b8c5e16b83be4085cf9877c541cd1, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2543784155272599280, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
 --- !u!1 &1437705084
 GameObject:
