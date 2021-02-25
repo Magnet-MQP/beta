@@ -111,3 +111,4 @@ MonoBehaviour:
   BuildingCount: 100
   RespawnDistance: 1000
   BuildingTemplate: {fileID: 7275441025265244823, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
+  PlayerRef: {fileID: 0}
