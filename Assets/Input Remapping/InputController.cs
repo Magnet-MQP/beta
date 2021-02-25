@@ -183,7 +183,7 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""id"": ""7a5402c1-562c-4804-a2fb-ad10d786f105"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
@@ -194,7 +194,7 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""id"": ""95fd61ca-c4dd-4151-bfe5-0b9b85f2e302"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone,ScaleVector2"",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
@@ -245,7 +245,7 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
+                    ""name"": ""Negative"",
                     ""id"": ""60d208e7-4257-437e-8d60-05329c463a75"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -256,7 +256,7 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
+                    ""name"": ""Positive"",
                     ""id"": ""9d34aa61-727f-4777-8ab3-f25263f0025b"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",

@@ -1,22 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class LookController : MonoBehaviour {
-    private Slider lookX;
-    private Slider lookY;
+    private PlayerInput m_PlayerInput;
     GameManager manager;
 
-    void Awake()
+    void Start()
     {
         manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
-        Debug.Log(manager.lookSpeedX);
-        Debug.Log(manager.lookSpeedY);
+        m_PlayerInput = manager.getPlayerInput();
     }
 
     public void changeLookSpeedX(float value)
     {
         manager.lookSpeedX = value;
+
     }
 
     public void changeLookSpeedY(float value) 
@@ -32,5 +32,10 @@ public class LookController : MonoBehaviour {
     public void invertY()
     {
         manager.lookSpeedY = manager.lookSpeedY * (-1.0f);  
+    }
+
+    public void toggleHold()
+    {
+        manager.glovesIsHold = !manager.glovesIsHold;
     }
 }

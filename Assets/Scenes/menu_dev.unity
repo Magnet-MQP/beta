@@ -336,6 +336,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1015493790947242027, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: changeLookSpeedX
+      objectReference: {fileID: 0}
     - target: {fileID: 1162074713174046907, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -447,6 +451,10 @@ PrefabInstance:
     - target: {fileID: 8166506382171022568, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266172278284764781, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8279733426911859584, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_RootOrder
