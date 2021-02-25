@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     private float pauseWait = 0;
     private float pauseWaitMax = 0.1f;
+    public float lookSpeedX = 4.0f;
+    public float lookSpeedY = 4.0f;
 
     // Scene changing
     public Scene currScene;

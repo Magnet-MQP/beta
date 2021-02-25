@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ControlsMenu : MonoBehaviour
 {
-  GameManager manager;
+    GameManager manager;
     // Start is called before the first frame update
     void Start()
     {

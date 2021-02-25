@@ -134,8 +134,8 @@ MonoBehaviour:
   AudioSourceGloves: {fileID: 8007069916879993962}
   AudioGlovesNeg: {fileID: 8300000, guid: 64a162459cd24b04a88ae6cd29a56d06, type: 3}
   AudioGlovesPos: {fileID: 8300000, guid: 1278610f968a95c47bf0984a462cd0ae, type: 3}
-  InCutscene: 0
   ActiveCutscene: {fileID: 0}
+  InCutscene: 0
 --- !u!82 &3964060029680023792
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1325,6 +1325,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 4270319487687505376, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4270319487687505376, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4348752084042904003, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
       propertyPath: m_Layer
       value: 11
@@ -1368,6 +1376,14 @@ PrefabInstance:
     - target: {fileID: 4765704727425895832, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4900400743565975843, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_MinValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4900400743565975843, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: changeLookX
       objectReference: {fileID: 0}
     - target: {fileID: 4900476345975606226, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1460,6 +1476,18 @@ PrefabInstance:
     - target: {fileID: 6262294022612047860, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500662872391739827, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500662872391739827, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500662872391739827, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6613452534062301719, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
       propertyPath: m_Layer

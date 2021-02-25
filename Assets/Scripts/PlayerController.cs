@@ -432,13 +432,14 @@ public class PlayerController : MonoBehaviour
             float dLookUp = 0.0f;
             if ( m_PlayerInput.currentControlScheme == "Gamepad")
             {
-                dLookRight = look.x * LookSpeed * 30; 
-                dLookUp = look.y * LookSpeed * 30; 
+                dLookRight = look.x * GM.lookSpeedX * 30; 
+                dLookUp = look.y * GM.lookSpeedY * 30; 
             }
             else 
             {
-                dLookRight = look.x * LookSpeed; 
-                dLookUp = look.y * LookSpeed; 
+                look.Normalize();
+                dLookRight = look.x * GM.lookSpeedX; 
+                dLookUp = look.y * GM.lookSpeedY; 
             }
 
 
