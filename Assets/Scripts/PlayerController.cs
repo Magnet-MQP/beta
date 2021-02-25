@@ -800,7 +800,7 @@ public class PlayerController : MonoBehaviour
             m_CanInteract = false;
             
         }
-        // Is interactable object detected in front of player?
+        // No Interactable in range
         else {
             m_CanInteract = false;
             m_CanInteract_Far = false;   
@@ -812,7 +812,7 @@ public class PlayerController : MonoBehaviour
 
             if (interactComponent != null) {
                 // Perform object's interaction
-                interactComponent.Interact(this);
+                interactComponent.Interact(this, m_RaycastFocus.distance);
             }
         }
         // Wasn't right in front of the player, but is it within pull range?
@@ -820,7 +820,7 @@ public class PlayerController : MonoBehaviour
             IInteractable interactComponent = m_RaycastFocus.collider.transform.GetComponent<IInteractable>();
             if (interactComponent != null) {
                 // Perform object's interaction
-                interactComponent.InteractFar(this);
+                interactComponent.InteractFar(this, m_RaycastFocus.distance);
             }
 
         }
