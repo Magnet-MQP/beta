@@ -10,15 +10,27 @@ public class LookController : MonoBehaviour {
     void Awake()
     {
         manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
+        Debug.Log(manager.lookSpeedX);
+        Debug.Log(manager.lookSpeedY);
     }
 
-    public void changeLookX(float value)
+    public void changeLookSpeedX(float value)
     {
-       // manager.lookSpeedX = value;
+        manager.lookSpeedX = value;
     }
 
-    public void changeLookY(float value) 
+    public void changeLookSpeedY(float value) 
     {
-        //manager.lookSpeedY = value;
+        manager.lookSpeedY = value;
+    }
+
+    public void invertX()
+    {
+        manager.lookSpeedX = manager.lookSpeedX * (-1.0f);  
+    }
+
+    public void invertY()
+    {
+        manager.lookSpeedY = manager.lookSpeedY * (-1.0f);  
     }
 }
