@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
         {
             pauseWait -= Time.unscaledDeltaTime;
         }
-        if (m_PlayerInput.actions["menu"].ReadValue<float>() == 1)
+        if (m_PlayerInput.actions["Menu"].ReadValue<float>() == 1)
         {
             // TODO: should unpause if already paused
             if (enablePause && pauseWait <= 0) {
