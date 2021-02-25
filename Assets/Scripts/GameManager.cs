@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     private float pauseWait = 0;
     private float pauseWaitMax = 0.1f;
+    public float lookSpeedX = 4.0f;
+    public float lookSpeedY = 4.0f;
+    public bool glovesIsHold = false;
 
     // Scene changing
     public Scene currScene;
@@ -29,10 +32,14 @@ public class GameManager : MonoBehaviour
         m_PlayerInput = playerInput;
     }
 
+    public PlayerInput getPlayerInput()
+    {
+      return m_PlayerInput;
+    }
+
    // called first
     void OnEnable()
     {
-        //Debug.Log("OnEnable called");
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 

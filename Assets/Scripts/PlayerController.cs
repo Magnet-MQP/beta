@@ -318,16 +318,18 @@ public class PlayerController : MonoBehaviour
 
     void Gloves(float value) 
     {
+        //Debug.Log(value);
         if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
+
         // left click --> -1 right click --> 1
         //DEBUG - Use Left Mouse and Right Mouse to change glove polarity
         if (value == -1)
         {
             // Negative (Cyan)
-            if (GlovePolarity == Charge.Negative)
+            if (!GM.glovesIsHold && GlovePolarity == Charge.Negative)
             {
                 GlovePolarity = Charge.Neutral;
                 gloveTargetVolume = 0;
@@ -344,9 +346,8 @@ public class PlayerController : MonoBehaviour
         if (value == 1)
         {
             // Positive (Red)
-            if (GlovePolarity == Charge.Positive)
+            if (!GM.glovesIsHold && GlovePolarity == Charge.Positive)
             {
-                GlovePolarity = Charge.Neutral;
                 GlovePolarity = Charge.Neutral;
                 gloveTargetVolume = 0;
             }
@@ -357,6 +358,12 @@ public class PlayerController : MonoBehaviour
                 gloveTargetVolume = 1;
                 AudioSourceGloves.Play();
             }
+            gloveChangeTimer = 0;
+        }
+        if (value == 0 && GM.glovesIsHold)
+        {
+            GlovePolarity = Charge.Neutral;
+            gloveTargetVolume = 0;
             gloveChangeTimer = 0;
         }
     }
@@ -386,14 +393,23 @@ public class PlayerController : MonoBehaviour
     {
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
-        if (m_PlayerInput.actions["boots"].triggered) {
+        var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
+
+        if (m_PlayerInput.actions["boots"].triggered)
+        {
             Boots();
         }
-        if (m_PlayerInput.actions["gloves"].triggered) 
+
+        if (GM.glovesIsHold) 
         {
-            var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
             Gloves(gloves);
         }
+        else if (m_PlayerInput.actions["gloves"].triggered)
+        {
+            Gloves(gloves);
+        }
+
+
         if (m_PlayerInput.actions["interact"].triggered) 
         {
             Interact();
@@ -430,16 +446,16 @@ public class PlayerController : MonoBehaviour
             // potentially have different look speed values for mouse and controller?
             float dLookRight = 0.0f;
             float dLookUp = 0.0f;
-            if ( m_PlayerInput.currentControlScheme == "Gamepad")
-            {
-                dLookRight = look.x * LookSpeed * 30; 
-                dLookUp = look.y * LookSpeed * 30; 
-            }
-            else 
-            {
-                dLookRight = look.x * LookSpeed; 
-                dLookUp = look.y * LookSpeed; 
-            }
+            // if ( m_PlayerInput.currentControlScheme == "Gamepad")
+            // {
+            //     dLookRight = look.x * GM.lookSpeedX;
+            //     dLookUp = look.y * GM.lookSpeedY;
+            // }
+            // else 
+            // {
+                dLookRight = look.x * GM.lookSpeedX; 
+                dLookUp = look.y * GM.lookSpeedY; 
+            // }
 
 
             //Look and change facing direction
