@@ -26,7 +26,7 @@ public class PowerSocketController : MonoBehaviour
         {
             Activated = true;
             MockPowerCell.SetActive(true);
-            Destroy(other.gameObject);
+            otherPhysics.DeleteSelf();
         }
     }
 }

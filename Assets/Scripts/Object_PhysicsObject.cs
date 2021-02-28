@@ -117,4 +117,15 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     m_ThisRigidbody.AddForce(force);
 
     }
+
+    /// <summary>
+    /// Safely destroy self, even if held
+    /// </summary>
+    public void DeleteSelf() {
+        if (controller != null)
+        {
+            controller.holding = false;
+        }
+        Destroy(gameObject);
+    }
 } 
