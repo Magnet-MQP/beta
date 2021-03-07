@@ -14,8 +14,12 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     private FixedJoint m_HoldJoint = null;
     private GameObject m_HoldObject = null;
     public Charge Obj_Polarity = Charge.Neutral;
+    
+    [Tooltip("Marked as true when the object has been 'used up', ex. placed in a power supply")]
+    public bool Consumed = false; 
     private PlayerController controller = null;
- 
+    
+
  
     private void Start() {
         gameObject.tag = "Interactable";
@@ -122,6 +126,7 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     /// Safely destroy self, even if held
     /// </summary>
     public void DeleteSelf() {
+        Consumed = true;
         if (controller != null)
         {
             controller.holding = false;

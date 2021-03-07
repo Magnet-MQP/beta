@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -1327753234362328942}
   - component: {fileID: 1016373866089608449}
   m_Layer: 10
-  m_Name: Box_Negative
+  m_Name: PowerCell
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
