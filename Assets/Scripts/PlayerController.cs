@@ -326,15 +326,16 @@ public class PlayerController : MonoBehaviour
 
         // left click --> -1 right click --> 1
         //DEBUG - Use Left Mouse and Right Mouse to change glove polarity
+        // Negative glove
         if (value == -1)
         {
             // Negative (Cyan)
             if (!GM.glovesIsHold && GlovePolarity == Charge.Negative)
             {
                 GlovePolarity = Charge.Neutral;
-                gloveTargetVolume = 0;
+                AudioSourceGloves.Stop();
             }
-            else
+            else if (!AudioSourceGloves.isPlaying || GlovePolarity == Charge.Positive)
             {
                 GlovePolarity = Charge.Negative;
                 AudioSourceGloves.clip = AudioGlovesNeg;
@@ -343,15 +344,16 @@ public class PlayerController : MonoBehaviour
             }
             gloveChangeTimer = 0;
         }
+        // Positive glove
         if (value == 1)
         {
             // Positive (Red)
             if (!GM.glovesIsHold && GlovePolarity == Charge.Positive)
             {
                 GlovePolarity = Charge.Neutral;
-                gloveTargetVolume = 0;
+                AudioSourceGloves.Stop();
             }
-            else
+            else if (!AudioSourceGloves.isPlaying || GlovePolarity == Charge.Negative)
             {
                 GlovePolarity = Charge.Positive;
                 AudioSourceGloves.clip = AudioGlovesPos;
@@ -360,10 +362,11 @@ public class PlayerController : MonoBehaviour
             }
             gloveChangeTimer = 0;
         }
+        // No glove, head empty
         if (value == 0 && GM.glovesIsHold)
         {
             GlovePolarity = Charge.Neutral;
-            gloveTargetVolume = 0;
+            AudioSourceGloves.Stop();
             gloveChangeTimer = 0;
         }
     }
@@ -710,8 +713,10 @@ public class PlayerController : MonoBehaviour
                 BootMagnetTarget = null;
 
                 // Play boots disable sound
+                /*
                 AudioSourceBoots.clip = AudioBootsOff;
                 AudioSourceBoots.Play();
+                */
             }
         }
         else
@@ -801,12 +806,10 @@ public class PlayerController : MonoBehaviour
             CrosshairTopMarks.enabled = false;
         }
 
-        // RFDOLAN PICKUP CODE
 
         Ray ray = new Ray(m_CameraTransform.position, m_CameraTransform.forward);
 
         if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
-        //TODO add different options for pulling from far vs picking up.
             m_CanInteract = true;
             m_CanInteract_Far = false;
         }
@@ -840,18 +843,6 @@ public class PlayerController : MonoBehaviour
             }
 
         }
- 
-        /*
-         // Has action button been pressed whilst interactable object is in front of player?
-         if (Input.GetButtonDown("Fire3") && m_CanInteract == true) {
-             IInteractable interactComponent = m_RaycastFocus.collider.transform.GetComponent<IInteractable>();
- 
-             if (interactComponent != null) {
-                 // Perform object's action
-                 interactComponent.Action(this);
-             }
-         }
-         */
     }
 
     /// <summary>
