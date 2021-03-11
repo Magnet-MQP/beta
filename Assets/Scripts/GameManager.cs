@@ -6,8 +6,11 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [Tooltip("The singleton instance")]
     public static GameManager Instance; // singleton
     private PlayerInput m_PlayerInput;
+    private GameObject playerReference = null;
+
     // Pause settings
     GameObject[] pauseObjects;
     GameObject[] toHideObjects;
@@ -55,6 +58,7 @@ public class GameManager : MonoBehaviour
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         toHideObjects = GameObject.FindGameObjectsWithTag("HideOnPause");
         controlsObjects = GameObject.FindGameObjectsWithTag("Controls");
+        playerReference = GameObject.Find("Player");
         hidePaused();
         updatePauseState();
     }
@@ -74,6 +78,9 @@ public class GameManager : MonoBehaviour
         
     }
     void Start() {
+        // track the player
+        playerReference = GameObject.Find("Player");
+
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
         scenenum = currScene.buildIndex;
@@ -107,7 +114,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Progress to the next scene numerically
+    /// <summary>
+    /// Scene Function: Progress to the next scene numerically
+    /// </summary>
     public void nextScene() {
         //Debug.Log("GO");
         int nextIndex = currScene.buildIndex+1;
@@ -117,7 +126,9 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Progress to the previous scene numerically
+    /// <summary>
+    /// Scene Function: Progress to the previous scene numerically
+    /// </summary>
     public void prevScene() {
         int nextIndex = currScene.buildIndex-1;
         if(nextIndex != 0) { enablePause = true;} 
@@ -125,13 +136,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
     }
 
-    // Jump to the main menu
+    /// <summary>
+    /// Scene Function: Jump to the main menu scene
+    /// </summary>
     public void mainMenu() {
         enablePause = false;
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
-    // Show or hide pause menu elements
+    /// <summary>
+    /// Menu Function: Show or hide pause menu elements
+    /// </summary>
     public void switchPause() {
         isPaused = !isPaused;
         pauseWait = pauseWaitMax;
@@ -166,7 +181,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // show objects with PauseObject tag
+    /// <summary>
+    /// Menu Function: show objects with PauseObject tag
+    /// </summary>
     public void showPaused() {
 
         foreach(GameObject g in pauseObjects) {
@@ -180,7 +197,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // hide objects with PauseObject tag
+    /// <summary>
+    /// Menu Function: hide objects with PauseObject tag
+    /// </summary>
     public void hidePaused() {
         foreach(GameObject g in pauseObjects) {
             g.SetActive(false);
@@ -193,6 +212,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Menu Function: display the control options menu
+    /// </summary>
     public void showControls() 
     {
       foreach(GameObject g in controlsObjects)
@@ -203,5 +225,17 @@ public class GameManager : MonoBehaviour
       {
         g.SetActive(false);
       }
+    }
+
+    /// <summary>
+    /// Return the currently stored reference to the player, or attempt to find a new one
+    /// </summary>
+    public GameObject GetPlayer()
+    {
+        if (playerReference == null)
+        {
+            playerReference = GameObject.Find("Player");
+        }
+        return playerReference;
     }
 }

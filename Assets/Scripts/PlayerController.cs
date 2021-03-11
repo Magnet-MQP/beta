@@ -64,25 +64,51 @@ public class PlayerController : MonoBehaviour
     [Tooltip("X overlayed on the crosshair, indicating an unreachable target")]
     public Image CrosshairError;
     [Tooltip("The UI image indicating the player's glove polarity")]
-    public Image GlovePolarityReadout;
+    public Image GlovePolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI image indicating the player's boot polarity")]
-    public Sprite[] GlovePolarityIcons; 
+    public Sprite[] GlovePolarityIcons; // CONSIDER DELETING
     [Tooltip("The UI icon set used to show the player's boot polarity")]
-    public Image BootPolarityReadout;
+    public Image BootPolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI icon set used to show the player's glove polarity")]
-    public Sprite[] BootPolarityIcons;
+    public Sprite[] BootPolarityIcons; // CONSIDER DELETING
     [Tooltip("The glow effect at the bottom of the screen indicating your boot polarity")]
     public Image BootPolarityGlow;
     [Tooltip("The set of colors to use for the boot polarity glow effect")]
     public Color[] PolarityColors;
+    [Tooltip("The set of colors to use for polarity emissives on the player")]
+    public Color[] EmissivePolarityColors;
     /// <summary>
     /// Access the correct color for the current glove polarity
     /// </summary>
     public Color GlovePolarityColor { get {return PolarityColors[1 + (int) GlovePolarity];} }
     /// <summary>
+    /// Access the correct color for the current glove glow
+    /// </summary>
+    public Color EmissivePolarityColor { get {return EmissivePolarityColors[1 + (int) GlovePolarity];} }
+    /// <summary>
     /// Access the correct color for the current boot polarity
     /// </summary>
     public Color BootPolarityColor { get {return PolarityColors[1 + (int) BootPolarity];} }
+
+    // Arm Model References
+    [Tooltip("The player's left arm")]
+    [Header("Arm Models")]
+    public PlayerArmController ArmL;
+    [Tooltip("The player's right arm")]
+    public PlayerArmController ArmR;
+    private float armCyclePos = 0f; // used to animate walking hand gesture
+    private float armCycleSpeed = 0.002f; // used to animate walking hand gesture
+    private float armSwing = 0.1f; // amount of arm movement
+    private float armGripPos = 0f; // used to animate magnet hang gesture
+    private float armGripSpeed = 7f; // rate at which arms move into magnet position when in use
+    private bool armInteractAnim = false; // whether to play the arm interact animation
+    private float armInteractPos = 0f; // used to animate object use gesture
+    private float armInteractSpeed = 5f; // rate at which the arm inteact animation plays
+    private float armRestSpeed = 4f; // rate at which arms settle back into place when using magnets or not moving
+    private float armLookX = 0f; // amount the arms lead the camera in the x direction
+    private float armLookY = 0f; // amount the arms lead the camera in the y direction
+    private float armLookFactor = 0.06f; // ratio of look movement to arm leading
+    private float armLookSpeed = 2f; // rate at which arms settle back from leading
 
     // Movement and Orientation
     [Header("Movement and Orientation")] // this has to be below the first tooltip for dumb reasons
@@ -203,6 +229,7 @@ public class PlayerController : MonoBehaviour
     public bool holding = false;
     //private bool GlovesOn = false;
 
+    [Header("Managers")]
     private GameManager GM;
     private InputController controls;
     private InputControlScheme gamepad;
@@ -214,6 +241,7 @@ public class PlayerController : MonoBehaviour
     private float targetDistance = 0;
     private PlayerInput m_PlayerInput;
     // Audio
+    [Header("Audio")]
     public AudioSource AudioSourceBoots;
     public AudioClip AudioBootsOn;
     public AudioClip AudioBootsOff;
@@ -318,11 +346,12 @@ public class PlayerController : MonoBehaviour
 
     void Gloves(float value) 
     {
-        //Debug.Log(value);
         if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
+
+        bool polarityChanged = false;
 
         // left click --> -1 right click --> 1
         //DEBUG - Use Left Mouse and Right Mouse to change glove polarity
@@ -343,6 +372,7 @@ public class PlayerController : MonoBehaviour
                 AudioSourceGloves.Play();
             }
             gloveChangeTimer = 0;
+            polarityChanged = true;
         }
         // Positive glove
         if (value == 1)
@@ -361,6 +391,7 @@ public class PlayerController : MonoBehaviour
                 AudioSourceGloves.Play();
             }
             gloveChangeTimer = 0;
+            polarityChanged = true;
         }
         // No glove, head empty
         if (value == 0 && GM.glovesIsHold)
@@ -368,6 +399,14 @@ public class PlayerController : MonoBehaviour
             GlovePolarity = Charge.Neutral;
             AudioSourceGloves.Stop();
             gloveChangeTimer = 0;
+            polarityChanged = true;
+        }
+
+        // update polarity glow colors
+        if (polarityChanged)
+        {
+            ArmL.SetArmEmissive(EmissivePolarityColor);
+            ArmR.SetArmEmissive(EmissivePolarityColor);
         }
     }
 
@@ -378,6 +417,7 @@ public class PlayerController : MonoBehaviour
         if (sc != null  && targetDistance < INTERACT_RANGE)
         {
             sc.UseSwitch();
+            PlayInteractAnim();
         }
     }
 
@@ -474,6 +514,10 @@ public class PlayerController : MonoBehaviour
             }
             MainCamera.transform.Rotate(-dLookUp, 0, 0, Space.Self);
             lookAngle += dLookUp;
+
+            // lead with hands
+            armLookX += dLookRight*armLookFactor;
+            armLookY += dLookUp*armLookFactor;
         }
         else 
         {
@@ -489,6 +533,69 @@ public class PlayerController : MonoBehaviour
         CrosshairBottom.color = BootPolarityColor;
         CrosshairBottom.enabled = BootPolarity != Charge.Neutral;
         BootPolarityGlow.color = BootPolarityColor;
+
+        // Animate arm movement 
+        // - lead camera with hands
+        armLookX -= armLookX*armLookSpeed*Time.deltaTime;
+        armLookY -= armLookY*armLookSpeed*Time.deltaTime;
+        Vector3 lookOffset = new Vector3(armLookY, armLookX, 0);
+        ArmL.SetArmAngleOffset(lookOffset);
+        ArmR.SetArmAngleOffset(lookOffset);
+
+        // - pull arms inwards if using magnets
+        if (GlovePolarity != Charge.Neutral)
+        {
+            if (armGripPos < 1)
+            {
+                armGripPos = Mathf.Min(1,armGripPos+Time.deltaTime*armGripSpeed);
+            }   
+        }
+        else if (armGripPos > 0)
+        {
+            armGripPos = Mathf.Max(0,armGripPos-Time.deltaTime*armGripSpeed);
+        }
+        float gripOffset = 0.2f*armGripPos;
+        // - extend right arm if using object
+        if (armInteractAnim)
+        {
+            armInteractPos += Mathf.Max(0.4f,1-armInteractPos)*armInteractSpeed*Time.deltaTime;
+            if (armInteractPos >= 1)
+            {
+                armInteractPos = 0;
+                armInteractAnim = false;
+            }
+        }
+        // - settle arms back to rest if not moving OR if using magnet
+        if (armCyclePos > 0 && (GlovePolarity != Charge.Neutral || (dForward == 0 && dRight == 0 && CurrentPlayerState != PlayerState.Pulling)))
+        {
+            float restOffset = 0f;
+            if (armCyclePos >= 0.5)
+            {
+                restOffset = 0.5f;
+            }
+            if (armCyclePos < 0.25f || (armCyclePos > 0.5f && armCyclePos < 0.75f))
+            {
+                armCyclePos -= (armCyclePos-restOffset)*Time.deltaTime*armRestSpeed;
+                if (armCyclePos < restOffset)
+                {
+                    armCyclePos = 0;
+                }
+            }
+            else
+            {
+                armCyclePos += (restOffset+0.5f-armCyclePos)*Time.deltaTime*armRestSpeed;
+                if (armCyclePos >= restOffset+0.5f)
+                {
+                    armCyclePos = 0;
+                }
+            }
+        }
+        float leftOffset = armSwing*Mathf.Sin(armCyclePos*2f*Mathf.PI);
+        float rightOffset = armSwing*Mathf.Sin(armCyclePos*2f*Mathf.PI + Mathf.PI); // keep the arms at opposite phase
+        float interactOffsetX = Mathf.Cos(armInteractPos*2f*Mathf.PI)-1f;
+        float interactOffsetZ = Mathf.Max(-0.5f,Mathf.Sin(armInteractPos*Mathf.PI));
+        ArmL.SetArmPositionOffset(new Vector3(gripOffset,leftOffset+0.5f*gripOffset,0.4f*leftOffset));
+        ArmR.SetArmPositionOffset(new Vector3(-gripOffset,rightOffset+0.5f*gripOffset,0.4f*rightOffset) + new Vector3(0.3f*interactOffsetX,0,1.2f*interactOffsetZ));
 
         // Calculate distance to target and show error
         if (ReticleTarget != null)
@@ -588,6 +695,15 @@ public class PlayerController : MonoBehaviour
             {
                 // slow down
                 RB.velocity = RB.velocity - Vector3.ProjectOnPlane(RB.velocity/2, -gravityDirection);
+            }
+            // animate movement if not using gloves
+            if (GlovePolarity == Charge.Neutral)
+            {
+                armCyclePos += RB.velocity.magnitude * armCycleSpeed;
+            }
+            if (armCyclePos > 1)
+            {
+                armCyclePos -= 1;
             }
         }
         // - apply gravity OR pull self along target path
@@ -828,7 +944,6 @@ public class PlayerController : MonoBehaviour
         // Has interact button been pressed whilst interactable object is in front of player?
         if (m_CanInteract) {
             IInteractable interactComponent = m_RaycastFocus.collider.transform.GetComponent<IInteractable>();
-
             if (interactComponent != null) {
                 // Perform object's interaction
                 interactComponent.Interact(this, m_RaycastFocus.distance);
@@ -900,5 +1015,15 @@ public class PlayerController : MonoBehaviour
     public void DisplaySubtitle(SubtitleData sd)
     {
         SM.QueueSubtitle(sd);
+    }
+
+
+    /// <summary>
+    /// Play the arm interaction animation
+    /// </summary>
+    public void PlayInteractAnim()
+    {
+        armInteractPos = 0f;
+        armInteractAnim = true;
     }
 }
