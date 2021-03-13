@@ -8,7 +8,7 @@ public class BackButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
+        manager = GameManager.getGameManager();
         
     }
 
@@ -18,8 +18,13 @@ public class BackButton : MonoBehaviour
         
     }
 
-    public void Back()
+    public void BackPause()
     {
-      manager.showPaused();
+      manager.showPauseMenu();
+    }
+
+    public void BackSettings()
+    {
+      manager.showSettingsMenu();
     }
 }

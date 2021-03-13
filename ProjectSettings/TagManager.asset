@@ -7,10 +7,14 @@ TagManager:
   - MagnetTarget
   - Metal
   - Interactable
-  - HideOnPause
   - GameManager
   - ShowOnPause
   - Controls
+  - Settings
+  - Subtitles
+  - Crosshair
+  - Graphics
+  - Audio
   layers:
   - Default
   - TransparentFX
