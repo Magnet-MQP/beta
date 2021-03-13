@@ -37,10 +37,6 @@ public class GameManager : MonoBehaviour
         return Instance;
     }
 
-    public void setPlayerInput(PlayerInput playerInput) {
-        m_PlayerInput = playerInput;
-    }
-
     public PlayerInput getPlayerInput()
     {
       return m_PlayerInput;
@@ -78,6 +74,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
+        m_PlayerInput = GetComponent<PlayerInput>();
 
         // singleton insurance
         if(Instance == null) {
@@ -218,34 +216,8 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Menu Function: display the control options menu
+    /// Menu Function: display the settings menu
     /// </summary>
-    public void showControlsMenu() 
-    {
-        hider();
-        foreach(GameObject g in controlsObjects)
-        {
-            g.SetActive(true);
-        }
-    }
-    public void showGraphicsMenu() 
-    {
-        hider();
-        foreach(GameObject g in graphicsObjects)
-        {
-            g.SetActive(true);
-        }
-    }
-    public void showAudioMenu() 
-    {
-        hider();
-        foreach(GameObject g in audioObjects)
-        {
-            g.SetActive(true);
-        }
-    }
-
-    // shows settings menu
     public void showSettingsMenu() 
     {
         hider();
@@ -258,6 +230,34 @@ public class GameManager : MonoBehaviour
           SM.removeSettingsSubtitle();
         }
     }
+
+    /// <summary>
+    /// Menu Function: display the graphics options menu
+    /// </summary>
+    public void showGraphicsMenu() 
+    {
+        hider();
+        foreach(GameObject g in graphicsObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Menu Function: display the control options menu
+    /// </summary>
+    public void showControlsMenu() 
+    {
+        hider();
+        foreach(GameObject g in controlsObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Menu Function: display the subtitles options menu
+    /// </summary>   
     public void showSubtitleMenu()
     {
         hider();
@@ -270,6 +270,19 @@ public class GameManager : MonoBehaviour
         isSubtitles = !isSubtitles;
 
     }
+
+    /// <summary>
+    /// Menu Function: display the audio options menu
+    /// </summary>
+    public void showAudioMenu() 
+    {
+        hider();
+        foreach(GameObject g in audioObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+    
     private void hider()
     {
         foreach(GameObject g in pauseObjects) 

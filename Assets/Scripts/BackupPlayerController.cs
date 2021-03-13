@@ -252,10 +252,7 @@ public class BPlayerController : MonoBehaviour
     private float cutsceneTimer = 0f;
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
 
-    void Awake() 
-    {
-        m_PlayerInput = GetComponent<PlayerInput>();
-    }
+    void Awake() { }
 
     // Start is called before the first frame update
     void Start()
@@ -264,7 +261,7 @@ public class BPlayerController : MonoBehaviour
         RB = GetComponent<Rigidbody>();
         
         GM = GameManager.getGameManager();
-        GM.setPlayerInput(m_PlayerInput);
+        m_PlayerInput = GM.getPlayerInput();
 
         // automatically start assigned cutscene, if present
         if (ActiveCutscene != null)

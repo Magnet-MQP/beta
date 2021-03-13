@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1337382035547592756}
   - component: {fileID: 715757793303321814}
   - component: {fileID: 3964060029680023792}
-  - component: {fileID: 7380128593272803082}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -238,36 +237,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7380128593272803082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715757793303321809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 2e73107aac9fd1c4b872874732e251d7, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &715757793990617150
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +651,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arm: {fileID: 3279039197811034447}
   ArmEnd: {fileID: 4956458032027203540}
-  ArmMaterial: {fileID: 2100000, guid: 67fdc0c46c00c7245b51d4c399120a4d, type: 2}
   ArmRenderer: {fileID: 4735530486163416269}
 --- !u!1 &2783751908590326221
 GameObject:
@@ -924,7 +892,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arm: {fileID: 6281223564737878928}
   ArmEnd: {fileID: 7056513427284795771}
-  ArmMaterial: {fileID: 2100000, guid: d6aac6b3e33b8934ea4d4bfc11cb2238, type: 2}
   ArmRenderer: {fileID: 5045620770063735624}
 --- !u!1 &5974596372238960017
 GameObject:
@@ -1774,9 +1741,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5227707646282588231 stripped
+--- !u!114 &6142716886163221636 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 187733723507945807, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2245372952730434956, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
   m_PrefabInstance: {fileID: 5338589354829353224}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1845,9 +1812,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6142716886163221636 stripped
+--- !u!114 &5227707646282588231 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2245372952730434956, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+  m_CorrespondingSourceObject: {fileID: 187733723507945807, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
   m_PrefabInstance: {fileID: 5338589354829353224}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
