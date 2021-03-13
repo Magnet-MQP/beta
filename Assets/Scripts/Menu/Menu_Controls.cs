@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlsMenu : MonoBehaviour
+public class Menu_Controls : MonoBehaviour
 {
     GameManager manager;
     // Start is called before the first frame update
     void Start()
     {
-        manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
+        manager = GameManager.getGameManager();
     }
 
     // Update is called once per frame
@@ -19,6 +19,6 @@ public class ControlsMenu : MonoBehaviour
 
     public void Controls()
     {
-        manager.showControls();
+        manager.showControlsMenu();
     }
 }

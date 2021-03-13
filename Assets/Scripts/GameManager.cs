@@ -10,8 +10,12 @@ public class GameManager : MonoBehaviour
     private PlayerInput m_PlayerInput;
     // Pause settings
     GameObject[] pauseObjects;
-    GameObject[] toHideObjects;
+    GameObject[] crosshairObjects;
     GameObject[] controlsObjects;
+    GameObject[] subtitleObjects;
+    GameObject[] settingsObjects;
+    GameObject[] graphicsObjects;
+    GameObject[] audioObjects;
     public bool enablePause;
     public bool isPaused = false;
     private float pauseWait = 0;
@@ -23,6 +27,8 @@ public class GameManager : MonoBehaviour
     // Scene changing
     public Scene currScene;
     public int scenenum = 77;
+    private bool isSubtitles = false;
+    private SubtitleManager SM;
 
     public static GameManager getGameManager() {
         return Instance;
@@ -41,6 +47,7 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SM = SubtitleManager.getSubtitleManager();
     }
 
     // called second
@@ -53,9 +60,14 @@ public class GameManager : MonoBehaviour
         //Debug.Log(scenenum);
         Time.timeScale = 1;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
-        toHideObjects = GameObject.FindGameObjectsWithTag("HideOnPause");
+        crosshairObjects = GameObject.FindGameObjectsWithTag("Crosshair");
         controlsObjects = GameObject.FindGameObjectsWithTag("Controls");
-        hidePaused();
+        subtitleObjects = GameObject.FindGameObjectsWithTag("Subtitles");
+        settingsObjects = GameObject.FindGameObjectsWithTag("Settings");
+        graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
+        audioObjects = GameObject.FindGameObjectsWithTag("Audio");
+
+        hidePauseMenu();
         updatePauseState();
     }
 
@@ -148,60 +160,125 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            hidePaused();
+            hidePauseMenu();
         }
         else if(isPaused)
         {
             Time.timeScale = 0; 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            showPaused();
+            showPauseMenu();
         } 
         else 
         {
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            hidePaused();
+            hidePauseMenu();
         }
     }
 
     // show objects with PauseObject tag
-    public void showPaused() {
-
-        foreach(GameObject g in pauseObjects) {
+    public void showPauseMenu()
+    {
+        hider();
+        foreach(GameObject g in pauseObjects) 
+        {
             g.SetActive(true);
-        }
-        foreach(GameObject g in toHideObjects) {
-            g.SetActive(false);
-        }
-        foreach(GameObject g in controlsObjects) {
-            g.SetActive(false);
         }
     }
 
     // hide objects with PauseObject tag
-    public void hidePaused() {
-        foreach(GameObject g in pauseObjects) {
-            g.SetActive(false);
-        }
-        foreach(GameObject g in toHideObjects) {
+    public void hidePauseMenu()
+    {
+        hider();
+        foreach(GameObject g in crosshairObjects) 
+        {
             g.SetActive(true);
-        }
-        foreach(GameObject g in controlsObjects) {
-            g.SetActive(false);
         }
     }
 
-    public void showControls() 
+    // show controls menu
+    public void showControlsMenu() 
     {
-      foreach(GameObject g in controlsObjects)
-      {
-        g.SetActive(true);
-      }
-      foreach(GameObject g in pauseObjects)
-      {
-        g.SetActive(false);
-      }
+        hider();
+        foreach(GameObject g in controlsObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+    public void showGraphicsMenu() 
+    {
+        hider();
+        foreach(GameObject g in graphicsObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+    public void showAudioMenu() 
+    {
+        hider();
+        foreach(GameObject g in audioObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+
+    // shows settings menu
+    public void showSettingsMenu() 
+    {
+        hider();
+        foreach(GameObject g in settingsObjects)
+        {
+            g.SetActive(true);
+        }
+        if (isSubtitles) {
+          isSubtitles = !isSubtitles;
+          SM.removeSettingsSubtitle();
+        }
+    }
+
+    public void showSubtitleMenu()
+    {
+        hider();
+        foreach(GameObject g in subtitleObjects)
+        {
+            g.SetActive(true);
+        }
+        SM.moveSubtitlesForMenu();
+        SM.QueueSubtitle(new SubtitleData("This is an example subtitle", 100000, 0.1f));
+        isSubtitles = !isSubtitles;
+
+    }
+    private void hider()
+    {
+        foreach(GameObject g in pauseObjects) 
+        {
+            g.SetActive(false);
+        }
+        foreach(GameObject g in crosshairObjects) 
+        {
+            g.SetActive(false);
+        }
+        foreach(GameObject g in settingsObjects) 
+        {
+            g.SetActive(false);
+        }
+        foreach(GameObject g in graphicsObjects) 
+        {
+            g.SetActive(false);
+        }
+        foreach(GameObject g in controlsObjects) 
+        {
+            g.SetActive(false);
+        }
+        foreach(GameObject g in subtitleObjects) 
+        {
+            g.SetActive(false);
+        }
+        foreach(GameObject g in audioObjects) 
+        {
+            g.SetActive(false);
+        }                   
     }
 }

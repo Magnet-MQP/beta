@@ -8,7 +8,7 @@ public class Menu_Continue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
+        manager =  GameManager.getGameManager();
         
     }
 

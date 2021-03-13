@@ -9,14 +9,12 @@ public class LookController : MonoBehaviour {
 
     void Start()
     {
-        manager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
-        m_PlayerInput = manager.getPlayerInput();
+        manager = GameManager.getGameManager();
     }
 
     public void changeLookSpeedX(float value)
     {
         manager.lookSpeedX = value;
-
     }
 
     public void changeLookSpeedY(float value) 
