@@ -109,16 +109,12 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {   
-        if (pauseWait > 0)
+
+        if (m_PlayerInput != null && m_PlayerInput.actions["Menu"].triggered )
         {
-            pauseWait -= Time.unscaledDeltaTime;
-        }
-        if (m_PlayerInput.actions["Menu"].ReadValue<float>() == 1)
-        {
-            // TODO: should unpause if already paused
-            if (enablePause && pauseWait <= 0) {
+            if (enablePause) {
                 switchPause();
             }
         }
@@ -150,6 +146,7 @@ public class GameManager : MonoBehaviour
     /// Scene Function: Jump to the main menu scene
     /// </summary>
     public void mainMenu() {
+        Debug.Log("hello");
         enablePause = false;
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }

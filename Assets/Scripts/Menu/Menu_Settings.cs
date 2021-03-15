@@ -14,5 +14,6 @@ public class Menu_Settings : MonoBehaviour
     public void Settings()
     {
         manager.showSettingsMenu();
+
     }
 }
