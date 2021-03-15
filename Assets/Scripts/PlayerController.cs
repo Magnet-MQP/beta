@@ -8,11 +8,20 @@ using UnityEngine.InputSystem;
 /// Handles all of the player's movement
 /// </summary>
 
+public enum PlayerState
+{
+    Neutral, // Full regular input and movement. Transitions to: Pulling
+    Pulling, // Pulling self to a surface. Move along coordinate path with collisions disabled. Transitions to: Attached
+    Attached, // Attached to a surface. Bounded movement. Transitions to: Neutral, Pulling
+}
+
+
 public class PlayerController : MonoBehaviour
 {
 
     /*
     TODO
+    - player can sometimes clip through edges of magnet field
     - fix collision issues
     -> stuttery descent down sloped wall
     -> fix floor clipping issues (to replicate: target adjacent wall & switch/disable polarity mid-flight)
@@ -35,7 +44,10 @@ public class PlayerController : MonoBehaviour
     public SphereCollider Collider;
     [Tooltip("The camera attached to the player, acting as their head")]
     public Camera MainCamera;
+    [Tooltip("The Subtitle Manager for the game")]
     public SubtitleManager SM;
+    [Tooltip("The Bootup Controller, which handles the bootup animation.")]
+    public BootupController BC;
 
     // UI References
     [Tooltip("The top part of the crosshair, indicating glove polarity")]
@@ -52,29 +64,57 @@ public class PlayerController : MonoBehaviour
     [Tooltip("X overlayed on the crosshair, indicating an unreachable target")]
     public Image CrosshairError;
     [Tooltip("The UI image indicating the player's glove polarity")]
-    public Image GlovePolarityReadout;
+    public Image GlovePolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI image indicating the player's boot polarity")]
-    public Sprite[] GlovePolarityIcons; 
+    public Sprite[] GlovePolarityIcons; // CONSIDER DELETING
     [Tooltip("The UI icon set used to show the player's boot polarity")]
-    public Image BootPolarityReadout;
+    public Image BootPolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI icon set used to show the player's glove polarity")]
-    public Sprite[] BootPolarityIcons;
+    public Sprite[] BootPolarityIcons; // CONSIDER DELETING
     [Tooltip("The glow effect at the bottom of the screen indicating your boot polarity")]
     public Image BootPolarityGlow;
     [Tooltip("The set of colors to use for the boot polarity glow effect")]
     public Color[] PolarityColors;
+    [Tooltip("The set of colors to use for polarity emissives on the player")]
+    public Color[] EmissivePolarityColors;
     /// <summary>
     /// Access the correct color for the current glove polarity
     /// </summary>
     public Color GlovePolarityColor { get {return PolarityColors[1 + (int) GlovePolarity];} }
     /// <summary>
+    /// Access the correct color for the current glove glow
+    /// </summary>
+    public Color EmissivePolarityColor { get {return EmissivePolarityColors[1 + (int) GlovePolarity];} }
+    /// <summary>
     /// Access the correct color for the current boot polarity
     /// </summary>
     public Color BootPolarityColor { get {return PolarityColors[1 + (int) BootPolarity];} }
 
+    // Arm Model References
+    [Tooltip("The player's left arm")]
+    [Header("Arm Models")]
+    public PlayerArmController ArmL;
+    [Tooltip("The player's right arm")]
+    public PlayerArmController ArmR;
+    private float armCyclePos = 0f; // used to animate walking hand gesture
+    private float armCycleSpeed = 0.002f; // used to animate walking hand gesture
+    private float armSwing = 0.1f; // amount of arm movement
+    private float armGripPos = 0f; // used to animate magnet hang gesture
+    private float armGripSpeed = 7f; // rate at which arms move into magnet position when in use
+    private bool armInteractAnim = false; // whether to play the arm interact animation
+    private float armInteractPos = 0f; // used to animate object use gesture
+    private float armInteractSpeed = 5f; // rate at which the arm inteact animation plays
+    private float armRestSpeed = 4f; // rate at which arms settle back into place when using magnets or not moving
+    private float armLookX = 0f; // amount the arms lead the camera in the x direction
+    private float armLookY = 0f; // amount the arms lead the camera in the y direction
+    private float armLookFactor = 0.06f; // ratio of look movement to arm leading
+    private float armLookSpeed = 2f; // rate at which arms settle back from leading
+
     // Movement and Orientation
+    [Header("Movement and Orientation")] // this has to be below the first tooltip for dumb reasons
+    [SerializeField]
+    private PlayerState m_CurrentPlayerState = PlayerState.Neutral;
     [Tooltip("The player's movement speed")]
-    [Header("Movement and Orientation")]
     public float MoveSpeed = 50f;
     [Tooltip("The amount of acceleration to apply")]
     public float GravityIntensity = 1f;
@@ -87,8 +127,41 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The direction the player percieves as up (should match the normal of the surface they're standing on or falling towards)")]
     private Vector3 targetUpDirection = Vector3.up;
     private Vector3 nextTargetUpDirection = Vector3.up;
+    [Tooltip("The path the player pulls themselves along when using boots")]
+    [SerializeField]
+    private List<Vector3> PullPath = new List<Vector3>();
     [Tooltip("Offset used to ensure player doesn't clip through objects")]
     private const float COLLISION_OFFSET = 0.01f;
+    /// <summary>
+    /// Get and Set the player's state, automatically changing the appropriate collision settings
+    /// </summary>
+    public PlayerState CurrentPlayerState {
+        // TODO: Add and apply PLAYER and MAGNETFIELD layers!!!
+        get {return m_CurrentPlayerState;}
+        set {
+            // determine collision settings based on new state
+            bool disableFieldCollision = true;
+            bool enableCollider = true;
+            switch (value)
+            {
+                case PlayerState.Neutral:
+                    targetUpDirection = Vector3.up;
+                    break;
+                case PlayerState.Pulling:
+                    enableCollider = false;
+                    break;
+                case PlayerState.Attached:
+                    disableFieldCollision = false;
+                    break;
+            }
+            // update whether collider is active
+            Collider.enabled = enableCollider;
+            // update physics collision with Magnet Fields
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),LayerMask.NameToLayer("MagnetField"), disableFieldCollision);
+            // apply new state
+            m_CurrentPlayerState = value;
+            } 
+        }
     
     // Camera
     [Tooltip("The upper bound of the player's vertical visual range")]
@@ -156,10 +229,9 @@ public class PlayerController : MonoBehaviour
     public bool holding = false;
     //private bool GlovesOn = false;
 
+    [Header("Managers")]
     private GameManager GM;
     private InputController controls;
-    private InputAction moveAction;
-    private InputAction lookAction;
     private InputControlScheme gamepad;
     [Tooltip("Foward Vector2 of player movement")]
     private float dForward = 0;
@@ -167,8 +239,9 @@ public class PlayerController : MonoBehaviour
     private float dRight = 0;
     [Tooltip("Distance to target")]
     private float targetDistance = 0;
-
+    private PlayerInput m_PlayerInput;
     // Audio
+    [Header("Audio")]
     public AudioSource AudioSourceBoots;
     public AudioClip AudioBootsOn;
     public AudioClip AudioBootsOff;
@@ -179,56 +252,66 @@ public class PlayerController : MonoBehaviour
     private float gloveChangeTimer = 0;
     private float gloveChangeTimerMax = 0.2f;
 
-    private float gamepadFactor = 0;
-    
-    // For opening sequence
-    private float openingTimer = 17f;
-    private float openingFreePoint = 4f; // how much time should be left on the clock when the player gains input
+    [Tooltip("The current cutscene the player is in (if this is set, the player will immediately enter it on load)")]
+    [Header("Cutscenes")]
+    public CutsceneData ActiveCutscene = null;
+    [Tooltip("Whether the player is actively in a cutscene")]
+    public bool InCutscene = false;
+    private float cutsceneTimer = 0f;
+    private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
 
     void Awake() 
     {
-        controls = new InputController();
-        moveAction = controls.player.Movement;
-        lookAction = controls.player.Camera;
-
-        controls.player.Camera.started += ctx => Look(ctx.ReadValue<Vector2>(), ctx.control); 
-        controls.player.Boots.performed += ctx => Boots(ctx.ReadValue<float>()); 
-        controls.player.Gloves.performed += ctx => Gloves(ctx.ReadValue<float>()); 
-        controls.player.Interact.performed += _ => Interact(); 
+        m_PlayerInput = GetComponent<PlayerInput>();
     }
 
-    void OnEnable() 
-    { 
-        controls.Enable();
-        moveAction.Enable();
-        lookAction.Enable();
-    }
-
-    void OnDisable() 
-    { 
-        controls.Disable(); 
-        moveAction.Disable();
-        lookAction.Disable();
-    }
-
-    void Look(Vector2 direction, InputControl control) 
+    // Start is called before the first frame update
+    void Start()
     {
-        if (control.name == "rightStick")
+        m_CameraTransform = GetComponentInChildren<Camera>().transform;
+        RB = GetComponent<Rigidbody>();
+        
+        GM = GameManager.getGameManager();
+        GM.setPlayerInput(m_PlayerInput);
+
+        // automatically start assigned cutscene, if present
+        if (ActiveCutscene != null)
         {
-            gamepadFactor = 8;
-        }
-        else {
-            gamepadFactor = 1;
+            StartCutscene(ActiveCutscene);
         }
     }
 
-    void Boots(float value) 
+    /// <summary>
+    /// Play a cutscene
+    /// </summary>
+    public void StartCutscene(CutsceneData newScene)
     {
-        if (GM.isPaused || (value != 1 && value != -1) || openingTimer > 0) 
+        // load cutscene info
+        ActiveCutscene = newScene;
+        cutsceneTimer = newScene.FullDuration;
+        cutsceneUnlockPoint = cutsceneTimer - newScene.LockDuration;
+        if (newScene.ShowBootup)
+        {
+            BC.StartBootupSequence();
+        }
+
+        // load dialogue data
+        for (int i = 0; i < newScene.Dialogue.Length; i++)
+        {
+            SM.QueueSubtitle(newScene.Dialogue[i]);
+        }
+
+        // actually start cutscene
+        InCutscene = true;
+    }
+
+    void Boots() 
+    {
+        // skip if paused, in intro, or pulling
+        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
-        // Q --> -1 E --> 1
         Charge targetCharge = GetPolarity(ReticleTarget);
         //
         Charge newCharge = Charge.Neutral;
@@ -250,98 +333,38 @@ public class PlayerController : MonoBehaviour
             bootTargetChanged = true;
         }
         // - disable boots if without target
-        else if (BootPolarity != Charge.Neutral)
+        else if (BootPolarity != Charge.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
             nextBootPolarity = Charge.Neutral;
             nextBootMagnetTarget = null;
             nextBootTargetPosition = transform.position;
             nextTargetUpDirection = targetUpDirection;   // unchanged
             bootTargetChanged = true;
+            CurrentPlayerState = PlayerState.Neutral;
         }
-        
-        
-        //*/
-        /* DEACTIVATED - OLD VERSION WITH MULTIPLE BOOT POLARITY BUTTONS
-        if (value == 1)
-        {
-            // Negative (Cyan)
-            // - always pull to opposite polarity
-            if (targetCharge == Charge.Positive && ReticleTarget != null && 
-                ReticleTarget.CompareTag("MagnetTarget") && targetDistance < SELF_PULL_RANGE)
-            {
-                nextBootPolarity = Charge.Negative;
-                nextBootMagnetTarget = ReticleTarget;
-                nextBootTargetPosition = ReticleHitPosition;
-                nextTargetUpDirection = ReticleHitNormal;
-            }
-            // - disable boots if on negative without target
-            else if (BootPolarity == Charge.Negative)
-            {
-                nextBootPolarity = Charge.Neutral;
-                nextBootMagnetTarget = null;
-                nextBootTargetPosition = transform.position;
-                nextTargetUpDirection = targetUpDirection;   // unchanged
-            }
-            // - switch to negative
-            else 
-            {
-                nextBootPolarity = Charge.Negative;
-                nextBootMagnetTarget = BootMagnetTarget;     // unchanged
-                nextBootTargetPosition = BootTargetPosition; // unchanged
-                nextTargetUpDirection = targetUpDirection;   // unchanged
-            }
-            bootTargetChanged = true;
-        }
-        if (value == -1)
-        {
-            // Positive (Red)
-            // - always pull to opposite polarity
-            if (targetCharge == Charge.Negative && ReticleTarget != null && 
-                ReticleTarget.CompareTag("MagnetTarget") && targetDistance < SELF_PULL_RANGE)
-            {
-                nextBootPolarity = Charge.Positive;
-                nextBootMagnetTarget = ReticleTarget;
-                nextBootTargetPosition = ReticleHitPosition;
-                nextTargetUpDirection = ReticleHitNormal;
-            }
-            // - disable boots if on positive without target
-            else if (BootPolarity == Charge.Positive)
-            {
-                nextBootPolarity = Charge.Neutral;
-                nextBootMagnetTarget = null;
-                nextBootTargetPosition = transform.position;
-                nextTargetUpDirection = targetUpDirection; // unchanged
-            }
-            // - switch to positive
-            else
-            {
-                nextBootPolarity = Charge.Positive;
-                nextBootMagnetTarget = BootMagnetTarget; // unchanged
-                nextBootTargetPosition = BootTargetPosition; // unchanged
-                nextTargetUpDirection = targetUpDirection; // unchanged
-            }
-            bootTargetChanged = true;
-        }
-        */
     }
 
     void Gloves(float value) 
     {
-        if (GM.isPaused || openingTimer > 0) 
+        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
+
+        bool polarityChanged = false;
+
         // left click --> -1 right click --> 1
         //DEBUG - Use Left Mouse and Right Mouse to change glove polarity
+        // Negative glove
         if (value == -1)
         {
             // Negative (Cyan)
-            if (GlovePolarity == Charge.Negative)
+            if (!GM.glovesIsHold && GlovePolarity == Charge.Negative)
             {
                 GlovePolarity = Charge.Neutral;
-                gloveTargetVolume = 0;
+                AudioSourceGloves.Stop();
             }
-            else
+            else if (!AudioSourceGloves.isPlaying || GlovePolarity == Charge.Positive)
             {
                 GlovePolarity = Charge.Negative;
                 AudioSourceGloves.clip = AudioGlovesNeg;
@@ -349,17 +372,18 @@ public class PlayerController : MonoBehaviour
                 AudioSourceGloves.Play();
             }
             gloveChangeTimer = 0;
+            polarityChanged = true;
         }
+        // Positive glove
         if (value == 1)
         {
             // Positive (Red)
-            if (GlovePolarity == Charge.Positive)
+            if (!GM.glovesIsHold && GlovePolarity == Charge.Positive)
             {
                 GlovePolarity = Charge.Neutral;
-                GlovePolarity = Charge.Neutral;
-                gloveTargetVolume = 0;
+                AudioSourceGloves.Stop();
             }
-            else
+            else if (!AudioSourceGloves.isPlaying || GlovePolarity == Charge.Negative)
             {
                 GlovePolarity = Charge.Positive;
                 AudioSourceGloves.clip = AudioGlovesPos;
@@ -367,6 +391,22 @@ public class PlayerController : MonoBehaviour
                 AudioSourceGloves.Play();
             }
             gloveChangeTimer = 0;
+            polarityChanged = true;
+        }
+        // No glove, head empty
+        if (value == 0 && GM.glovesIsHold)
+        {
+            GlovePolarity = Charge.Neutral;
+            AudioSourceGloves.Stop();
+            gloveChangeTimer = 0;
+            polarityChanged = true;
+        }
+
+        // update polarity glow colors
+        if (polarityChanged)
+        {
+            ArmL.SetArmEmissive(EmissivePolarityColor);
+            ArmR.SetArmEmissive(EmissivePolarityColor);
         }
     }
 
@@ -377,38 +417,58 @@ public class PlayerController : MonoBehaviour
         if (sc != null  && targetDistance < INTERACT_RANGE)
         {
             sc.UseSwitch();
+            PlayInteractAnim();
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// When colliding with a magnet field while Attached, orient to its normal
+    /// </summary> 
+    void OnCollisionEnter(Collision col)
     {
-        m_CameraTransform = GetComponentInChildren<Camera>().transform;
-        RB = GetComponent<Rigidbody>();
-        
-        GM = GameManager.getGameManager();
-
-        // opening sequence (hard-coded for now)
-        SM.QueueSubtitle(new SubtitleData("[ INITIALIZING SYSTEMS... ]", 5000, 4f));
-        SM.QueueSubtitle(new SubtitleData("[ UNIT ID: FyED-OR ]", 4999, 8f));
-        SM.QueueSubtitle(new SubtitleData("[ ELECTROMAGNETS: ACTIVE ]", 4998, 12f));
-        SM.QueueSubtitle(new SubtitleData("[ OCULAR CAMERA: ACTIVE ]", 4997, 16f));
+        if (CurrentPlayerState == PlayerState.Attached && col.gameObject.layer == LayerMask.NameToLayer("MagnetField"))
+        {
+            targetUpDirection = col.gameObject.transform.up;
+        }
     }
 
     void Update()
     {
+        var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
+        var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
+        var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
 
-        // opening sequence (hard-coded for now)
-        if (openingTimer > 0) 
+        if (m_PlayerInput.actions["boots"].triggered)
         {
-            openingTimer -= Time.deltaTime;
-            if (openingTimer <= 0)
+            Boots();
+        }
+
+        if (GM.glovesIsHold) 
+        {
+            Gloves(gloves);
+        }
+        else if (m_PlayerInput.actions["gloves"].triggered)
+        {
+            Gloves(gloves);
+        }
+
+
+        if (m_PlayerInput.actions["interact"].triggered) 
+        {
+            Interact();
+        }
+
+        // play cutscene
+        if (InCutscene) 
+        {
+            cutsceneTimer -= Time.deltaTime;
+            // end cutscene at end of timer
+            if (cutsceneTimer <= 0)
             {
-                SM.QueueSubtitle(new SubtitleData("FyED-OR: \"Wait... where am I now?\"", 4996, 4f));
-                SM.QueueSubtitle(new SubtitleData("FyED-OR: \"THE TRASH COMPACTOR!?\"", 4995, 8f));
-                SM.QueueSubtitle(new SubtitleData("FyED-OR: \"I need to find a way out!\"", 4994, 12f));
+                InCutscene = false;
             }
-            if (openingTimer > openingFreePoint)
+            // disable other actions after this point if necessary
+            if (cutsceneTimer > cutsceneUnlockPoint)
             {
                 return;
             }
@@ -421,15 +481,25 @@ public class PlayerController : MonoBehaviour
             AudioSourceGloves.volume = Mathf.Lerp(AudioSourceGloves.volume, gloveTargetVolume, gloveChangeTimer/gloveChangeTimerMax);
         }
 
-
         if (!GM.isPaused) 
         {
-            dForward = moveAction.ReadValue<Vector2>().y;
-            dRight = moveAction.ReadValue<Vector2>().x;
+            dForward = move.y;
+            dRight = move.x;
 
-            float dLookRight = lookAction.ReadValue<Vector2>().x*LookSpeed * gamepadFactor;
-            float dLookUp = lookAction.ReadValue<Vector2>().y*LookSpeed * gamepadFactor;
-            //Debug.Log("right: "+ dLookRight + " up: " + dLookUp);
+            // potentially have different look speed values for mouse and controller?
+            float dLookRight = 0.0f;
+            float dLookUp = 0.0f;
+            // if ( m_PlayerInput.currentControlScheme == "Gamepad")
+            // {
+            //     dLookRight = look.x * GM.lookSpeedX;
+            //     dLookUp = look.y * GM.lookSpeedY;
+            // }
+            // else 
+            // {
+                dLookRight = look.x * GM.lookSpeedX; 
+                dLookUp = look.y * GM.lookSpeedY; 
+            // }
+
 
             //Look and change facing direction
             transform.RotateAround(transform.position, transform.up, dLookRight);
@@ -444,6 +514,10 @@ public class PlayerController : MonoBehaviour
             }
             MainCamera.transform.Rotate(-dLookUp, 0, 0, Space.Self);
             lookAngle += dLookUp;
+
+            // lead with hands
+            armLookX += dLookRight*armLookFactor;
+            armLookY += dLookUp*armLookFactor;
         }
         else 
         {
@@ -459,6 +533,69 @@ public class PlayerController : MonoBehaviour
         CrosshairBottom.color = BootPolarityColor;
         CrosshairBottom.enabled = BootPolarity != Charge.Neutral;
         BootPolarityGlow.color = BootPolarityColor;
+
+        // Animate arm movement 
+        // - lead camera with hands
+        armLookX -= armLookX*armLookSpeed*Time.deltaTime;
+        armLookY -= armLookY*armLookSpeed*Time.deltaTime;
+        Vector3 lookOffset = new Vector3(armLookY, armLookX, 0);
+        ArmL.SetArmAngleOffset(lookOffset);
+        ArmR.SetArmAngleOffset(lookOffset);
+
+        // - pull arms inwards if using magnets
+        if (GlovePolarity != Charge.Neutral)
+        {
+            if (armGripPos < 1)
+            {
+                armGripPos = Mathf.Min(1,armGripPos+Time.deltaTime*armGripSpeed);
+            }   
+        }
+        else if (armGripPos > 0)
+        {
+            armGripPos = Mathf.Max(0,armGripPos-Time.deltaTime*armGripSpeed);
+        }
+        float gripOffset = 0.2f*armGripPos;
+        // - extend right arm if using object
+        if (armInteractAnim)
+        {
+            armInteractPos += Mathf.Max(0.4f,1-armInteractPos)*armInteractSpeed*Time.deltaTime;
+            if (armInteractPos >= 1)
+            {
+                armInteractPos = 0;
+                armInteractAnim = false;
+            }
+        }
+        // - settle arms back to rest if not moving OR if using magnet
+        if (armCyclePos > 0 && (GlovePolarity != Charge.Neutral || (dForward == 0 && dRight == 0 && CurrentPlayerState != PlayerState.Pulling)))
+        {
+            float restOffset = 0f;
+            if (armCyclePos >= 0.5)
+            {
+                restOffset = 0.5f;
+            }
+            if (armCyclePos < 0.25f || (armCyclePos > 0.5f && armCyclePos < 0.75f))
+            {
+                armCyclePos -= (armCyclePos-restOffset)*Time.deltaTime*armRestSpeed;
+                if (armCyclePos < restOffset)
+                {
+                    armCyclePos = 0;
+                }
+            }
+            else
+            {
+                armCyclePos += (restOffset+0.5f-armCyclePos)*Time.deltaTime*armRestSpeed;
+                if (armCyclePos >= restOffset+0.5f)
+                {
+                    armCyclePos = 0;
+                }
+            }
+        }
+        float leftOffset = armSwing*Mathf.Sin(armCyclePos*2f*Mathf.PI);
+        float rightOffset = armSwing*Mathf.Sin(armCyclePos*2f*Mathf.PI + Mathf.PI); // keep the arms at opposite phase
+        float interactOffsetX = Mathf.Cos(armInteractPos*2f*Mathf.PI)-1f;
+        float interactOffsetZ = Mathf.Max(-0.5f,Mathf.Sin(armInteractPos*Mathf.PI));
+        ArmL.SetArmPositionOffset(new Vector3(gripOffset,leftOffset+0.5f*gripOffset,0.4f*leftOffset));
+        ArmR.SetArmPositionOffset(new Vector3(-gripOffset,rightOffset+0.5f*gripOffset,0.4f*rightOffset) + new Vector3(0.3f*interactOffsetX,0,1.2f*interactOffsetZ));
 
         // Calculate distance to target and show error
         if (ReticleTarget != null)
@@ -494,21 +631,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // /// Handle physics and movement
+    /// <summary>
+    /// Handle physics and movement
+    /// </summary>
     void FixedUpdate()
     {
         bool sliding = false;
 
         // Update boot target if landed
-        if (Landed && bootTargetChanged)
+        if ((CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached) && bootTargetChanged)
         {
             BootPolarity = nextBootPolarity;
             BootMagnetTarget = nextBootMagnetTarget;
             BootTargetPosition = nextBootTargetPosition;
             targetUpDirection = nextTargetUpDirection;
             bootTargetChanged = false;
-            if (BootMagnetTarget != null)
+            if (BootMagnetTarget != null && CanStickTo(BootMagnetTarget))
             {
+                // Change state to Pulling
+                CurrentPlayerState = PlayerState.Pulling;
+                // Generate movement path
+                PullPath.Clear();
+                // - end 1 unit above target surface
+                PullPath.Add(BootTargetPosition + targetUpDirection.normalized*Collider.radius);
+                // GENERATE FULL PATH HERE
+                // (I currently skip this part because I'm actually just using a simpler avoidance system for now.)
                 // Apply launch force
                 RB.AddForce(transform.up*200f, ForceMode.Force);
                 // Play boots activate sound
@@ -517,6 +664,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                // Detach from surfaces
+                CurrentPlayerState = PlayerState.Neutral;
                 // Play boots disable sound
                 AudioSourceBoots.clip = AudioBootsOff;
                 AudioSourceBoots.Play();
@@ -533,8 +682,8 @@ public class PlayerController : MonoBehaviour
 
         // Apply Physics
         Vector3 gravityDirection = -transform.up;
-        // - move (skip if pulling to surface)
-        if (BootMagnetTarget == null)
+        // - move (if Neutral or Attached to surface)
+        if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
             if (dForward != 0 || dRight != 0)
             {
@@ -547,13 +696,49 @@ public class PlayerController : MonoBehaviour
                 // slow down
                 RB.velocity = RB.velocity - Vector3.ProjectOnPlane(RB.velocity/2, -gravityDirection);
             }
+            // animate movement if not using gloves
+            if (GlovePolarity == Charge.Neutral)
+            {
+                armCyclePos += RB.velocity.magnitude * armCycleSpeed;
+            }
+            if (armCyclePos > 1)
+            {
+                armCyclePos -= 1;
+            }
         }
-        // - apply gravity OR pull self to target
-        if (BootMagnetTarget != null && CanStickTo(BootMagnetTarget))
+        // - apply gravity OR pull self along target path
+        if (CurrentPlayerState == PlayerState.Pulling)
         {
-            // pull self to spot one unit above target
-            gravityDirection = BootTargetPosition + targetUpDirection.normalized*Collider.radius - transform.position;
-            FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
+            // advance to next path node if at end
+            if (PullPath.Count > 0 && Vector3.Distance(transform.position, PullPath[0]) < Collider.radius)
+            {
+                PullPath.RemoveAt(0); 
+            }
+            // if further nodes still present, pull towards next
+            if (PullPath.Count > 0)
+            {
+                gravityDirection = PullPath[0] - transform.position;
+                FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
+                // avoid obstacles via simple steering
+                float obstacleDistance = 10f;
+                for (int i = 0; i < 8; i++)
+                {
+                    float angle = Mathf.PI*i/4;
+                    Vector3 direction = gravityDirection + 3*transform.up*Mathf.Cos(angle) + 3*transform.right*Mathf.Sin(angle);
+                    RaycastHit obstacleHit;
+                    Physics.SphereCast(transform.position, Collider.radius, direction, out obstacleHit, obstacleDistance, LayerMask.GetMask("Wall"));
+                    if (obstacleHit.collider)
+                    {
+                        // apply force pushing player away from wall, which is stronger the closer they are to it
+                        RB.AddForce(-1.7f * Vector3.ProjectOnPlane(direction,-gravityDirection) * (1-(obstacleHit.distance/obstacleDistance)));
+                    }
+                }
+            }
+            // otherwise, attach to surface
+            else
+            {
+                CurrentPlayerState = PlayerState.Attached;
+            }
         }
         else
         {
@@ -561,83 +746,79 @@ public class PlayerController : MonoBehaviour
             FallSpeed = Mathf.Min(FallSpeed + GravityIntensity, TerminalVelocity);
         }
         // - detect floor
-        //   detects Wall and Interactable objects - must set the appropriate layer first!
+        //   detects Wall and Interactable objects - you must set them to the appropriate layer first!
         Vector3 fallOffset = gravityDirection.normalized * FallSpeed * Time.deltaTime;
-        RaycastHit floorHit;
-        Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
-        if (floorHit.collider)
+        if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
-            // if floor can't be stuck to, switch back to normal gravity
-            if (targetUpDirection.normalized != Vector3.up && BootMagnetTarget == null && !CanStickTo(floorHit.collider.gameObject))
+            RaycastHit floorHit;
+            Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+            if (floorHit.collider)
             {
-                targetUpDirection = Vector3.up;
-                FallSpeed = 0f;
-                fallOffset = Vector3.zero;
-            }
-            // if floor is metal or opposite polarity and within slope tolerance, stick to it
-            else if (Vector3.Angle(transform.up, floorHit.normal) < SlopeTolerance)
-            {
-                // floor detected
-                if (BootMagnetTarget == null)
+                /*
+                // if floor can't be stuck to, switch back to normal gravity
+                if (targetUpDirection.normalized != Vector3.up && BootMagnetTarget == null && !CanStickTo(floorHit.collider.gameObject))
                 {
-                    Landed = true;
+                    targetUpDirection = Vector3.up;
                     FallSpeed = 0f;
-                }
-                fallOffset = fallOffset.normalized * (floorHit.distance-COLLISION_OFFSET);
-                // stop targetting landing point once reached
-                if (floorHit.collider.gameObject == BootMagnetTarget)
-                {
-                    BootMagnetTarget = null;
-                    Landed = true;
-                    FallSpeed = 0f;
+                    fallOffset = Vector3.zero;
                 }
                 else
+                */
+
+                // if floor is metal or opposite polarity and within slope tolerance, stick to it
+                if (Vector3.Angle(transform.up, floorHit.normal) < SlopeTolerance)
                 {
-                    // force gravity reset timer to still continue
+                    // floor detected
+                    if (BootMagnetTarget == null)
+                    {
+                        Landed = true;
+                        FallSpeed = 0f;
+                    }
+                    fallOffset = fallOffset.normalized * (floorHit.distance-COLLISION_OFFSET);
+                    // stop targetting landing point once reached
+                    if (floorHit.collider.gameObject == BootMagnetTarget)
+                    {
+                        BootMagnetTarget = null;
+                        Landed = true;
+                        FallSpeed = 0f;
+                    }
+                    else
+                    {
+                        // force gravity reset timer to still continue
+                        sliding = true;
+                    }
+                }
+                // fall or slide if no floor detected
+                else
+                {
+                    // no floor, slide instead
+                    RB.AddForce(Vector3.ProjectOnPlane(floorHit.normal * FallSpeed * Time.deltaTime, -gravityDirection), ForceMode.VelocityChange);
+                    Landed = false;
                     sliding = true;
                 }
             }
-            // fall or slide if no floor detected
             else
             {
-                // no floor, slide instead
-                RB.AddForce(Vector3.ProjectOnPlane(floorHit.normal * FallSpeed * Time.deltaTime, -gravityDirection), ForceMode.VelocityChange);
+                // falling
                 Landed = false;
-                sliding = true;
-            }
-            // disable boots if can't stick to floor
-            if (!CanStickTo(floorHit.collider.gameObject))
-            {
-                // disable boots
-                BootPolarity = Charge.Neutral;
-            }
-        }
-        else
-        {
-            // falling
-            Landed = false;
-            // disable boots if falling without a target
-            if (BootMagnetTarget == null)
-            {
-                BootPolarity = Charge.Neutral;
+                // disable boots if falling without a target
+                if (BootMagnetTarget == null)
+                {
+                    BootPolarity = Charge.Neutral;
+                }
             }
         }
         // - update position (with extra check to prevent clipping)
         RaycastHit fallHit;
+        if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
+        {
         Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
-        if (fallHit.collider)
-        {
-            fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
+            if (fallHit.collider)
+            {
+                fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
+            }
         }
-        if (BootMagnetTarget != null)
-        {
-            RB.MovePosition(transform.position + fallOffset);
-        }
-        else
-        {
-            RB.MovePosition(transform.position + fallOffset);
-            //RB.AddForce(10f*fallOffset/Time.deltaTime, ForceMode.Force);
-        }
+        RB.MovePosition(transform.position + fallOffset);
 
         // Increment timer to reset boot target if stuck to invalid surface
         if ((Landed || sliding) && BootMagnetTarget != null)
@@ -648,8 +829,10 @@ public class PlayerController : MonoBehaviour
                 BootMagnetTarget = null;
 
                 // Play boots disable sound
+                /*
                 AudioSourceBoots.clip = AudioBootsOff;
                 AudioSourceBoots.Play();
+                */
             }
         }
         else
@@ -657,7 +840,7 @@ public class PlayerController : MonoBehaviour
             bootResetTimer = 0;
         }
 
-        // Spherecast Crosshair
+        // Raycast Crosshair
         // detects Wall and Interactable objects - must set the appropriate layer first!)
         float castDistance = 500f;
         RaycastHit hit;
@@ -739,34 +922,31 @@ public class PlayerController : MonoBehaviour
             CrosshairTopMarks.enabled = false;
         }
 
-        // RFDOLAN PICKUP CODE
 
         Ray ray = new Ray(m_CameraTransform.position, m_CameraTransform.forward);
 
-        if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE) && m_RaycastFocus.collider.transform.tag == "Interactable") {
-        //TODO add different options for pulling from far vs picking up.
+        if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract = true;
             m_CanInteract_Far = false;
         }
 
-        else if (Physics.Raycast(ray, out m_RaycastFocus, PULL_RANGE) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        else if (Physics.Raycast(ray, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract_Far = true;
             m_CanInteract = false;
             
         }
-        // Is interactable object detected in front of player?
+        // No Interactable in range
         else {
             m_CanInteract = false;
-            m_CanInteract_Far = false;
+            m_CanInteract_Far = false;   
         }
 
         // Has interact button been pressed whilst interactable object is in front of player?
         if (m_CanInteract) {
             IInteractable interactComponent = m_RaycastFocus.collider.transform.GetComponent<IInteractable>();
-
             if (interactComponent != null) {
                 // Perform object's interaction
-                interactComponent.Interact(this);
+                interactComponent.Interact(this, m_RaycastFocus.distance);
             }
         }
         // Wasn't right in front of the player, but is it within pull range?
@@ -774,22 +954,10 @@ public class PlayerController : MonoBehaviour
             IInteractable interactComponent = m_RaycastFocus.collider.transform.GetComponent<IInteractable>();
             if (interactComponent != null) {
                 // Perform object's interaction
-                interactComponent.InteractFar(this);
+                interactComponent.InteractFar(this, m_RaycastFocus.distance);
             }
 
         }
- 
-        /*
-         // Has action button been pressed whilst interactable object is in front of player?
-         if (Input.GetButtonDown("Fire3") && m_CanInteract == true) {
-             IInteractable interactComponent = m_RaycastFocus.collider.transform.GetComponent<IInteractable>();
- 
-             if (interactComponent != null) {
-                 // Perform object's action
-                 interactComponent.Action(this);
-             }
-         }
-         */
     }
 
     /// <summary>
@@ -847,5 +1015,15 @@ public class PlayerController : MonoBehaviour
     public void DisplaySubtitle(SubtitleData sd)
     {
         SM.QueueSubtitle(sd);
+    }
+
+
+    /// <summary>
+    /// Play the arm interaction animation
+    /// </summary>
+    public void PlayInteractAnim()
+    {
+        armInteractPos = 0f;
+        armInteractAnim = true;
     }
 }

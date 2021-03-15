@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public interface IInteractable
 {
-    void Interact(PlayerController script);
-    void InteractFar(PlayerController script);
-    void Action(PlayerController script);
+    void Interact(PlayerController script, float dist);
+    void InteractFar(PlayerController script, float dist);
 }
 public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     public bool m_Held = false;
@@ -15,8 +14,12 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     private FixedJoint m_HoldJoint = null;
     private GameObject m_HoldObject = null;
     public Charge Obj_Polarity = Charge.Neutral;
+    
+    [Tooltip("Marked as true when the object has been 'used up', ex. placed in a power supply")]
+    public bool Consumed = false; 
     private PlayerController controller = null;
- 
+    
+
  
     private void Start() {
         gameObject.tag = "Interactable";
@@ -42,7 +45,7 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     }
  
     // Pick up the object, or drop it if it is already being held
-    public void Interact(PlayerController playerScript) {
+    public void Interact(PlayerController playerScript, float dist) {
         //Debug.Log("Interact");
         // Is the object currently being held?
         if(controller == null) {
@@ -78,7 +81,7 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     }
 
     // Pull object towards us or push away
-    public void InteractFar(PlayerController playerScript) {
+    public void InteractFar(PlayerController playerScript, float dist) {
         //Debug.Log("Interact far");
         if(playerScript.GlovePolarity != Obj_Polarity){
             Attract(playerScript);
@@ -88,18 +91,6 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
         }
     }
  
-    // Throw the object
-    public void Action(PlayerController playerScript) {
-        // Is the object currently being held?
-        if (m_Held) {
-            Drop();
-            
- 
-            // Force the object away in the opposite direction of the player
-            Vector3 forceDir = transform.position - playerScript.m_HandTransform.position;
-            m_ThisRigidbody.AddForce(forceDir * playerScript.m_ThrowForce);
-        }
-    }
  
     // Drop the object
     private void Drop() {
@@ -129,5 +120,17 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     Vector3 force = forcedir * impulse_by_dist * playerScript.MagnetGloveIntensity;
     m_ThisRigidbody.AddForce(force);
 
+    }
+
+    /// <summary>
+    /// Safely destroy self, even if held
+    /// </summary>
+    public void DeleteSelf() {
+        Consumed = true;
+        if (controller != null)
+        {
+            controller.holding = false;
+        }
+        Destroy(gameObject);
     }
 } 
