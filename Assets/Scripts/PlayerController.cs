@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The marks at the top part of the crosshair, indicating a glove target")]
     public Image CrosshairBottomMarks;
     [Tooltip("The marks at the side of the crosshair, indicating an interactable target (ex. a button)")]
-    public Image CrosshairSideMarks;
+    public Image CrosshairInteract;
     [Tooltip("X overlayed on the crosshair, indicating an unreachable target")]
     public Image CrosshairError;
     [Tooltip("The UI image indicating the player's glove polarity")]
@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
     public Image BootPolarityGlow;
     [Tooltip("The set of colors to use for the boot polarity glow effect")]
     public Color[] PolarityColors;
+    [Tooltip("The color used to indicate that boots are active")]
+    public Color BootActiveColor;
     [Tooltip("The set of colors to use for polarity emissives on the player")]
     public Color[] EmissivePolarityColors;
     /// <summary>
@@ -88,7 +90,18 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Access the correct color for the current boot polarity
     /// </summary>
-    public Color BootPolarityColor { get {return PolarityColors[1 + (int) BootPolarity];} }
+    public Color BootPolarityColor {
+        get {
+            if (BootPolarity == Charge.Neutral && CurrentPlayerState == PlayerState.Neutral)
+            {
+                return new Color(0,0,0,0);
+            }
+            else
+            {
+                return BootActiveColor;
+            }
+        }
+    }
 
     // Arm Model References
     [Tooltip("The player's left arm")]
@@ -136,7 +149,6 @@ public class PlayerController : MonoBehaviour
     /// Get and Set the player's state, automatically changing the appropriate collision settings
     /// </summary>
     public PlayerState CurrentPlayerState {
-        // TODO: Add and apply PLAYER and MAGNETFIELD layers!!!
         get {return m_CurrentPlayerState;}
         set {
             // determine collision settings based on new state
@@ -160,8 +172,8 @@ public class PlayerController : MonoBehaviour
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),LayerMask.NameToLayer("MagnetField"), disableFieldCollision);
             // apply new state
             m_CurrentPlayerState = value;
-            } 
-        }
+        } 
+    }
     
     // Camera
     [Tooltip("The upper bound of the player's vertical visual range")]
@@ -270,6 +282,8 @@ public class PlayerController : MonoBehaviour
         
         GM = GameManager.getGameManager();
         m_PlayerInput = GM.getPlayerInput();
+
+        CrosshairInteract.enabled = false; // start with the interact crosshair hidden
 
         // automatically start assigned cutscene, if present
         if (ActiveCutscene != null)
@@ -524,11 +538,9 @@ public class PlayerController : MonoBehaviour
 
         GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
         CrosshairTop.color = GlovePolarityColor;
-        CrosshairTop.enabled = GlovePolarity != Charge.Neutral;
 
         BootPolarityReadout.sprite = BootPolarityIcons[1 + (int) BootPolarity];
         CrosshairBottom.color = BootPolarityColor;
-        CrosshairBottom.enabled = BootPolarity != Charge.Neutral;
         BootPolarityGlow.color = BootPolarityColor;
 
         // Animate arm movement 
@@ -855,7 +867,7 @@ public class PlayerController : MonoBehaviour
                 // indicate surface as valid target
                 CrosshairBottomMarks.enabled = true;
                 CrosshairTopMarks.enabled = false;
-                CrosshairSideMarks.enabled = false;
+                CrosshairInteract.enabled = false;
 
                 // DEBUG - show the normal of the surface with a magenta line
                 Debug.DrawRay(ReticleHitPosition, hit.normal*2f, Color.magenta,0f);
@@ -868,12 +880,12 @@ public class PlayerController : MonoBehaviour
                 if (ReticleTarget.GetComponent<ChargeProperty>())
                 {
                     CrosshairTopMarks.enabled = true;
-                    CrosshairSideMarks.enabled = false;
+                    CrosshairInteract.enabled = false;
                 }
                 else
                 {
                     CrosshairTopMarks.enabled = false;
-                    CrosshairSideMarks.enabled = true;
+                    CrosshairInteract.enabled = true;
                 }
             }
 
@@ -882,7 +894,7 @@ public class PlayerController : MonoBehaviour
             {
                 CrosshairBottomMarks.enabled = false;
                 CrosshairTopMarks.enabled = false;
-                CrosshairSideMarks.enabled = false;
+                CrosshairInteract.enabled = false;
             }
 
             // Get and display target's subtitle data if present and within reading distance
