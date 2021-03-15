@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_DecoCar
+  m_Name: M_Scaffold
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_ShaderKeywords: _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: 99ce907efe01a95478db147a3c4de790, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6477c382c7d7e614e930195ed419eba2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissiveColorMap:
-        m_Texture: {fileID: 2800000, guid: b9f4b917a30112f46a5adbc3283ee6f2, type: 3}
+        m_Texture: {fileID: 2800000, guid: b9a108ae31d7d9040b6cace426bf28f3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
@@ -69,15 +69,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 99ce907efe01a95478db147a3c4de790, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6477c382c7d7e614e930195ed419eba2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 2800000, guid: 1a95dac8f45aacb44b7a433fd81caf40, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5315cb40ea6d4a84bababa2e53b07350, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: efad31fc49e7d4b44b7b040fd5b27045, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2ce1ab1f4960376479a1e785a789b7cd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -235,7 +235,7 @@ Material:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
+    - _EmissiveColor: {r: 0.07075471, g: 0.09417579, b: 1, a: 1}
     - _EmissiveColorLDR: {r: 1, g: 1, b: 1, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
