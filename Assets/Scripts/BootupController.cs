@@ -9,18 +9,24 @@ using UnityEngine.UI;
 
 public class BootupController : MonoBehaviour
 {
+    [Tooltip("Whether the \"closed eyes\" visual starts")]
+    public bool StartVisible = false;
+    [Tooltip("Whether or not to play the animation")]
+    public bool PlayAnimation = false;
+    
+    // References
     public Canvas UICanvas;
     public Image PanelTop;
     public Image PanelBottom;
     public Image PanelLeft;
     public Image PanelRight;
+    
     private float timer = 0;
     private float timerMax = 15f;
     private float width;
     private float height;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         width = Screen.width;
         height = Screen.height;
@@ -33,12 +39,14 @@ public class BootupController : MonoBehaviour
         PanelTop.rectTransform.position -= yoffset;
         PanelBottom.rectTransform.position += yoffset;
         */
+
+        SetVisibility(StartVisible);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer < timerMax)
+        if (PlayAnimation && timer < timerMax)
         {
             timer += Time.deltaTime;
             float speed = 250f*Time.deltaTime;
@@ -59,11 +67,29 @@ public class BootupController : MonoBehaviour
             // hide at the end of the animation
             if (timer >= timerMax)
             {
-                PanelTop.enabled = false;
-                PanelBottom.enabled = false;
-                PanelLeft.enabled = false;
-                PanelRight.enabled = false;
+                SetVisibility(false);
             }
         }
+    }
+
+    /// <summary>
+    /// Start the animation on command
+    /// </summary>
+    public void StartBootupSequence()
+    {
+        PlayAnimation = true;
+        timer = 0;
+        SetVisibility(true);
+    }
+
+    /// <summary>
+    /// Toggle the state of the panels
+    /// </summary>
+    public void SetVisibility(bool show)
+    {
+        PanelTop.enabled = show;
+        PanelBottom.enabled = show;
+        PanelLeft.enabled = show;
+        PanelRight.enabled = show;
     }
 }

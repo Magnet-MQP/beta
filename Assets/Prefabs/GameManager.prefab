@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enablePause: 0
+  isPaused: 0
+  lookSpeedX: 2.5
+  lookSpeedY: 2.5
+  glovesIsHold: 0
   currScene:
     m_Handle: 0
   scenenum: 77
