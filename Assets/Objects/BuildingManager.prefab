@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb95cefdaa3f23a46bc0ac6eeeac97f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildingCount: 100
+  BuildingCount: 50
   RespawnDistance: 1000
   BuildingTemplate: {fileID: 7275441025265244823, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
   PlayerRef: {fileID: 0}

@@ -85,7 +85,7 @@ MonoBehaviour:
   CrosshairTopMarks: {fileID: 5227707646282588231}
   CrosshairBottom: {fileID: 7258388250223809456}
   CrosshairBottomMarks: {fileID: 2617091056180115805}
-  CrosshairSideMarks: {fileID: 5156689533811296204}
+  CrosshairInteract: {fileID: 5156689533811296204}
   CrosshairError: {fileID: 4182603263871425129}
   GlovePolarityReadout: {fileID: 6842787699814399887}
   GlovePolarityIcons:
@@ -102,8 +102,9 @@ MonoBehaviour:
   - {r: 0.3, g: 0.3, b: 1, a: 0.9019608}
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 1, g: 0.3, b: 0.40294096, a: 0.9019608}
+  BootActiveColor: {r: 1, g: 1, b: 1, a: 0.9019608}
   EmissivePolarityColors:
-  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0.2216981, g: 0.28521994, b: 1, a: 1}
   - {r: 0, g: 0, b: 0, a: 0}
   - {r: 1, g: 0, b: 0, a: 1}
   ArmL: {fileID: 9186108518618792737}
