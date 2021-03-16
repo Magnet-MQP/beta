@@ -504,16 +504,16 @@ public class PlayerController : MonoBehaviour
             // potentially have different look speed values for mouse and controller?
             float dLookRight = 0.0f;
             float dLookUp = 0.0f;
-            // if ( m_PlayerInput.currentControlScheme == "Gamepad")
-            // {
-            //     dLookRight = look.x * GM.lookSpeedX;
-            //     dLookUp = look.y * GM.lookSpeedY;
-            // }
-            // else 
-            // {
+            if ( m_PlayerInput.currentControlScheme == "Gamepad")
+            {
+                dLookRight = look.x * GM.lookSpeedX * 10;
+                dLookUp = look.y * GM.lookSpeedY * 10;
+            }
+            else 
+            {
                 dLookRight = look.x * GM.lookSpeedX; 
                 dLookUp = look.y * GM.lookSpeedY; 
-            // }
+            }
 
 
             //Look and change facing direction
