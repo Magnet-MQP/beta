@@ -195,6 +195,10 @@ MonoBehaviour:
   ControlTargets:
   - {fileID: 0}
   SoundPlayer: {fileID: 6303539166848652916}
+  HasPower: 1
+  Button: {fileID: 1552477934}
+  MatReady: {fileID: 2100000, guid: 689dac5689c8015469fe70620e589e80, type: 2}
+  MatInactive: {fileID: 2100000, guid: 6b17ec7669aef384dacb4ab0b704360e, type: 2}
 --- !u!114 &1589470213574136139
 MonoBehaviour:
   m_ObjectHideFlags: 0

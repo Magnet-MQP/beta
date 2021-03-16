@@ -18,6 +18,14 @@ public class ElevatorController : ARemoteControllable
     public float MoveSpeed;
     [Tooltip("The audio source on this object")]
     public AudioSource SoundPlayer;
+    
+    [Tooltip("Whether to carry the player with the elevator")]
+    [Header("Cutcene")]
+    public bool CarryPlayer = false;
+    [Tooltip("If assigned, play the cutscene when activated")]
+    public CutsceneData StartCutscene = null;
+    [Tooltip("If assigned, play the cutscene when reaching the end of its path")]
+    public CutsceneData EndCutscene = null;
 
     // Update is called once per frame
     void Update()
@@ -29,6 +37,14 @@ public class ElevatorController : ARemoteControllable
             if (transform.position == targetPosition)
             {
                 SoundPlayer.Stop();
+                if (EndCutscene != null)
+                {
+                    GameObject player = GameManager.Instance.GetPlayer();
+                    if (player != null)
+                    {
+                        player.GetComponent<PlayerController>().StartCutscene(EndCutscene);
+                    }
+                }
             }
         }
     }
@@ -44,6 +60,21 @@ public class ElevatorController : ARemoteControllable
             {
                 targetPositionID = activationCount;
                 SoundPlayer.Play();
+
+                GameObject player = GameManager.Instance.GetPlayer();
+                if (player != null)
+                {
+                    // carry the player
+                    if (CarryPlayer)
+                    {
+                        player.transform.SetParent(transform);
+                    }
+                    // start the cutscene
+                    if (StartCutscene != null)
+                    {
+                        player.GetComponent<PlayerController>().StartCutscene(StartCutscene);
+                    }
+                }
             }
         }
     }

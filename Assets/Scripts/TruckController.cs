@@ -28,8 +28,8 @@ public class TruckController : ARemoteControllable
                 }
                 if (timer <= 0)
                 {
-                    // return to menu
-                    GameManager.Instance.mainMenu();
+                    // advance to next scene
+                    GameManager.Instance.nextScene();
                 }
             }
         }

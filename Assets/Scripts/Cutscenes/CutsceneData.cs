@@ -11,7 +11,9 @@ public class CutsceneData : ScriptableObject
     public float LockDuration;
     
     [Tooltip("Whether to show the bootup \"eyes opening\" animation")]
-    public bool ShowBootup;
+    public bool ShowBootup = false;
+    [Tooltip("Whether to return to the menu at the end of the cutscene")]
+    public bool ExitAtEnd = false;
     
     [Tooltip("The set of dialogue lines to play in the cutscene")]
     public SubtitleData[] Dialogue;
