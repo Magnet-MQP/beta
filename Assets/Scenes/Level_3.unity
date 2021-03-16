@@ -9756,6 +9756,14 @@ PrefabInstance:
       propertyPath: enablePause
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8198055088719881514, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
+      propertyPath: lookSpeedX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8198055088719881514, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
+      propertyPath: lookSpeedY
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8198055088719881515, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
       propertyPath: m_Name
       value: GameManager
