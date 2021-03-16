@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     private float pauseWait = 0;
     private float pauseWaitMax = 0.1f;
-    public float lookSpeedX = 4.0f;
-    public float lookSpeedY = 4.0f;
+    public float lookSpeedX = 1.0f;
+    public float lookSpeedY = 1.0f;
     public bool glovesIsHold = false;
 
     // Scene changing

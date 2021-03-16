@@ -183,7 +183,7 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""id"": ""7a5402c1-562c-4804-a2fb-ad10d786f105"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
