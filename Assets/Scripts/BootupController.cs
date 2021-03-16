@@ -75,10 +75,11 @@ public class BootupController : MonoBehaviour
     /// <summary>
     /// Start the animation on command
     /// </summary>
-    public void StartBootupSequence()
+    public void StartBootupSequence(float length)
     {
         PlayAnimation = true;
         timer = 0;
+        timerMax = length;
         SetVisibility(true);
     }
 

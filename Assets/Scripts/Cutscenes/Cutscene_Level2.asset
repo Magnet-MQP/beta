@@ -15,14 +15,18 @@ MonoBehaviour:
   FullDuration: 21
   LockDuration: 1
   ShowBootup: 1
+  ExitAtEnd: 0
   Dialogue:
-  - message: 'FyED-OR: I recognize that giant truck in the distance!'
+  - message: 
     priority: 5000
+    timer: 1
+  - message: 'FyED-OR: I recognize that giant truck in the distance!'
+    priority: 4999
     timer: 7
   - message: 'FyED-OR: My databanks inform me it stops at the factory where I was
       built.'
-    priority: 4999
+    priority: 4998
     timer: 14
   - message: 'FyED-OR: If I can hitch a ride over to it I can go home!'
-    priority: 4998
+    priority: 4997
     timer: 21

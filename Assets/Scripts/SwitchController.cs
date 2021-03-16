@@ -25,9 +25,14 @@ public class SwitchController : ARemoteControllable, IRemoteController
     [Tooltip("The material to use when pressed or de-powered")]
     public Material MatInactive;
 
+    [Tooltip("The text to show when active")]
+    public string ActiveMessage;
+    private TextProperty myText;
 
     void Start()
     {
+        myText = GetComponent<TextProperty>();
+
         if (HasPower)
         {
             Button.GetComponent<Renderer>().material = MatReady;
@@ -35,6 +40,7 @@ public class SwitchController : ARemoteControllable, IRemoteController
         else
         {
             Button.GetComponent<Renderer>().material = MatInactive;
+            myText.Text = "This switch needs power";
         }
     }
 
@@ -48,6 +54,7 @@ public class SwitchController : ARemoteControllable, IRemoteController
                 rc.RemoteActivate(this);
             }
             used = true;
+            Button.GetComponent<Renderer>().material = MatInactive;
             SoundPlayer.Play();
         }
     }
@@ -58,6 +65,7 @@ public class SwitchController : ARemoteControllable, IRemoteController
         if (!used)
         {
             Button.GetComponent<Renderer>().material = MatReady;
+            myText.Text = ActiveMessage;
         }
     }
 }

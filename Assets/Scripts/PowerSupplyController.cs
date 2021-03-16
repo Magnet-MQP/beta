@@ -10,6 +10,8 @@ public class PowerSupplyController : MonoBehaviour, IRemoteController
     public ARemoteControllable ActivationTarget;
     [Tooltip("Whether the power supply is operational")]
     private bool powerActivated = false;
+    [Tooltip("The message to display when fully activated")]
+    public string ActiveMessage = "";
 
     // Update is called once per frame
     void Update()
@@ -27,6 +29,10 @@ public class PowerSupplyController : MonoBehaviour, IRemoteController
         {
             powerActivated = true;
             ActivationTarget.RemoteActivate(this);
+            if (ActiveMessage != "")
+            {
+                SubtitleManager.Instance.QueueSubtitle(new SubtitleData(ActiveMessage, 5000));
+            }
         }
     }
 }

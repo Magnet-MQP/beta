@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cea9e3696f9603548a1c1c17fa6c74b9, type: 3}
-  m_Name: Cutscene_Level1Intro
+  m_Name: Cutscene_Level1_Intro
   m_EditorClassIdentifier: 
   FullDuration: 17
   LockDuration: 13
   ShowBootup: 1
+  ExitAtEnd: 0
   Dialogue:
   - message: '[ INITIALIZING SYSTEMS... ]'
     priority: 5000

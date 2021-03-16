@@ -303,7 +303,7 @@ public class PlayerController : MonoBehaviour
         cutsceneUnlockPoint = cutsceneTimer - newScene.LockDuration;
         if (newScene.ShowBootup)
         {
-            BC.StartBootupSequence();
+            BC.StartBootupSequence(newScene.LockDuration);
         }
 
         // load dialogue data
@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
     void Boots() 
     {
         // skip if paused, in intro, or pulling
-        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
+        if (GM.isPaused || (InCutscene && cutsceneTimer > cutsceneUnlockPoint) || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -357,7 +357,7 @@ public class PlayerController : MonoBehaviour
 
     void Gloves(float value) 
     {
-        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
+        if (GM.isPaused || (InCutscene && cutsceneTimer > cutsceneUnlockPoint) || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -477,6 +477,10 @@ public class PlayerController : MonoBehaviour
             if (cutsceneTimer <= 0)
             {
                 InCutscene = false;
+                if (ActiveCutscene.ExitAtEnd)
+                {
+                    GameManager.Instance.mainMenu();
+                }
             }
             // disable other actions after this point if necessary
             if (cutsceneTimer > cutsceneUnlockPoint)
