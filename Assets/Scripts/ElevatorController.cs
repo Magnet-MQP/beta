@@ -6,7 +6,7 @@ using UnityEngine;
 /// Controls the elevator in the first level
 /// </summary>
 
-public class ElevatorController : ARemoteControllable
+public class ElevatorController : ARemoteControllable, IRemoteController
 {
     [Tooltip("The set of positions the elevator moves between")]
     public Vector3[] Positions;
@@ -26,6 +26,8 @@ public class ElevatorController : ARemoteControllable
     public CutsceneData StartCutscene = null;
     [Tooltip("If assigned, play the cutscene when reaching the end of its path")]
     public CutsceneData EndCutscene = null;
+    [Tooltip("If assigned, activate this object when reaching the end of its path")]
+    public ARemoteControllable ActivationTarget = null;
 
     // Update is called once per frame
     void Update()
@@ -37,6 +39,7 @@ public class ElevatorController : ARemoteControllable
             if (transform.position == targetPosition)
             {
                 SoundPlayer.Stop();
+                // play end cutscene
                 if (EndCutscene != null)
                 {
                     GameObject player = GameManager.Instance.GetPlayer();
@@ -44,6 +47,11 @@ public class ElevatorController : ARemoteControllable
                     {
                         player.GetComponent<PlayerController>().StartCutscene(EndCutscene);
                     }
+                }
+                // activate target
+                if (ActivationTarget != null)
+                {
+                    ActivationTarget.RemoteActivate(this);
                 }
             }
         }
