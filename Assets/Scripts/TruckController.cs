@@ -39,11 +39,6 @@ public class TruckController : ARemoteControllable
                     }
                     messaged = true;
                 }
-                if (timer <= 0)
-                {
-                    // advance to next scene
-                    GameManager.Instance.nextScene();
-                }
             }
         }
     }

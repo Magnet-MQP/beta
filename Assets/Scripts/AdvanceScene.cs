@@ -5,11 +5,14 @@ using UnityEngine;
 // Advances to the next scene when touched by the player
 public class AdvanceScene : MonoBehaviour
 {
+    public CutsceneData TransitionCutscene;
+    private bool activated = false;
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !activated)
         {
-            GameManager.Instance.nextScene();
+            other.GetComponent<PlayerController>().StartCutscene(TransitionCutscene);
+            activated = true;
         }
     }
 }

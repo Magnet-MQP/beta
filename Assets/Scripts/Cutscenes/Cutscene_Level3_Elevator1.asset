@@ -17,6 +17,6 @@ MonoBehaviour:
   ShowBootup: 0
   ExitAtEnd: 0
   Dialogue:
-  - message: 'FyED-OR: Well, this is it.'
+  - message: 'FyED-OR: "Well, this is it."'
     priority: 5000
     timer: 5

@@ -20,25 +20,27 @@ public class BootupController : MonoBehaviour
     public Image PanelBottom;
     public Image PanelLeft;
     public Image PanelRight;
+    private Vector3 topStart;
+    private Vector3 botStart;
+    private Vector3 leftStart;
+    private Vector3 rightStart;
+    private float width;
+    private float height;
     
     private float timer = 0;
     private float timerMax = 15f;
-    private float width;
-    private float height;
+    private bool invertAnimation = false; // whether to play the animation in reverse
+   
 
     void Awake()
     {
         width = Screen.width;
         height = Screen.height;
 
-        /*
-        Vector3 xoffset = new Vector3(width/2, 0, 0);
-        PanelLeft.rectTransform.position -= xoffset;
-        PanelRight.rectTransform.position += xoffset;
-        Vector3 yoffset = new Vector3(0, height/2, 0);
-        PanelTop.rectTransform.position -= yoffset;
-        PanelBottom.rectTransform.position += yoffset;
-        */
+        topStart = PanelTop.transform.position;
+        botStart = PanelBottom.transform.position;
+        leftStart = PanelLeft.transform.position;
+        rightStart = PanelRight.transform.position;
 
         SetVisibility(StartVisible);
     }
@@ -48,21 +50,29 @@ public class BootupController : MonoBehaviour
     {
         if (PlayAnimation && timer < timerMax)
         {
+            float timerFactor = 15f/timerMax; // 15 is a magic number from how this was originally coded
             timer += Time.deltaTime;
-            float speed = 250f*Time.deltaTime;
-            float wait = 10f;
-            if (timer > wait && (timer < wait+0.4f || timer > wait+2f))
+            float progressX = Mathf.Min(1f, timer/timerMax);  
+            // invert animation
+            if (invertAnimation)
             {
-                Vector3 yspeed = new Vector3(0, 2*speed, 0);
-                PanelTop.rectTransform.position -= yspeed;
-                PanelBottom.rectTransform.position += yspeed;
+                progressX = 1-progressX;
             }
-            if (timer > wait && (timer < wait+0.4f || (timer > wait+1f && timer < wait+6f)))
+            // piecewise - x continues uniformly, while y freezes 1/4 of the way in and resumes
+            float progressY = progressX;
+            if (progressX >= 0.25f && progressX < 0.75f)
             {
-                Vector3 xspeed = new Vector3(4f*speed, 0, 0);
-                PanelLeft.rectTransform.position -= xspeed;
-                PanelRight.rectTransform.position += xspeed;
+                progressY = 0.25f;
             }
+            else if (progressX >= 0.75f)
+            {
+                progressY = 0.25f+3f*(progressX-0.75f);
+            }
+            
+            PanelTop.transform.position = topStart - Vector3.up*height*progressY;
+            PanelBottom.transform.position = botStart + Vector3.up*height*progressY;
+            PanelLeft.transform.position = leftStart - Vector3.right*width*progressX;
+            PanelRight.transform.position = rightStart + Vector3.right*width*progressX;
 
             // hide at the end of the animation
             if (timer >= timerMax)
@@ -73,9 +83,27 @@ public class BootupController : MonoBehaviour
     }
 
     /// <summary>
-    /// Start the animation on command
+    /// Start the bootup animation on command
     /// </summary>
     public void StartBootupSequence(float length)
+    {
+        invertAnimation = false;
+        StartAnimation(length);
+    }
+
+    /// <summary>
+    /// Start the shutdown animation on command
+    /// </summary>
+    public void StartShutdownSequence(float length)
+    {
+        invertAnimation = true;
+        StartAnimation(length);
+    }
+
+    /// <summary>
+    /// Start an animation on command
+    /// </summary>
+    private void StartAnimation(float length)
     {
         PlayAnimation = true;
         timer = 0;

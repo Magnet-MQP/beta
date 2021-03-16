@@ -15,7 +15,11 @@ MonoBehaviour:
   FullDuration: 4
   LockDuration: 0
   ShowBootup: 0
+  ShowShutdown: 1
+  ShutdownDuration: 2
   ExitAtEnd: 0
+  AdvanceAtEnd: 1
+  ReloadAtEnd: 0
   Dialogue:
   - message: 'FyED-OR: "This looks like my ride out."'
     priority: 5000

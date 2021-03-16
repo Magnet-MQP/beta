@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles all of the player's movement
@@ -271,6 +272,7 @@ public class PlayerController : MonoBehaviour
     public bool InCutscene = false;
     private float cutsceneTimer = 0f;
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
+    private bool cutsceneEndEffect = false; // whether the end effect of the current cutscene has started
 
     void Awake() { }
 
@@ -301,6 +303,7 @@ public class PlayerController : MonoBehaviour
         ActiveCutscene = newScene;
         cutsceneTimer = newScene.FullDuration;
         cutsceneUnlockPoint = cutsceneTimer - newScene.LockDuration;
+        cutsceneEndEffect = false;
         if (newScene.ShowBootup)
         {
             BC.StartBootupSequence(newScene.LockDuration);
@@ -474,12 +477,29 @@ public class PlayerController : MonoBehaviour
         {
             cutsceneTimer -= Time.deltaTime;
             // end cutscene at end of timer
+            if (ActiveCutscene.ShowShutdown && !cutsceneEndEffect && cutsceneTimer <= ActiveCutscene.ShutdownDuration)
+            {
+                // shutdown effect
+                BC.StartShutdownSequence(ActiveCutscene.ShutdownDuration);
+                cutsceneEndEffect = true;
+            }
             if (cutsceneTimer <= 0)
             {
                 InCutscene = false;
+                // restart game if desired
                 if (ActiveCutscene.ExitAtEnd)
                 {
                     GameManager.Instance.mainMenu();
+                }
+                // advance scene if desired
+                else if (ActiveCutscene.AdvanceAtEnd)
+                {
+                    GameManager.Instance.nextScene();
+                }
+                // reload scene if desired
+                else if (ActiveCutscene.ReloadAtEnd)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 }
             }
             // disable other actions after this point if necessary

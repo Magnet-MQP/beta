@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea9e3696f9603548a1c1c17fa6c74b9, type: 3}
   m_Name: Cutscene_Level3_Elevator2
   m_EditorClassIdentifier: 
-  FullDuration: 15
+  FullDuration: 12
   LockDuration: 0
   ShowBootup: 0
+  ShowShutdown: 1
+  ShutdownDuration: 4
   ExitAtEnd: 1
+  AdvanceAtEnd: 0
+  ReloadAtEnd: 0
   Dialogue:
-  - message: 'FyED-OR: Welcome home, FyED-OR.'
+  - message: 'FyED-OR: "Welcome home, FyED-OR."'
     priority: 5000
     timer: 5
   - message: END OF DEMO
     priority: 4999
-    timer: 15
+    timer: 12

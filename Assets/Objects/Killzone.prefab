@@ -57,3 +57,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ec631235ca44245833cc58e26b22e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RespawnCutscene: {fileID: 11400000, guid: 6d6c0e25763d2c9478092e074f47ecde, type: 2}

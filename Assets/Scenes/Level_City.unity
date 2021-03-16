@@ -569,7 +569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962944389192693501, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6304503391545752299, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1618,6 +1618,14 @@ PrefabInstance:
     - target: {fileID: 8198055088719881514, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
       propertyPath: enablePause
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8198055088719881514, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
+      propertyPath: lookSpeedX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8198055088719881514, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
+      propertyPath: lookSpeedY
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8198055088719881515, guid: bbe1ed05d17885d49b5718da785e5be6, type: 3}
       propertyPath: m_Name
@@ -4829,6 +4837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3da812b6cbdb9428f62e0978f216b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TransitionCutscene: {fileID: 11400000, guid: 2248acd06ea045849b52d889369c5ae8, type: 2}
 --- !u!1 &2040164011
 GameObject:
   m_ObjectHideFlags: 0

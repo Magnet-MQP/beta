@@ -10,23 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cea9e3696f9603548a1c1c17fa6c74b9, type: 3}
-  m_Name: Cutscene_Level2
+  m_Name: Cutscene_Level2_Intro
   m_EditorClassIdentifier: 
   FullDuration: 21
   LockDuration: 1
   ShowBootup: 1
+  ShowShutdown: 0
+  ShutdownDuration: 1
   ExitAtEnd: 0
+  AdvanceAtEnd: 0
+  ReloadAtEnd: 0
   Dialogue:
   - message: 
     priority: 5000
     timer: 1
-  - message: 'FyED-OR: I recognize that giant truck in the distance!'
+  - message: 'FyED-OR: "I recognize that giant truck in the distance!"'
     priority: 4999
     timer: 7
-  - message: 'FyED-OR: My databanks inform me it stops at the factory where I was
-      built.'
+  - message: 'FyED-OR: "My databanks inform me it stops at the factory where I was
+      built."'
     priority: 4998
     timer: 14
-  - message: 'FyED-OR: If I can hitch a ride over to it I can go home!'
+  - message: 'FyED-OR: "If I can hitch a ride over to it I can go home!"'
     priority: 4997
     timer: 21

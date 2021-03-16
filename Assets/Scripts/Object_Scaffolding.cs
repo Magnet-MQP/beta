@@ -48,7 +48,7 @@ public class Object_Scaffolding : MonoBehaviour, IInteractable {
             //Boxcast to see if we ware going to collide with something
             m_HitDetect = Physics.BoxCast(m_Collider.bounds.center, transform.localScale, Vector3.Project(-player_pull, transform.forward), out m_Hit, transform.rotation, m_MaxDistance);
             if(m_HitDetect) {
-                Debug.Log("Hit " + m_Hit.collider.gameObject.name);
+                //Debug.Log("Hit " + m_Hit.collider.gameObject.name);
                 return;
             }
             AddForce(-player_pull, playerScript.MagnetGloveFalloff, playerScript.MagnetGloveIntensity);
@@ -57,7 +57,7 @@ public class Object_Scaffolding : MonoBehaviour, IInteractable {
         else if (playerScript.GlovePolarity == Obj_Polarity) {
             m_HitDetect = Physics.BoxCast(m_Collider.bounds.center, transform.localScale, Vector3.Project(player_pull, transform.forward), out m_Hit, transform.rotation, m_MaxDistance);
             if(m_HitDetect) {
-                Debug.Log("Hit " + m_Hit.collider.gameObject.name);
+                //Debug.Log("Hit " + m_Hit.collider.gameObject.name);
                 return;
             }
             AddForce(player_pull, playerScript.MagnetGloveFalloff, playerScript.MagnetGloveIntensity);
