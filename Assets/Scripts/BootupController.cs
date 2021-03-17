@@ -26,21 +26,46 @@ public class BootupController : MonoBehaviour
     private Vector3 rightStart;
     private float width;
     private float height;
+
     
+    private float animDelay = 0f;
     private float timer = 0;
     private float timerMax = 15f;
     private bool invertAnimation = false; // whether to play the animation in reverse
-   
+    
+    // Animation parameters
+    private float bootupDelayFactor = 0.1f; // portion of bootup anim to wait before starting
+    private float pauseTime = 0.05f; // time at which initial vertical opening stops
+    private float xSpeed = 1.25f; // horizontal opening speed after initial wait
+    private float yResumeTime = 0.8f; // time at which vertical opening resumes
+    private float yInitialSpeed = 1f; // Vertical opening speed in first animation phase
+    private float yFinalSpeed; // calculated at start. Vertical opening speed in last animation phase
 
-    void Awake()
+    void Start()
     {
         width = Screen.width;
         height = Screen.height;
+        
+        Vector2 screenSize = new Vector2(1600,900);
+        Vector3 center = new Vector3(width/2f,height/2f,0);
+        
+        topStart = center - Vector3.up*height/2f;
+        botStart = center + Vector3.up*height/2f;
+        leftStart = center - Vector3.right*width/2f;
+        rightStart = center + Vector3.right*width/2f;
 
-        topStart = PanelTop.transform.position;
-        botStart = PanelBottom.transform.position;
-        leftStart = PanelLeft.transform.position;
-        rightStart = PanelRight.transform.position;
+        PanelTop.transform.position = topStart;
+        PanelBottom.transform.position = botStart;
+        PanelLeft.transform.position = leftStart;
+        PanelRight.transform.position = rightStart;
+        
+        PanelTop.rectTransform.sizeDelta = screenSize;
+        PanelBottom.rectTransform.sizeDelta = screenSize;
+        PanelLeft.rectTransform.sizeDelta = screenSize;
+        PanelRight.rectTransform.sizeDelta = screenSize;
+
+        // initialize animation params
+        yFinalSpeed = (1-pauseTime*yInitialSpeed)/(1-yResumeTime);
 
         SetVisibility(StartVisible);
     }
@@ -50,36 +75,56 @@ public class BootupController : MonoBehaviour
     {
         if (PlayAnimation && timer < timerMax)
         {
-            float timerFactor = 15f/timerMax; // 15 is a magic number from how this was originally coded
-            timer += Time.deltaTime;
-            float progressX = Mathf.Min(1f, timer/timerMax);  
-            // invert animation
-            if (invertAnimation)
+            if (timer == 0)
             {
-                progressX = 1-progressX;
+                SetVisibility(true);
+                // idk why it makes me do this here but *shrug*
             }
-            // piecewise - x continues uniformly, while y freezes 1/4 of the way in and resumes
-            float progressY = progressX;
-            if (progressX >= 0.25f && progressX < 0.75f)
+            if (animDelay > 0)
             {
-                progressY = 0.25f;
+                animDelay -= Time.deltaTime;
             }
-            else if (progressX >= 0.75f)
+            else
             {
-                progressY = 0.25f+3f*(progressX-0.75f);
-            }
-            
-            PanelTop.transform.position = topStart - Vector3.up*height*progressY;
-            PanelBottom.transform.position = botStart + Vector3.up*height*progressY;
-            PanelLeft.transform.position = leftStart - Vector3.right*width*progressX;
-            PanelRight.transform.position = rightStart + Vector3.right*width*progressX;
-
-            // hide at the end of the animation
-            if (timer >= timerMax)
-            {
-                SetVisibility(false);
+                timer += Time.deltaTime;
+                float progress = Mathf.Min(1f, timer/timerMax);  
+                // invert animation
+                if (invertAnimation)
+                {
+                    progress = 1-progress;
+                }
+                // piecewise - open uniformly, then x continues uniformly but faster while y freezes 1/4 of the way in and resumes
+                float progressX = progress*xSpeed;
+                float progressY = progress*yInitialSpeed;
+                if (progress >= pauseTime && progress < yResumeTime)
+                {
+                    progressY = pauseTime*yInitialSpeed;
+                }
+                else if (progress >= yResumeTime)
+                {
+                    progressY = pauseTime*yInitialSpeed+yFinalSpeed*(progress-yResumeTime);
+                }
+                
+                UpdatePanels(progressX,progressY);
+                
+                // hide at the end of the animation
+                if (timer >= timerMax && !invertAnimation)
+                {
+                    SetVisibility(false);
+                }
             }
         }
+    }
+
+    /// <summary>
+    /// Updates the position of the panels
+    /// </summary>
+    private void UpdatePanels(float progressX, float progressY)
+    {
+        PanelTop.transform.position = topStart - Vector3.up*height*progressY/2f;
+        PanelBottom.transform.position = botStart + Vector3.up*height*progressY/2f;
+        PanelLeft.transform.position = leftStart - Vector3.right*width*progressX/2f;
+        PanelRight.transform.position = rightStart + Vector3.right*width*progressX/2f;
     }
 
     /// <summary>
@@ -88,6 +133,8 @@ public class BootupController : MonoBehaviour
     public void StartBootupSequence(float length)
     {
         invertAnimation = false;
+        animDelay = bootupDelayFactor;
+        UpdatePanels(0,0);
         StartAnimation(length);
     }
 
@@ -97,6 +144,8 @@ public class BootupController : MonoBehaviour
     public void StartShutdownSequence(float length)
     {
         invertAnimation = true;
+        animDelay = 0;
+        UpdatePanels(1,1);
         StartAnimation(length);
     }
 
@@ -114,7 +163,7 @@ public class BootupController : MonoBehaviour
     /// <summary>
     /// Toggle the state of the panels
     /// </summary>
-    public void SetVisibility(bool show)
+    private void SetVisibility(bool show)
     {
         PanelTop.enabled = show;
         PanelBottom.enabled = show;

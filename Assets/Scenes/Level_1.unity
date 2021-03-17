@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.000060352308, g: 0.00004553286, b: 0.00006103357, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23329,10 +23329,10 @@ PrefabInstance:
     - target: {fileID: 715757793303321814, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: ActiveCutscene
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 45f72236ede5614488da3bf28c2e7fe0, type: 2}
     - target: {fileID: 715757793303321814, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: InCutscene
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 715757793303321835, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_LocalPosition.x

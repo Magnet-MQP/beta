@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
 
-        Debug.Log(ES);
+        //Debug.Log(ES);
 
         hidePauseMenu();
         updatePauseState();
@@ -127,6 +127,18 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Stops the camera from rendering anything else
+    /// Used to prevent visual artifacts on reloading a scene
+    /// </summary>
+    private void DisableCamera()
+    {
+        /*
+        Camera.main.cullingMask = 0;
+        Camera.main.clearFlags = CameraClearFlags.Nothing;
+        */
+    }
+
+    /// <summary>
     /// Scene Function: Progress to the next scene numerically
     /// </summary>
     public void nextScene() {
@@ -134,6 +146,7 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex+1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        DisableCamera();
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
 
     }
@@ -145,6 +158,7 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex-1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        DisableCamera();
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
     }
 
@@ -152,15 +166,17 @@ public class GameManager : MonoBehaviour
     /// Scene Function: Progress to the previous scene numerically
     /// </summary>
     public void reloadScene() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        playerReference = null;
+        DisableCamera();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     /// <summary>
     /// Scene Function: Jump to the main menu scene
     /// </summary>
     public void mainMenu() {
-        Debug.Log("hello");
         enablePause = false;
+        DisableCamera();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
