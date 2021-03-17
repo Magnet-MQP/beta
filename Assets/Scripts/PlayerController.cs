@@ -208,6 +208,8 @@ public class PlayerController : MonoBehaviour
     public const float SELF_PULL_RANGE = 45f;
     private float bootResetTimer = 0;
     private float bootResetTimerMax = 0.2f;
+    [Tooltip("The detection radius of the player's targetting reticle")]
+    public float ReticleRadius = 1f;
 
     // Targetting
     [Tooltip("The object the player currently is aiming at")]
@@ -878,6 +880,19 @@ public class PlayerController : MonoBehaviour
         float castDistance = 500f;
         RaycastHit hit;
         Physics.Raycast(MainCamera.transform.position, MainCamera.transform.forward, out hit, castDistance, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+        // - if no target found, try again with a spherecast that only detects interactables
+        if (hit.collider == null || hit.collider.gameObject.layer != LayerMask.NameToLayer("Interactable"))
+        {
+            // cast up to max distance or the hit distance
+            float sphereDistance = castDistance;
+            if (hit.collider)
+            {
+                sphereDistance = hit.distance;
+                Debug.Log(LayerMask.LayerToName(hit.collider.gameObject.layer));
+            }
+            Physics.SphereCast(MainCamera.transform.position, ReticleRadius, MainCamera.transform.forward, out hit, sphereDistance, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore);
+        }
+        // - process hit
         if (hit.collider)
         {
             ReticleTarget = hit.collider.gameObject;
@@ -958,12 +973,12 @@ public class PlayerController : MonoBehaviour
 
         Ray ray = new Ray(m_CameraTransform.position, m_CameraTransform.forward);
 
-        if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract = true;
             m_CanInteract_Far = false;
         }
 
-        else if (Physics.Raycast(ray, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        else if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract_Far = true;
             m_CanInteract = false;
             
