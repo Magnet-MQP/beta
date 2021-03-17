@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     public int scenenum = 77;
     private bool isSubtitles = false;
     private SubtitleManager SM;
+    private EventSystem ES;
 
     public static GameManager getGameManager() {
         return Instance;
@@ -66,6 +68,10 @@ public class GameManager : MonoBehaviour
         graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
         playerReference = GameObject.Find("Player");
+
+        ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
+
+        Debug.Log(ES);
 
         hidePauseMenu();
         updatePauseState();
@@ -143,6 +149,13 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Scene Function: Progress to the previous scene numerically
+    /// </summary>
+    public void reloadScene() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
     /// Scene Function: Jump to the main menu scene
     /// </summary>
     public void mainMenu() {
@@ -198,6 +211,8 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(pauseObjects[0].transform.Find("Start_Button").gameObject);
+        
     }
 
     /// <summary>
@@ -226,6 +241,7 @@ public class GameManager : MonoBehaviour
           isSubtitles = !isSubtitles;
           SM.removeSettingsSubtitle();
         }
+        EventSystem.current.SetSelectedGameObject(settingsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
     /// <summary>
@@ -238,6 +254,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(graphicsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
     /// <summary>
@@ -250,6 +267,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(controlsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
     /// <summary>
@@ -262,9 +280,11 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(subtitleObjects[0].transform.Find("Start_Button").gameObject);
         SM.moveSubtitlesForMenu();
         SM.QueueSubtitle(new SubtitleData("This is an example subtitle", 100000, 0.1f));
         isSubtitles = !isSubtitles;
+        Debug.Log(EventSystem.current);
 
     }
 
@@ -278,6 +298,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(audioObjects[0].transform.Find("Start_Button").gameObject);
     }
     
     private void hider()

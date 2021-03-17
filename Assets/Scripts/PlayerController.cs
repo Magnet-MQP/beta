@@ -499,7 +499,7 @@ public class PlayerController : MonoBehaviour
                 // reload scene if desired
                 else if (ActiveCutscene.ReloadAtEnd)
                 {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    GameManager.Instance.reloadScene();
                 }
             }
             // disable other actions after this point if necessary

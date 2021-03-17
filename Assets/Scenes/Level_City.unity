@@ -211,6 +211,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: VerticalSwayBound
       value: 3
@@ -271,9 +291,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck08_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -358,10 +394,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1488654074762848348, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ed4a5a0fa9abde343849bb61d403f213, type: 2}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: HorizontalSwayBound
       value: 2
@@ -437,6 +489,14 @@ PrefabInstance:
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck09_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -617,6 +677,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8166506382171022568, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422949474949126141, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1164,6 +1228,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5115281637713344004, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20.8
@@ -1208,9 +1292,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck13_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -1404,6 +1504,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: SettlePosition.x
       value: -14.1
@@ -1468,9 +1588,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck04_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -1486,10 +1622,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1488654074762848348, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ed4a5a0fa9abde343849bb61d403f213, type: 2}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: HorizontalSwayBound
       value: 5
@@ -1561,6 +1713,14 @@ PrefabInstance:
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck15_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -1974,6 +2134,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: ReverseLimit
       value: -1
@@ -2049,6 +2225,14 @@ PrefabInstance:
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck06_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -2140,10 +2324,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1488654074762848348, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ed4a5a0fa9abde343849bb61d403f213, type: 2}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: ReverseLimit
       value: -5
@@ -2216,9 +2420,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck02_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -2917,6 +3137,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: VerticalSwayBound
       value: 4
@@ -3001,9 +3241,25 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck10_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -3983,6 +4239,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: SettlePosition.x
       value: 16.73
@@ -4051,9 +4327,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck12_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -4709,10 +5001,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1488654074762848348, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ed4a5a0fa9abde343849bb61d403f213, type: 2}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: SettlePosition.x
       value: -12.1
@@ -4769,9 +5081,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck11_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
@@ -5420,10 +5748,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 36958007653854017, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 529757612793065471, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1488654074762848348, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ed4a5a0fa9abde343849bb61d403f213, type: 2}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1703486014037460383, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: ReverseLimit
       value: -5
@@ -5504,9 +5852,25 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -303.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5383585459184248973, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5599928309498195134, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: m_Name
       value: Truck03_Cargo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641690140477217456, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872141842732975107, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}

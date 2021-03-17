@@ -135,8 +135,8 @@ MonoBehaviour:
   m_ThrowForce: 200
   holding: 0
   AudioSourceBoots: {fileID: 3964060029680023792}
-  AudioBootsOn: {fileID: 8300000, guid: aa6a51085aa46934fbcca3e53f2462ba, type: 3}
-  AudioBootsOff: {fileID: 8300000, guid: 18143603c2be6b0438a5af6b3597da86, type: 3}
+  AudioBootsOn: {fileID: 8300000, guid: d1d1b000e1cbda746a0acd7a34129af1, type: 3}
+  AudioBootsOff: {fileID: 8300000, guid: cb887d9000595c343b3441427ce7fc55, type: 3}
   AudioSourceGloves: {fileID: 8007069916879993962}
   AudioGlovesNeg: {fileID: 8300000, guid: 64a162459cd24b04a88ae6cd29a56d06, type: 3}
   AudioGlovesPos: {fileID: 8300000, guid: 1278610f968a95c47bf0984a462cd0ae, type: 3}
