@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: e28075396a65f5e4f830f5177f98a152, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 988501620}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &75544092
@@ -401,6 +401,11 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+--- !u!1 &988501620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6843941541944607836, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
+  m_PrefabInstance: {fileID: 1155424626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1155424626
 PrefabInstance:
   m_ObjectHideFlags: 0
