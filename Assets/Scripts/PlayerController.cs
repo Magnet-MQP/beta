@@ -888,7 +888,6 @@ public class PlayerController : MonoBehaviour
             if (hit.collider)
             {
                 sphereDistance = hit.distance;
-                Debug.Log(LayerMask.LayerToName(hit.collider.gameObject.layer));
             }
             Physics.SphereCast(MainCamera.transform.position, ReticleRadius, MainCamera.transform.forward, out hit, sphereDistance, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore);
         }
@@ -968,6 +967,7 @@ public class PlayerController : MonoBehaviour
             ReticleHitPosition = transform.position;
             CrosshairBottomMarks.enabled = false;
             CrosshairTopMarks.enabled = false;
+            CrosshairInteract.enabled = false;
         }
 
 
