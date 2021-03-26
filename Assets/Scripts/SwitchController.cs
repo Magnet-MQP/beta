@@ -55,6 +55,7 @@ public class SwitchController : ARemoteControllable, IRemoteController
             }
             used = true;
             Button.GetComponent<Renderer>().material = MatInactive;
+            myText.Text = "";
             SoundPlayer.Play();
         }
     }
