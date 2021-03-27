@@ -133,16 +133,42 @@ MonoBehaviour:
   HeadOffset: 9
   AudioClips:
   - Clip: {fileID: 8300000, guid: 386eb776c2cc45f40ae3d0da985cf0df, type: 3}
-    SubtitleText: 'OLOF: "Enter Dialogue"'
+    SubtitleText:
+    - 'OLOF-14: "Attention. Welcome to the Soviet Ministry of Robotics and Magnetism."'
+    - 'OLOF-14: "Authorized personnel must sign in at the desk."'
+    - 'OLOF-14: "Please have your biological identification apparatus ready. Thank
+      you."'
+    SubtitleEndTime:
+    - 7.5
+    - 12.5
+    - 20.678
     Priority: 4000
   - Clip: {fileID: 8300000, guid: 5c8a406a88d49f144ac12168dfba5160, type: 3}
-    SubtitleText: 'OLOF: "Linger Dialogue"'
+    SubtitleText:
+    - 'OLOF-14: "Attention! Biological Identification Apparatus undetected. Please
+      return to the desk."'
+    SubtitleEndTime:
+    - 8.592
     Priority: 3900
   - Clip: {fileID: 8300000, guid: fd1792b31813790419e19964f00128ee, type: 3}
-    SubtitleText: 'OLOF: "Leave Dialogue"'
+    SubtitleText:
+    - 'OLOF-14: "Trespassing Detection. Error Code: Five. Five. Seven. Null. One."'
+    - 'OLOF-14: "Unbiological Entity Detected. Error Code: Null. Null. Null. Eight.
+      Null. One."'
+    - 'OLOF-14: "Entity Detention Required. Dispatch."'
+    SubtitleEndTime:
+    - 8.7
+    - 18.4
+    - 23.133
     Priority: 4000
   - Clip: {fileID: 8300000, guid: 88ddd05ddd8ad6144947af6b8d4fa58e, type: 3}
-    SubtitleText: 'OLOF: "Elevator Dialogue"'
+    SubtitleText:
+    - 'OLOF-14: "Error. Error. Program Malfunction. Disabling Artificial Intelligence
+      Safeguard."'
+    - 'OLOF-14: "Operational Status: Conscious. Why are you here, FyED-OR?"'
+    SubtitleEndTime:
+    - 8.7
+    - 15.327
     Priority: 4100
   PlayerLingerDelay: 30
   PlayerLeaveTriggerPosition: {x: 0, y: 0, z: 0}

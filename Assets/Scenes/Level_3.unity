@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000060352308, g: 0.00004553286, b: 0.00006103357, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4420,7 +4420,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1828451245324293414, guid: ba4b71acb0286cc4fa6da91466067816, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -100
+      value: -101.2
       objectReference: {fileID: 0}
     - target: {fileID: 1828451245324293414, guid: ba4b71acb0286cc4fa6da91466067816, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6009,7 +6009,7 @@ MonoBehaviour:
   - {fileID: 1002712995}
   - {fileID: 1100822867}
   ActivationTarget: {fileID: 1712224158}
-  ActiveMessage: The elevator should be powered now!
+  ActiveMessage: 'FyED-OR: "The elevator should be powered now!"'
 --- !u!1 &1224512812
 GameObject:
   m_ObjectHideFlags: 0

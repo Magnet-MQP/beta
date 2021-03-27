@@ -7,9 +7,10 @@ using UnityEngine;
 /// </summary>
 
 [System.Serializable]
-public struct SubtitledAudio {
+public class SubtitledAudio {
     public AudioClip Clip;
-    public string SubtitleText;
+    public string[] SubtitleText;
+    public float[] SubtitleEndTime;
     public int Priority;
 }
 
@@ -43,6 +44,7 @@ public class OLOFController : ARemoteControllable
     private bool playerDetected = false; // whether Player Enters dialogue has been triggered
     private float playerLingerTimer = 0f;
     private bool playerLeft = false; // whether Player Leaves dialogue has been triggered
+    private bool elevatorActive = false; // whether the elevator has been activated
     private float audioWait = 0f; // delay before a new audio clip can play
 
     private GameObject player;
@@ -82,7 +84,7 @@ public class OLOFController : ARemoteControllable
                     playerDetected = true;
                 }
                 // Play Dialogue 1 (Player Lingers)
-                else
+                else if (!elevatorActive)
                 {
                     playerLingerTimer += Time.deltaTime;
                     if (playerLingerTimer > PlayerLingerDelay)
@@ -119,6 +121,7 @@ public class OLOFController : ARemoteControllable
         }
         audioWait = 0f;
         PlayAudio(3);
+        elevatorActive = true;
     }
 
     private void PlayAudio(int id)
@@ -133,13 +136,18 @@ public class OLOFController : ARemoteControllable
         SubtitledAudio thisAudio = AudioClips[id];
 
         // play clip
+        Speaker.Stop();
         Speaker.PlayOneShot(thisAudio.Clip);
         audioWait = thisAudio.Clip.length;
 
         // show subtitle
         if (player != null)
         {
-            player.GetComponent<PlayerController>().DisplaySubtitle(new SubtitleData(thisAudio.SubtitleText, thisAudio.Priority, thisAudio.Clip.length));
+            PlayerController pc = player.GetComponent<PlayerController>();
+            for (int i = 0; i < thisAudio.SubtitleText.Length; i++)
+            {
+                pc.DisplaySubtitle(new SubtitleData(thisAudio.SubtitleText[i], thisAudio.Priority-i, thisAudio.SubtitleEndTime[i]));
+            }
         }
     }
 }
