@@ -10,7 +10,7 @@ public class CityScroll : MonoBehaviour
 {
     public float MoveSpeed = 4f;
     public Rigidbody RB;
-    public Vector3 MinSize = new Vector3(50, 200, 50);
+    public Vector3 MinSize = new Vector3(150, 200, 150);
     public Vector3 MaxSize = new Vector3(200, 500, 200);
     public float LeftBound;
     public float RightBound;

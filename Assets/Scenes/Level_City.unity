@@ -5478,19 +5478,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3515514691687412787, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: RespawnDistance
-      value: 4000
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 3515514691687412787, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: PlayerRef
       value: 
       objectReference: {fileID: 451326088}
+    - target: {fileID: 3515514691687412787, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
+      propertyPath: BuildingCount
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4827000405566721714, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: m_Name
       value: BuildingManager (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5139490967055813814, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -450
+      value: -550
       objectReference: {fileID: 0}
     - target: {fileID: 5139490967055813814, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5628,19 +5632,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3515514691687412787, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: RespawnDistance
-      value: 4000
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 3515514691687412787, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: PlayerRef
       value: 
       objectReference: {fileID: 451326088}
+    - target: {fileID: 3515514691687412787, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
+      propertyPath: BuildingCount
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4827000405566721714, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: m_Name
       value: BuildingManager
       objectReference: {fileID: 0}
     - target: {fileID: 5139490967055813814, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 450
+      value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 5139490967055813814, guid: 04e3d049b026c4945b562b8520d2204c, type: 3}
       propertyPath: m_LocalPosition.y

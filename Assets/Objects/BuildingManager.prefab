@@ -110,5 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingCount: 50
   RespawnDistance: 1000
-  BuildingTemplate: {fileID: 7275441025265244823, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
-  PlayerRef: {fileID: 0}
+  BuildingTemplates:
+  - {fileID: 5685888297276333338, guid: a99edd8660c3c0048abc0f5b84607b53, type: 3}
+  - {fileID: 5685888297276333338, guid: b84a10ca83435d0408998a650c4dd10d, type: 3}
+  - {fileID: 5685888297276333338, guid: 3dd8d9dfcc2a8b948a317dfbbcdf79b0, type: 3}
