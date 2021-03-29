@@ -246,8 +246,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Managers")]
     private GameManager GM;
-    private InputController controls;
-    private InputControlScheme gamepad;
     [Tooltip("Foward Vector2 of player movement")]
     private float dForward = 0;
     [Tooltip("Right Vector2 of player movement")]
