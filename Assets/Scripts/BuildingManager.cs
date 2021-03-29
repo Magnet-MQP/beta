@@ -53,7 +53,7 @@ public class BuildingManager : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x,
                                             transform.position.y,
-                                            playerRef.transform.position.z - RespawnDistance*0.7f);
+                                            playerRef.transform.position.z - RespawnDistance*0.4f);
         }
     }
 }

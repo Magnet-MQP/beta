@@ -74,6 +74,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8915041910461323301, guid: c4c2fb57480867345b298d8578029c15, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4c2fb57480867345b298d8578029c15, type: 3}
+--- !u!23 &3918339597847052045 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3793950735512087504, guid: c4c2fb57480867345b298d8578029c15, type: 3}
+  m_PrefabInstance: {fileID: 199969335668806877}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3035384742016567181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81,6 +86,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
+      propertyPath: WindowMaterialIndexes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
       propertyPath: MinSize.x
       value: 500
@@ -99,11 +108,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
       propertyPath: MinSize.y
-      value: 500
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
       propertyPath: MaxSize.y
-      value: 600
+      value: 900
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
+      propertyPath: BuildingModel
+      value: 
+      objectReference: {fileID: 3918339597847052045}
+    - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
+      propertyPath: WindowMaterialIndexes.Array.data[0]
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7275441025265244823, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
       propertyPath: m_Name

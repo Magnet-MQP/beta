@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
+      propertyPath: WindowMaterialIndexes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
       propertyPath: MinSize.x
       value: 500
       objectReference: {fileID: 0}
@@ -31,6 +35,10 @@ PrefabInstance:
       propertyPath: MaxSize.y
       value: 600
       objectReference: {fileID: 0}
+    - target: {fileID: 1057739498406981089, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
+      propertyPath: BuildingModel
+      value: 
+      objectReference: {fileID: 730728031722471846}
     - target: {fileID: 7275441025265244823, guid: dd2cb7aec5fff214d931635890e7690b, type: 3}
       propertyPath: m_Name
       value: ScrollingBuilding2
@@ -139,3 +147,8 @@ PrefabInstance:
     - {fileID: -5700594423369264227, guid: 130491d5b74838946ab577dfce8ab9ee, type: 3}
     - {fileID: -3863615299265250180, guid: 130491d5b74838946ab577dfce8ab9ee, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 130491d5b74838946ab577dfce8ab9ee, type: 3}
+--- !u!23 &730728031722471846 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3132399594174153120, guid: 130491d5b74838946ab577dfce8ab9ee, type: 3}
+  m_PrefabInstance: {fileID: 6819411288839880646}
+  m_PrefabAsset: {fileID: 0}
