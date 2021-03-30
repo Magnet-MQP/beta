@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public float lookSpeedX = 1.0f;
     public float lookSpeedY = 1.0f;
     public bool glovesIsHold = false;
+    public bool UseBootFade = false;
 
     // Scene changing
     public Scene currScene;
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     private bool isSubtitles = false;
     private SubtitleManager SM;
     private EventSystem ES;
+
 
     public static GameManager getGameManager() {
         return Instance;
@@ -117,7 +119,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-
         if (m_PlayerInput != null && m_PlayerInput.actions["Menu"].triggered )
         {
             if (enablePause) {
@@ -187,6 +188,13 @@ public class GameManager : MonoBehaviour
         isPaused = !isPaused;
         pauseWait = pauseWaitMax;
         updatePauseState();
+    }
+
+    /// <summary>
+    /// Menu Function: Toggle fade effect when using the boots
+    /// </summary>
+    public void toggleFade() {
+        UseBootFade = !UseBootFade;
     }
 
     /// <summary>

@@ -282,7 +282,6 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("Whether to show the fade out/in animation when pulling to a surface")]
     [Header("Accessibility Settings")]
-    public bool UseBootFade = false;
     private float bootFade = 0f;
     private const float BOOTFADE_MAX = 0.1f;
     private const float FADE_ANGLE_THRESHOLD = 4f; // angle difference between current and target up at which to activate fade
@@ -526,7 +525,7 @@ public class PlayerController : MonoBehaviour
 
         // boot fade overlay
         // reduces percieved motion when pulling to a surface or dropping from one
-        if (UseBootFade && Vector3.Angle(transform.up, targetUpDirection) > FADE_ANGLE_THRESHOLD)
+        if (GM.UseBootFade && Vector3.Angle(transform.up, targetUpDirection) > FADE_ANGLE_THRESHOLD)
         {
             bootFade = Mathf.Min(BOOTFADE_MAX, bootFade+Time.deltaTime);
         }
@@ -535,7 +534,7 @@ public class PlayerController : MonoBehaviour
             bootFade = Mathf.Max(0, bootFade-Time.deltaTime/2f);
         }
         float fadeOverlayAlpha = 0f;
-        if (UseBootFade)
+        if (GM.UseBootFade)
         {
             //fadeOverlayAlpha = (bootFade/bootFadeMax);
             fadeOverlayAlpha = Mathf.Min(2f,(Vector3.Angle(transform.up, targetUpDirection)/FADEOUT_ANGLE)) * (bootFade/BOOTFADE_MAX);
