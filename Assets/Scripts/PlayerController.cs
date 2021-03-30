@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     public Image CrosshairInteract;
     [Tooltip("X overlayed on the crosshair, indicating an unreachable target")]
     public Image CrosshairError;
+    /*
     [Tooltip("The UI image indicating the player's glove polarity")]
     public Image GlovePolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI image indicating the player's boot polarity")]
@@ -73,7 +74,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The UI icon set used to show the player's glove polarity")]
     public Sprite[] BootPolarityIcons; // CONSIDER DELETING
     [Tooltip("The glow effect at the bottom of the screen indicating your boot polarity")]
-    public Image BootPolarityGlow;
+    public Image BootPolarityGlow; // CONSIDER DELETING
+    */
+    [Tooltip("The image used for the fadeout/in boot pull animation")]
+    public Image BootFadeOverlay;
     [Tooltip("The set of colors to use for the boot polarity glow effect")]
     public Color[] PolarityColors;
     [Tooltip("The color used to indicate that boots are active")]
@@ -242,6 +246,9 @@ public class PlayerController : MonoBehaviour
     private bool m_CanInteract = false;
     private bool m_CanInteract_Far = false;
     public bool holding = false;
+    [Tooltip("Distance to target")]
+    private float targetDistance = 0;
+
     //private bool GlovesOn = false;
 
     [Header("Managers")]
@@ -250,9 +257,8 @@ public class PlayerController : MonoBehaviour
     private float dForward = 0;
     [Tooltip("Right Vector2 of player movement")]
     private float dRight = 0;
-    [Tooltip("Distance to target")]
-    private float targetDistance = 0;
-    private PlayerInput m_PlayerInput;
+        private PlayerInput m_PlayerInput;
+
     // Audio
     [Header("Audio")]
     public AudioSource AudioSourceBoots;
@@ -273,6 +279,15 @@ public class PlayerController : MonoBehaviour
     private float cutsceneTimer = 0f;
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
     private bool cutsceneEndEffect = false; // whether the end effect of the current cutscene has started
+
+    [Tooltip("Whether to show the fade out/in animation when pulling to a surface")]
+    [Header("Accessibility Settings")]
+    public bool UseBootFade = false;
+    private float bootFade = 0f;
+    private const float BOOTFADE_MAX = 0.1f;
+    private const float FADE_ANGLE_THRESHOLD = 4f; // angle difference between current and target up at which to activate fade
+    [Tooltip("Angle below which boot fade overlay becomes transparent")]
+    private const float FADEOUT_ANGLE = 5f;
 
     void Awake() { }
 
@@ -509,6 +524,24 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // boot fade overlay
+        // reduces percieved motion when pulling to a surface or dropping from one
+        if (UseBootFade && Vector3.Angle(transform.up, targetUpDirection) > FADE_ANGLE_THRESHOLD)
+        {
+            bootFade = Mathf.Min(BOOTFADE_MAX, bootFade+Time.deltaTime);
+        }
+        else if (bootFade > 0)
+        {
+            bootFade = Mathf.Max(0, bootFade-Time.deltaTime/2f);
+        }
+        float fadeOverlayAlpha = 0f;
+        if (UseBootFade)
+        {
+            //fadeOverlayAlpha = (bootFade/bootFadeMax);
+            fadeOverlayAlpha = Mathf.Min(2f,(Vector3.Angle(transform.up, targetUpDirection)/FADEOUT_ANGLE)) * (bootFade/BOOTFADE_MAX);
+        }
+        BootFadeOverlay.color = new Vector4(0,0,0, fadeOverlayAlpha);
+
         // fade in/out gloves audio
         if (gloveChangeTimer < gloveChangeTimerMax)
         {
@@ -560,12 +593,12 @@ public class PlayerController : MonoBehaviour
             dRight = 0;
         }
 
-        GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
+        //GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
         CrosshairTop.color = GlovePolarityColor;
 
-        BootPolarityReadout.sprite = BootPolarityIcons[1 + (int) BootPolarity];
+        //BootPolarityReadout.sprite = BootPolarityIcons[1 + (int) BootPolarity];
         CrosshairBottom.color = BootPolarityColor;
-        BootPolarityGlow.color = BootPolarityColor;
+        //BootPolarityGlow.color = BootPolarityColor;
 
         // Animate arm movement 
         // - lead camera with hands
