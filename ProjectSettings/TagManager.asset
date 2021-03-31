@@ -15,6 +15,7 @@ TagManager:
   - Crosshair
   - Graphics
   - Audio
+  - Menu
   layers:
   - Default
   - TransparentFX

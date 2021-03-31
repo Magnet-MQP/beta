@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     GameObject[] settingsObjects;
     GameObject[] graphicsObjects;
     GameObject[] audioObjects;
+    GameObject[] menuObjects;
     public bool enablePause;
     public bool isPaused = false;
     private float pauseWait = 0;
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour
         settingsObjects = GameObject.FindGameObjectsWithTag("Settings");
         graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
+        menuObjects = GameObject.FindGameObjectsWithTag("Menu");
         playerReference = GameObject.Find("Player");
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
@@ -78,10 +80,8 @@ public class GameManager : MonoBehaviour
         updatePauseState();
     }
 
-    // Start is called before the first frame update
     void Awake()
     {
-
         m_PlayerInput = GetComponent<PlayerInput>();
 
         // singleton insurance
@@ -92,8 +92,9 @@ public class GameManager : MonoBehaviour
         else if(Instance != this) {
             Destroy(gameObject);
         }
-        
     }
+
+    // Start is called before the first frame update
     void Start() {
         // track the player
         playerReference = GameObject.Find("Player");
@@ -104,6 +105,7 @@ public class GameManager : MonoBehaviour
         scenenum = currScene.buildIndex;
         //pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         //toHideObjects = GameObject.FindGameObjectsWithTag("HideOnPause");
+        SM = SubtitleManager.getSubtitleManager();
         updatePauseState();
     }
 
@@ -208,6 +210,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             hidePauseMenu();
+            showSettingsMenu();
         }
         else if(isPaused)
         {
@@ -261,6 +264,10 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        foreach(GameObject g in menuObjects)
+        {
+            g.SetActive(true);
+        }
         if (isSubtitles) {
           isSubtitles = !isSubtitles;
           SM.removeSettingsSubtitle();
@@ -308,8 +315,7 @@ public class GameManager : MonoBehaviour
         SM.moveSubtitlesForMenu();
         SM.QueueSubtitle(new SubtitleData("This is an example subtitle", 100000, 0.1f));
         isSubtitles = !isSubtitles;
-        Debug.Log(EventSystem.current);
-
+        //Debug.Log(EventSystem.current);
     }
 
     /// <summary>
@@ -325,7 +331,7 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(audioObjects[0].transform.Find("Start_Button").gameObject);
     }
     
-    private void hider()
+    public void hider()
     {
         foreach(GameObject g in pauseObjects) 
         {
@@ -355,6 +361,14 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(false);
         }                   
+    }
+
+    public void hideMenuObjects(){
+        foreach(GameObject g in menuObjects) 
+        {
+            g.SetActive(false);
+        }                   
+
     }
 
     /// <summary>
