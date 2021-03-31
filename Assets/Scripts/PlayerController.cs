@@ -64,11 +64,13 @@ public class PlayerController : MonoBehaviour
     public Image CrosshairInteract;
     [Tooltip("X overlayed on the crosshair, indicating an unreachable target")]
     public Image CrosshairError;
-    /*
     [Tooltip("The UI image indicating the player's glove polarity")]
-    public Image GlovePolarityReadout; // CONSIDER DELETING
+    public Image GlovePolarityReadout;
     [Tooltip("The UI image indicating the player's boot polarity")]
-    public Sprite[] GlovePolarityIcons; // CONSIDER DELETING
+    public Sprite[] GlovePolarityIcons;
+    [Tooltip("The UI icon set used to show the player's boot activation")]
+    public Image BootActiveReadout;
+    /*
     [Tooltip("The UI icon set used to show the player's boot polarity")]
     public Image BootPolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI icon set used to show the player's glove polarity")]
@@ -592,11 +594,12 @@ public class PlayerController : MonoBehaviour
             dRight = 0;
         }
 
-        //GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
+        GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
         CrosshairTop.color = GlovePolarityColor;
 
         //BootPolarityReadout.sprite = BootPolarityIcons[1 + (int) BootPolarity];
         CrosshairBottom.color = BootPolarityColor;
+        BootActiveReadout.enabled = CurrentPlayerState != PlayerState.Neutral;
         //BootPolarityGlow.color = BootPolarityColor;
 
         // Animate arm movement 
