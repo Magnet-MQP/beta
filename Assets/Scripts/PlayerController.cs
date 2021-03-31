@@ -606,7 +606,6 @@ public class PlayerController : MonoBehaviour
         Vector3 lookOffset = new Vector3(armLookY, armLookX, 0);
         ArmL.SetArmAngleOffset(lookOffset);
         ArmR.SetArmAngleOffset(lookOffset);
-
         // - pull arms inwards if using magnets
         if (GlovePolarity != Charge.Neutral)
         {
@@ -819,17 +818,6 @@ public class PlayerController : MonoBehaviour
             Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
             if (floorHit.collider)
             {
-                /*
-                // if floor can't be stuck to, switch back to normal gravity
-                if (targetUpDirection.normalized != Vector3.up && BootMagnetTarget == null && !CanStickTo(floorHit.collider.gameObject))
-                {
-                    targetUpDirection = Vector3.up;
-                    FallSpeed = 0f;
-                    fallOffset = Vector3.zero;
-                }
-                else
-                */
-
                 // if floor is metal or opposite polarity and within slope tolerance, stick to it
                 if (Vector3.Angle(transform.up, floorHit.normal) < SlopeTolerance)
                 {
@@ -877,13 +865,20 @@ public class PlayerController : MonoBehaviour
         RaycastHit fallHit;
         if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
-        Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+            Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
             if (fallHit.collider)
             {
                 fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
             }
         }
         RB.MovePosition(transform.position + fallOffset);
+        // - pull out of floor
+        RaycastHit antiClipCast;
+        Physics.Raycast(transform.position, -transform.up, out antiClipCast, Collider.radius, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+        if (antiClipCast.collider)
+        {
+            RB.MovePosition(transform.position + transform.up*(Collider.radius-antiClipCast.distance));
+        }
 
         // Increment timer to reset boot target if stuck to invalid surface
         if ((Landed || sliding) && BootMagnetTarget != null)
