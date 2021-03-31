@@ -127,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 2
   RB: {fileID: 3939319275546566826}
-  MinSize: {x: 50, y: 400, z: 50}
-  MaxSize: {x: 200, y: 1200, z: 200}
+  MinSize: {x: 50, y: 600, z: 50}
+  MaxSize: {x: 200, y: 1400, z: 200}
   LeftBound: 0
   RightBound: 0

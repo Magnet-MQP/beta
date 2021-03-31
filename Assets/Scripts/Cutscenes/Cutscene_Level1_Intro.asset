@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea9e3696f9603548a1c1c17fa6c74b9, type: 3}
+  m_Name: Cutscene_Level1_Intro
+  m_EditorClassIdentifier: 
+  FullDuration: 17
+  LockDuration: 13
+  ShowBootup: 1
+  ExitAtEnd: 0
+  Dialogue:
+  - message: '[ INITIALIZING SYSTEMS... ]'
+    priority: 5000
+    timer: 4
+  - message: '[ UNIT ID: FyED-OR ]'
+    priority: 4999
+    timer: 8
+  - message: '[ ELECTROMAGNETS: ACTIVE ]'
+    priority: 4998
+    timer: 12
+  - message: '[ OCULAR CAMERA: ACTIVE ]'
+    priority: 4997
+    timer: 16
+  - message: 'FyED-OR: "Wait... where am I now?"'
+    priority: 4996
+    timer: 21
+  - message: 'FyED-OR: "THE TRASH COMPACTOR!?"'
+    priority: 4995
+    timer: 25
+  - message: 'FyED-OR: "I need to find a way out!"'
+    priority: 4994
+    timer: 29

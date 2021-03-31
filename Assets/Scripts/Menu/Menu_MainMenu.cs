@@ -18,6 +18,7 @@ public class Menu_MainMenu : MonoBehaviour
         
     }
     public void ReturnToMain() {
+        //Debug.Log("hi");
         manager.mainMenu();
     }
 

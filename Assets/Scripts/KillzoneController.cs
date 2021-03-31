@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Resets the room when the player falls out of bounds
@@ -9,11 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class KillzoneController : MonoBehaviour
 {
+    [Tooltip("The cutscene to show when respawning the player")]
+    public CutsceneData RespawnCutscene;
+
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            other.GetComponent<PlayerController>().StartCutscene(RespawnCutscene);
         }
     }
 }

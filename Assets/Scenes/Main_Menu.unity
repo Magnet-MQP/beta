@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: e28075396a65f5e4f830f5177f98a152, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 988501620}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &75544092
@@ -401,6 +401,11 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+--- !u!1 &988501620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6843941541944607836, guid: a56039dac6f09204d9a21bf3b7bbd965, type: 3}
+  m_PrefabInstance: {fileID: 1155424626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1155424626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -750,6 +755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1615762022}
   - component: {fileID: 1615762021}
+  - component: {fileID: 1615762023}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -771,6 +777,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enablePause: 0
   isPaused: 0
+  lookSpeedX: 0.5
+  lookSpeedY: 0.5
+  glovesIsHold: 0
   currScene:
     m_Handle: 0
   scenenum: 77
@@ -788,3 +797,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1615762023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615762020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 2e73107aac9fd1c4b872874732e251d7, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}

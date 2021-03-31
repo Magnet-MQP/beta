@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles all of the player's movement
@@ -60,9 +61,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The marks at the top part of the crosshair, indicating a glove target")]
     public Image CrosshairBottomMarks;
     [Tooltip("The marks at the side of the crosshair, indicating an interactable target (ex. a button)")]
-    public Image CrosshairSideMarks;
+    public Image CrosshairInteract;
     [Tooltip("X overlayed on the crosshair, indicating an unreachable target")]
     public Image CrosshairError;
+    /*
     [Tooltip("The UI image indicating the player's glove polarity")]
     public Image GlovePolarityReadout; // CONSIDER DELETING
     [Tooltip("The UI image indicating the player's boot polarity")]
@@ -72,9 +74,14 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The UI icon set used to show the player's glove polarity")]
     public Sprite[] BootPolarityIcons; // CONSIDER DELETING
     [Tooltip("The glow effect at the bottom of the screen indicating your boot polarity")]
-    public Image BootPolarityGlow;
+    public Image BootPolarityGlow; // CONSIDER DELETING
+    */
+    [Tooltip("The image used for the fadeout/in boot pull animation")]
+    public Image BootFadeOverlay;
     [Tooltip("The set of colors to use for the boot polarity glow effect")]
     public Color[] PolarityColors;
+    [Tooltip("The color used to indicate that boots are active")]
+    public Color BootActiveColor;
     [Tooltip("The set of colors to use for polarity emissives on the player")]
     public Color[] EmissivePolarityColors;
     /// <summary>
@@ -88,7 +95,18 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Access the correct color for the current boot polarity
     /// </summary>
-    public Color BootPolarityColor { get {return PolarityColors[1 + (int) BootPolarity];} }
+    public Color BootPolarityColor {
+        get {
+            if (BootPolarity == Charge.Neutral && CurrentPlayerState == PlayerState.Neutral)
+            {
+                return new Color(0,0,0,0);
+            }
+            else
+            {
+                return BootActiveColor;
+            }
+        }
+    }
 
     // Arm Model References
     [Tooltip("The player's left arm")]
@@ -136,7 +154,6 @@ public class PlayerController : MonoBehaviour
     /// Get and Set the player's state, automatically changing the appropriate collision settings
     /// </summary>
     public PlayerState CurrentPlayerState {
-        // TODO: Add and apply PLAYER and MAGNETFIELD layers!!!
         get {return m_CurrentPlayerState;}
         set {
             // determine collision settings based on new state
@@ -160,8 +177,8 @@ public class PlayerController : MonoBehaviour
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),LayerMask.NameToLayer("MagnetField"), disableFieldCollision);
             // apply new state
             m_CurrentPlayerState = value;
-            } 
-        }
+        } 
+    }
     
     // Camera
     [Tooltip("The upper bound of the player's vertical visual range")]
@@ -195,6 +212,8 @@ public class PlayerController : MonoBehaviour
     public const float SELF_PULL_RANGE = 45f;
     private float bootResetTimer = 0;
     private float bootResetTimerMax = 0.2f;
+    [Tooltip("The detection radius of the player's targetting reticle")]
+    public float ReticleRadius = 1f;
 
     // Targetting
     [Tooltip("The object the player currently is aiming at")]
@@ -227,19 +246,19 @@ public class PlayerController : MonoBehaviour
     private bool m_CanInteract = false;
     private bool m_CanInteract_Far = false;
     public bool holding = false;
+    [Tooltip("Distance to target")]
+    private float targetDistance = 0;
+
     //private bool GlovesOn = false;
 
     [Header("Managers")]
     private GameManager GM;
-    private InputController controls;
-    private InputControlScheme gamepad;
     [Tooltip("Foward Vector2 of player movement")]
     private float dForward = 0;
     [Tooltip("Right Vector2 of player movement")]
     private float dRight = 0;
-    [Tooltip("Distance to target")]
-    private float targetDistance = 0;
-    private PlayerInput m_PlayerInput;
+        private PlayerInput m_PlayerInput;
+
     // Audio
     [Header("Audio")]
     public AudioSource AudioSourceBoots;
@@ -259,6 +278,15 @@ public class PlayerController : MonoBehaviour
     public bool InCutscene = false;
     private float cutsceneTimer = 0f;
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
+    private bool cutsceneEndEffect = false; // whether the end effect of the current cutscene has started
+
+    [Tooltip("Whether to show the fade out/in animation when pulling to a surface")]
+    [Header("Accessibility Settings")]
+    private float bootFade = 0f;
+    private const float BOOTFADE_MAX = 0.1f;
+    private const float FADE_ANGLE_THRESHOLD = 4f; // angle difference between current and target up at which to activate fade
+    [Tooltip("Angle below which boot fade overlay becomes transparent")]
+    private const float FADEOUT_ANGLE = 5f;
 
     void Awake() { }
 
@@ -270,6 +298,8 @@ public class PlayerController : MonoBehaviour
         
         GM = GameManager.getGameManager();
         m_PlayerInput = GM.getPlayerInput();
+
+        CrosshairInteract.enabled = false; // start with the interact crosshair hidden
 
         // automatically start assigned cutscene, if present
         if (ActiveCutscene != null)
@@ -287,9 +317,10 @@ public class PlayerController : MonoBehaviour
         ActiveCutscene = newScene;
         cutsceneTimer = newScene.FullDuration;
         cutsceneUnlockPoint = cutsceneTimer - newScene.LockDuration;
+        cutsceneEndEffect = false;
         if (newScene.ShowBootup)
         {
-            BC.StartBootupSequence();
+            BC.StartBootupSequence(newScene.LockDuration);
         }
 
         // load dialogue data
@@ -305,7 +336,7 @@ public class PlayerController : MonoBehaviour
     void Boots() 
     {
         // skip if paused, in intro, or pulling
-        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
+        if (GM.isPaused || (InCutscene && cutsceneTimer > cutsceneUnlockPoint) || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -343,7 +374,7 @@ public class PlayerController : MonoBehaviour
 
     void Gloves(float value) 
     {
-        if (GM.isPaused || InCutscene || CurrentPlayerState == PlayerState.Pulling) 
+        if (GM.isPaused || (InCutscene && cutsceneTimer > cutsceneUnlockPoint) || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
@@ -460,9 +491,30 @@ public class PlayerController : MonoBehaviour
         {
             cutsceneTimer -= Time.deltaTime;
             // end cutscene at end of timer
+            if (ActiveCutscene.ShowShutdown && !cutsceneEndEffect && cutsceneTimer <= ActiveCutscene.ShutdownDuration)
+            {
+                // shutdown effect
+                BC.StartShutdownSequence(ActiveCutscene.ShutdownDuration);
+                cutsceneEndEffect = true;
+            }
             if (cutsceneTimer <= 0)
             {
                 InCutscene = false;
+                // restart game if desired
+                if (ActiveCutscene.ExitAtEnd)
+                {
+                    GameManager.Instance.mainMenu();
+                }
+                // advance scene if desired
+                else if (ActiveCutscene.AdvanceAtEnd)
+                {
+                    GameManager.Instance.nextScene();
+                }
+                // reload scene if desired
+                else if (ActiveCutscene.ReloadAtEnd)
+                {
+                    GameManager.Instance.reloadScene();
+                }
             }
             // disable other actions after this point if necessary
             if (cutsceneTimer > cutsceneUnlockPoint)
@@ -470,6 +522,24 @@ public class PlayerController : MonoBehaviour
                 return;
             }
         }
+
+        // boot fade overlay
+        // reduces percieved motion when pulling to a surface or dropping from one
+        if (GM.UseBootFade && Vector3.Angle(transform.up, targetUpDirection) > FADE_ANGLE_THRESHOLD)
+        {
+            bootFade = Mathf.Min(BOOTFADE_MAX, bootFade+Time.deltaTime);
+        }
+        else if (bootFade > 0)
+        {
+            bootFade = Mathf.Max(0, bootFade-Time.deltaTime/2f);
+        }
+        float fadeOverlayAlpha = 0f;
+        if (GM.UseBootFade)
+        {
+            //fadeOverlayAlpha = (bootFade/bootFadeMax);
+            fadeOverlayAlpha = Mathf.Min(2f,(Vector3.Angle(transform.up, targetUpDirection)/FADEOUT_ANGLE)) * (bootFade/BOOTFADE_MAX);
+        }
+        BootFadeOverlay.color = new Vector4(0,0,0, fadeOverlayAlpha);
 
         // fade in/out gloves audio
         if (gloveChangeTimer < gloveChangeTimerMax)
@@ -486,16 +556,16 @@ public class PlayerController : MonoBehaviour
             // potentially have different look speed values for mouse and controller?
             float dLookRight = 0.0f;
             float dLookUp = 0.0f;
-            // if ( m_PlayerInput.currentControlScheme == "Gamepad")
-            // {
-            //     dLookRight = look.x * GM.lookSpeedX;
-            //     dLookUp = look.y * GM.lookSpeedY;
-            // }
-            // else 
-            // {
+            if ( m_PlayerInput.currentControlScheme == "Gamepad")
+            {
+                dLookRight = look.x * GM.lookSpeedX * 10;
+                dLookUp = look.y * GM.lookSpeedY * 10;
+            }
+            else 
+            {
                 dLookRight = look.x * GM.lookSpeedX; 
                 dLookUp = look.y * GM.lookSpeedY; 
-            // }
+            }
 
 
             //Look and change facing direction
@@ -522,14 +592,12 @@ public class PlayerController : MonoBehaviour
             dRight = 0;
         }
 
-        GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
+        //GlovePolarityReadout.sprite = GlovePolarityIcons[1 + (int) GlovePolarity];
         CrosshairTop.color = GlovePolarityColor;
-        CrosshairTop.enabled = GlovePolarity != Charge.Neutral;
 
-        BootPolarityReadout.sprite = BootPolarityIcons[1 + (int) BootPolarity];
+        //BootPolarityReadout.sprite = BootPolarityIcons[1 + (int) BootPolarity];
         CrosshairBottom.color = BootPolarityColor;
-        CrosshairBottom.enabled = BootPolarity != Charge.Neutral;
-        BootPolarityGlow.color = BootPolarityColor;
+        //BootPolarityGlow.color = BootPolarityColor;
 
         // Animate arm movement 
         // - lead camera with hands
@@ -538,7 +606,6 @@ public class PlayerController : MonoBehaviour
         Vector3 lookOffset = new Vector3(armLookY, armLookX, 0);
         ArmL.SetArmAngleOffset(lookOffset);
         ArmR.SetArmAngleOffset(lookOffset);
-
         // - pull arms inwards if using magnets
         if (GlovePolarity != Charge.Neutral)
         {
@@ -751,17 +818,6 @@ public class PlayerController : MonoBehaviour
             Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
             if (floorHit.collider)
             {
-                /*
-                // if floor can't be stuck to, switch back to normal gravity
-                if (targetUpDirection.normalized != Vector3.up && BootMagnetTarget == null && !CanStickTo(floorHit.collider.gameObject))
-                {
-                    targetUpDirection = Vector3.up;
-                    FallSpeed = 0f;
-                    fallOffset = Vector3.zero;
-                }
-                else
-                */
-
                 // if floor is metal or opposite polarity and within slope tolerance, stick to it
                 if (Vector3.Angle(transform.up, floorHit.normal) < SlopeTolerance)
                 {
@@ -809,13 +865,20 @@ public class PlayerController : MonoBehaviour
         RaycastHit fallHit;
         if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
-        Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+            Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
             if (fallHit.collider)
             {
                 fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
             }
         }
         RB.MovePosition(transform.position + fallOffset);
+        // - pull out of floor
+        RaycastHit antiClipCast;
+        Physics.Raycast(transform.position, -transform.up, out antiClipCast, Collider.radius, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+        if (antiClipCast.collider)
+        {
+            RB.MovePosition(transform.position + transform.up*(Collider.radius-antiClipCast.distance));
+        }
 
         // Increment timer to reset boot target if stuck to invalid surface
         if ((Landed || sliding) && BootMagnetTarget != null)
@@ -842,6 +905,18 @@ public class PlayerController : MonoBehaviour
         float castDistance = 500f;
         RaycastHit hit;
         Physics.Raycast(MainCamera.transform.position, MainCamera.transform.forward, out hit, castDistance, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+        // - if no target found, try again with a spherecast that only detects interactables
+        if (hit.collider == null || hit.collider.gameObject.layer != LayerMask.NameToLayer("Interactable"))
+        {
+            // cast up to max distance or the hit distance
+            float sphereDistance = castDistance;
+            if (hit.collider)
+            {
+                sphereDistance = hit.distance;
+            }
+            Physics.SphereCast(MainCamera.transform.position, ReticleRadius, MainCamera.transform.forward, out hit, sphereDistance, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore);
+        }
+        // - process hit
         if (hit.collider)
         {
             ReticleTarget = hit.collider.gameObject;
@@ -855,7 +930,7 @@ public class PlayerController : MonoBehaviour
                 // indicate surface as valid target
                 CrosshairBottomMarks.enabled = true;
                 CrosshairTopMarks.enabled = false;
-                CrosshairSideMarks.enabled = false;
+                CrosshairInteract.enabled = false;
 
                 // DEBUG - show the normal of the surface with a magenta line
                 Debug.DrawRay(ReticleHitPosition, hit.normal*2f, Color.magenta,0f);
@@ -868,12 +943,12 @@ public class PlayerController : MonoBehaviour
                 if (ReticleTarget.GetComponent<ChargeProperty>())
                 {
                     CrosshairTopMarks.enabled = true;
-                    CrosshairSideMarks.enabled = false;
+                    CrosshairInteract.enabled = false;
                 }
                 else
                 {
                     CrosshairTopMarks.enabled = false;
-                    CrosshairSideMarks.enabled = true;
+                    CrosshairInteract.enabled = true;
                 }
             }
 
@@ -882,7 +957,7 @@ public class PlayerController : MonoBehaviour
             {
                 CrosshairBottomMarks.enabled = false;
                 CrosshairTopMarks.enabled = false;
-                CrosshairSideMarks.enabled = false;
+                CrosshairInteract.enabled = false;
             }
 
             // Get and display target's subtitle data if present and within reading distance
@@ -917,17 +992,18 @@ public class PlayerController : MonoBehaviour
             ReticleHitPosition = transform.position;
             CrosshairBottomMarks.enabled = false;
             CrosshairTopMarks.enabled = false;
+            CrosshairInteract.enabled = false;
         }
 
 
         Ray ray = new Ray(m_CameraTransform.position, m_CameraTransform.forward);
 
-        if (Physics.Raycast(ray, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract = true;
             m_CanInteract_Far = false;
         }
 
-        else if (Physics.Raycast(ray, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        else if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract_Far = true;
             m_CanInteract = false;
             

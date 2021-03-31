@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,15 +24,18 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     private float pauseWait = 0;
     private float pauseWaitMax = 0.1f;
-    public float lookSpeedX = 4.0f;
-    public float lookSpeedY = 4.0f;
+    public float lookSpeedX = 1.0f;
+    public float lookSpeedY = 1.0f;
     public bool glovesIsHold = false;
+    public bool UseBootFade = false;
 
     // Scene changing
     public Scene currScene;
     public int scenenum = 77;
     private bool isSubtitles = false;
     private SubtitleManager SM;
+    private EventSystem ES;
+
 
     public static GameManager getGameManager() {
         return Instance;
@@ -66,6 +70,10 @@ public class GameManager : MonoBehaviour
         graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
         playerReference = GameObject.Find("Player");
+
+        ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
+
+        //Debug.Log(ES);
 
         hidePauseMenu();
         updatePauseState();
@@ -109,19 +117,26 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {   
-        if (pauseWait > 0)
+        if (m_PlayerInput != null && m_PlayerInput.actions["Menu"].triggered )
         {
-            pauseWait -= Time.unscaledDeltaTime;
-        }
-        if (m_PlayerInput.actions["Menu"].ReadValue<float>() == 1)
-        {
-            // TODO: should unpause if already paused
-            if (enablePause && pauseWait <= 0) {
+            if (enablePause) {
                 switchPause();
             }
         }
+    }
+
+    /// <summary>
+    /// Stops the camera from rendering anything else
+    /// Used to prevent visual artifacts on reloading a scene
+    /// </summary>
+    private void DisableCamera()
+    {
+        /*
+        Camera.main.cullingMask = 0;
+        Camera.main.clearFlags = CameraClearFlags.Nothing;
+        */
     }
 
     /// <summary>
@@ -132,6 +147,7 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex+1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        DisableCamera();
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
 
     }
@@ -143,7 +159,17 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex-1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        DisableCamera();
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
+    }
+
+    /// <summary>
+    /// Scene Function: Progress to the previous scene numerically
+    /// </summary>
+    public void reloadScene() {
+        playerReference = null;
+        DisableCamera();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -151,6 +177,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void mainMenu() {
         enablePause = false;
+        DisableCamera();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
@@ -161,6 +188,13 @@ public class GameManager : MonoBehaviour
         isPaused = !isPaused;
         pauseWait = pauseWaitMax;
         updatePauseState();
+    }
+
+    /// <summary>
+    /// Menu Function: Toggle fade effect when using the boots
+    /// </summary>
+    public void toggleFade() {
+        UseBootFade = !UseBootFade;
     }
 
     /// <summary>
@@ -201,6 +235,8 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(pauseObjects[0].transform.Find("Start_Button").gameObject);
+        
     }
 
     /// <summary>
@@ -229,6 +265,7 @@ public class GameManager : MonoBehaviour
           isSubtitles = !isSubtitles;
           SM.removeSettingsSubtitle();
         }
+        EventSystem.current.SetSelectedGameObject(settingsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
     /// <summary>
@@ -241,6 +278,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(graphicsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
     /// <summary>
@@ -253,6 +291,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(controlsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
     /// <summary>
@@ -265,9 +304,11 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(subtitleObjects[0].transform.Find("Start_Button").gameObject);
         SM.moveSubtitlesForMenu();
         SM.QueueSubtitle(new SubtitleData("This is an example subtitle", 100000, 0.1f));
         isSubtitles = !isSubtitles;
+        Debug.Log(EventSystem.current);
 
     }
 
@@ -281,6 +322,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(true);
         }
+        EventSystem.current.SetSelectedGameObject(audioObjects[0].transform.Find("Start_Button").gameObject);
     }
     
     private void hider()

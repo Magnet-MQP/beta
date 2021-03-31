@@ -123,7 +123,7 @@ Transform:
   m_GameObject: {fileID: 3483020223619389523}
   m_LocalRotation: {x: 0, y: 0.2588191, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 35, y: 63, z: 0}
-  m_LocalScale: {x: 8.5, y: 0.2, z: 8.5}
+  m_LocalScale: {x: 12, y: 0.2, z: 12}
   m_Children:
   - {fileID: 5486218374560752083}
   m_Father: {fileID: 0}
@@ -144,10 +144,14 @@ MonoBehaviour:
   Positions:
   - {x: 35, y: 63, z: 0}
   - {x: 35, y: 109.5, z: 0}
-  - {x: 35, y: 148, z: 0}
+  - {x: 35, y: 144, z: 0}
   - {x: 35, y: 196, z: 0}
   MoveSpeed: 7
   SoundPlayer: {fileID: 1476242931247709180}
+  CarryPlayer: 0
+  StartCutscene: {fileID: 0}
+  EndCutscene: {fileID: 0}
+  ActivationTarget: {fileID: 0}
 --- !u!82 &1476242931247709180
 AudioSource:
   m_ObjectHideFlags: 0

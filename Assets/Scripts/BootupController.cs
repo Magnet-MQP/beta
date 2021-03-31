@@ -20,25 +20,52 @@ public class BootupController : MonoBehaviour
     public Image PanelBottom;
     public Image PanelLeft;
     public Image PanelRight;
-    
-    private float timer = 0;
-    private float timerMax = 15f;
+    private Vector3 topStart;
+    private Vector3 botStart;
+    private Vector3 leftStart;
+    private Vector3 rightStart;
     private float width;
     private float height;
 
-    void Awake()
+    
+    private float animDelay = 0f;
+    private float timer = 0;
+    private float timerMax = 15f;
+    private bool invertAnimation = false; // whether to play the animation in reverse
+    
+    // Animation parameters
+    private float bootupDelayFactor = 0.1f; // portion of bootup anim to wait before starting
+    private float pauseTime = 0.05f; // time at which initial vertical opening stops
+    private float xSpeed = 1.25f; // horizontal opening speed after initial wait
+    private float yResumeTime = 0.8f; // time at which vertical opening resumes
+    private float yInitialSpeed = 1f; // Vertical opening speed in first animation phase
+    private float yFinalSpeed; // calculated at start. Vertical opening speed in last animation phase
+
+    void Start()
     {
         width = Screen.width;
         height = Screen.height;
+        
+        Vector2 screenSize = new Vector2(1600,900);
+        Vector3 center = new Vector3(width/2f,height/2f,0);
+        
+        topStart = center - Vector3.up*height/2f;
+        botStart = center + Vector3.up*height/2f;
+        leftStart = center - Vector3.right*width/2f;
+        rightStart = center + Vector3.right*width/2f;
 
-        /*
-        Vector3 xoffset = new Vector3(width/2, 0, 0);
-        PanelLeft.rectTransform.position -= xoffset;
-        PanelRight.rectTransform.position += xoffset;
-        Vector3 yoffset = new Vector3(0, height/2, 0);
-        PanelTop.rectTransform.position -= yoffset;
-        PanelBottom.rectTransform.position += yoffset;
-        */
+        PanelTop.transform.position = topStart;
+        PanelBottom.transform.position = botStart;
+        PanelLeft.transform.position = leftStart;
+        PanelRight.transform.position = rightStart;
+        
+        PanelTop.rectTransform.sizeDelta = screenSize;
+        PanelBottom.rectTransform.sizeDelta = screenSize;
+        PanelLeft.rectTransform.sizeDelta = screenSize;
+        PanelRight.rectTransform.sizeDelta = screenSize;
+
+        // initialize animation params
+        yFinalSpeed = (1-pauseTime*yInitialSpeed)/(1-yResumeTime);
 
         SetVisibility(StartVisible);
     }
@@ -48,44 +75,95 @@ public class BootupController : MonoBehaviour
     {
         if (PlayAnimation && timer < timerMax)
         {
-            timer += Time.deltaTime;
-            float speed = 250f*Time.deltaTime;
-            float wait = 10f;
-            if (timer > wait && (timer < wait+0.4f || timer > wait+2f))
+            if (timer == 0)
             {
-                Vector3 yspeed = new Vector3(0, 2*speed, 0);
-                PanelTop.rectTransform.position -= yspeed;
-                PanelBottom.rectTransform.position += yspeed;
+                SetVisibility(true);
+                // idk why it makes me do this here but *shrug*
             }
-            if (timer > wait && (timer < wait+0.4f || (timer > wait+1f && timer < wait+6f)))
+            if (animDelay > 0)
             {
-                Vector3 xspeed = new Vector3(4f*speed, 0, 0);
-                PanelLeft.rectTransform.position -= xspeed;
-                PanelRight.rectTransform.position += xspeed;
+                animDelay -= Time.deltaTime;
             }
-
-            // hide at the end of the animation
-            if (timer >= timerMax)
+            else
             {
-                SetVisibility(false);
+                timer += Time.deltaTime;
+                float progress = Mathf.Min(1f, timer/timerMax);  
+                // invert animation
+                if (invertAnimation)
+                {
+                    progress = 1-progress;
+                }
+                // piecewise - open uniformly, then x continues uniformly but faster while y freezes 1/4 of the way in and resumes
+                float progressX = progress*xSpeed;
+                float progressY = progress*yInitialSpeed;
+                if (progress >= pauseTime && progress < yResumeTime)
+                {
+                    progressY = pauseTime*yInitialSpeed;
+                }
+                else if (progress >= yResumeTime)
+                {
+                    progressY = pauseTime*yInitialSpeed+yFinalSpeed*(progress-yResumeTime);
+                }
+                
+                UpdatePanels(progressX,progressY);
+                
+                // hide at the end of the animation
+                if (timer >= timerMax && !invertAnimation)
+                {
+                    SetVisibility(false);
+                }
             }
         }
     }
 
     /// <summary>
-    /// Start the animation on command
+    /// Updates the position of the panels
     /// </summary>
-    public void StartBootupSequence()
+    private void UpdatePanels(float progressX, float progressY)
+    {
+        PanelTop.transform.position = topStart - Vector3.up*height*progressY/2f;
+        PanelBottom.transform.position = botStart + Vector3.up*height*progressY/2f;
+        PanelLeft.transform.position = leftStart - Vector3.right*width*progressX/2f;
+        PanelRight.transform.position = rightStart + Vector3.right*width*progressX/2f;
+    }
+
+    /// <summary>
+    /// Start the bootup animation on command
+    /// </summary>
+    public void StartBootupSequence(float length)
+    {
+        invertAnimation = false;
+        animDelay = bootupDelayFactor;
+        UpdatePanels(0,0);
+        StartAnimation(length);
+    }
+
+    /// <summary>
+    /// Start the shutdown animation on command
+    /// </summary>
+    public void StartShutdownSequence(float length)
+    {
+        invertAnimation = true;
+        animDelay = 0;
+        UpdatePanels(1,1);
+        StartAnimation(length);
+    }
+
+    /// <summary>
+    /// Start an animation on command
+    /// </summary>
+    private void StartAnimation(float length)
     {
         PlayAnimation = true;
         timer = 0;
+        timerMax = length;
         SetVisibility(true);
     }
 
     /// <summary>
     /// Toggle the state of the panels
     /// </summary>
-    public void SetVisibility(bool show)
+    private void SetVisibility(bool show)
     {
         PanelTop.enabled = show;
         PanelBottom.enabled = show;
