@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SM = SubtitleManager.getSubtitleManager();
     }
 
     // called second
@@ -98,6 +97,7 @@ public class GameManager : MonoBehaviour
     void Start() {
         // track the player
         playerReference = GameObject.Find("Player");
+        SM = SubtitleManager.getSubtitleManager();
 
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
