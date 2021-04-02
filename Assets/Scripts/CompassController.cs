@@ -11,6 +11,6 @@ public class CompassController : MonoBehaviour
     void Update()
     {
         // Stay oriented correctly
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+       transform.rotation = Quaternion.identity;
     }
 }
