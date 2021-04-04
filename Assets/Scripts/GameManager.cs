@@ -209,6 +209,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            AudioListener.pause = false;
             hidePauseMenu();
             showSettingsMenu();
         }
@@ -217,6 +218,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0; 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            AudioListener.pause = true;
             showPauseMenu();
         } 
         else 
@@ -224,6 +226,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            AudioListener.pause = false;
             hidePauseMenu();
         }
     }

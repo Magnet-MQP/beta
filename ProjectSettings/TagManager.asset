@@ -16,6 +16,7 @@ TagManager:
   - Graphics
   - Audio
   - Menu
+  - Main_Menu
   layers:
   - Default
   - TransparentFX
