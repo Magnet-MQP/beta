@@ -27,4 +27,8 @@ public class BackButton : MonoBehaviour
     {
       manager.showSettingsMenu();
     }
+
+    public void ShowMainMenu() {
+      manager.showMainMenu();
+    }
 }
