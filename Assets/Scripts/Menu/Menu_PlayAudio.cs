@@ -11,6 +11,7 @@ public class Menu_PlayAudio : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UI_Source.ignoreListenerPause = true;
         
     }
 

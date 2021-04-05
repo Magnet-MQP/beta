@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     GameObject[] pauseObjects;
     GameObject[] crosshairObjects;
     GameObject[] controlsObjects;
-    GameObject[] subtitleObjects;
+    GameObject[] generalObjects;
     GameObject[] settingsObjects;
     GameObject[] graphicsObjects;
     GameObject[] audioObjects;
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         crosshairObjects = GameObject.FindGameObjectsWithTag("Crosshair");
         controlsObjects = GameObject.FindGameObjectsWithTag("Controls");
-        subtitleObjects = GameObject.FindGameObjectsWithTag("Subtitles");
+        generalObjects = GameObject.FindGameObjectsWithTag("General");
         settingsObjects = GameObject.FindGameObjectsWithTag("Settings");
         graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
@@ -74,10 +74,11 @@ public class GameManager : MonoBehaviour
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
 
-        if(SM != null){
-            SM.menuParent = GameObject.FindGameObjectsWithTag("HUD")[0];
-            SM.canvas = GameObject.Find("Canvas");
-        }
+        SM = SubtitleManager.getSubtitleManager();
+        SM.menuParent = GameObject.FindGameObjectsWithTag("Menu")[0];
+        SM.defaultParent = GameObject.FindGameObjectsWithTag("Subtitles")[0];
+        SM.canvas = GameObject.Find("Canvas");
+        SM.moveSubtitlesToDefault();
 
         //Debug.Log(ES);
 
@@ -103,9 +104,7 @@ public class GameManager : MonoBehaviour
     void Start() {
         // track the player
         playerReference = GameObject.Find("Player");
-        SM = SubtitleManager.getSubtitleManager();
-        SM.menuParent = GameObject.FindGameObjectsWithTag("HUD")[0];
-        SM.canvas = GameObject.Find("Canvas");
+
 
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
@@ -130,7 +129,7 @@ public class GameManager : MonoBehaviour
     {   
         if (m_PlayerInput != null && m_PlayerInput.actions["Menu"].triggered )
         {
-            if (enablePause) {
+            if (enablePause && !playerReference.GetComponent<PlayerController>().InCutscene) {
                 switchPause();
             }
         }
@@ -156,7 +155,10 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex+1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
+        
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
 
     }
@@ -168,7 +170,9 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex-1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
     }
 
@@ -177,7 +181,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void reloadScene() {
         playerReference = null;
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
@@ -186,7 +192,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void mainMenu() {
         enablePause = false;
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
@@ -313,11 +321,11 @@ public class GameManager : MonoBehaviour
     public void showSubtitleMenu()
     {
         hider();
-        foreach(GameObject g in subtitleObjects)
+        foreach(GameObject g in generalObjects)
         {
             g.SetActive(true);
         }
-        EventSystem.current.SetSelectedGameObject(subtitleObjects[0].transform.Find("Start_Button").gameObject);
+        EventSystem.current.SetSelectedGameObject(generalObjects[0].transform.Find("Start_Button").gameObject);
         SM.moveSubtitlesForMenu();
         SM.QueueSubtitle(new SubtitleData("This is an example subtitle", 100000, 0.1f));
         isSubtitles = !isSubtitles;
@@ -373,7 +381,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(false);
         }
-        foreach(GameObject g in subtitleObjects) 
+        foreach(GameObject g in generalObjects) 
         {
             g.SetActive(false);
         }

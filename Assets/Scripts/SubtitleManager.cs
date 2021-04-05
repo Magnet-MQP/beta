@@ -43,6 +43,7 @@ public class SubtitleManager : MonoBehaviour
     private Vector3 originalPos = new Vector3(0,0,0);
 
     public GameObject menuParent;
+    public GameObject defaultParent;
     public GameObject canvas;
 
     // Subtitle messages
@@ -54,7 +55,7 @@ public class SubtitleManager : MonoBehaviour
     // Initialize Instance to self
     void Awake()
     {
-        Instance = this;
+        //Instance = this;
         // singleton insurance
         if(Instance == null) {
             DontDestroyOnLoad(gameObject);
@@ -71,6 +72,7 @@ public class SubtitleManager : MonoBehaviour
         GM = GameManager.getGameManager();
         SetSubtitleSize();
         SetSubtitleAlpha();
+        moveSubtitlesToDefault();
         originalPos = transform.localPosition;
     }
     public static SubtitleManager getSubtitleManager() {
@@ -230,10 +232,16 @@ public class SubtitleManager : MonoBehaviour
         transform.localPosition = new Vector3(0, 0, 0); 
     }
 
+    // Put subtitle in default position
+    public void moveSubtitlesToDefault() {
+        transform.SetParent(defaultParent.transform);
+        transform.localPosition = originalPos;
+    }
     // only for removing subtitle move
     public void removeSettingsSubtitle() {
         subtitleQueue.RemoveAt(0);
-        transform.SetParent(canvas.transform);
+        //transform.SetParent(canvas.transform);
+        transform.SetParent(defaultParent.transform);
         transform.localPosition = originalPos;
         transform.SetSiblingIndex(6);
 
@@ -259,6 +267,11 @@ public class SubtitleManager : MonoBehaviour
             }
             subtitleScale = 1;
         }
+    }
+
+    public void unparent() {
+        transform.parent = null;
+        DontDestroyOnLoad(gameObject);
     }
 
 }
