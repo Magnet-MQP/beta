@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     GameObject[] settingsObjects;
     GameObject[] graphicsObjects;
     GameObject[] audioObjects;
-    GameObject[] menuObjects;
+    GameObject[] mainMenuObjects;
     public bool enablePause;
     public bool isPaused = false;
     private float pauseWait = 0;
@@ -69,10 +69,15 @@ public class GameManager : MonoBehaviour
         settingsObjects = GameObject.FindGameObjectsWithTag("Settings");
         graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
-        menuObjects = GameObject.FindGameObjectsWithTag("Menu");
+        mainMenuObjects = GameObject.FindGameObjectsWithTag("Main_Menu");
         playerReference = GameObject.Find("Player");
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
+
+        if(SM != null){
+            SM.menuParent = GameObject.FindGameObjectsWithTag("HUD")[0];
+            SM.canvas = GameObject.Find("Canvas");
+        }
 
         //Debug.Log(ES);
 
@@ -99,6 +104,8 @@ public class GameManager : MonoBehaviour
         // track the player
         playerReference = GameObject.Find("Player");
         SM = SubtitleManager.getSubtitleManager();
+        SM.menuParent = GameObject.FindGameObjectsWithTag("HUD")[0];
+        SM.canvas = GameObject.Find("Canvas");
 
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
@@ -206,7 +213,7 @@ public class GameManager : MonoBehaviour
     {
         if (!enablePause)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             AudioListener.pause = false;
@@ -264,10 +271,6 @@ public class GameManager : MonoBehaviour
     {
         hider();
         foreach(GameObject g in settingsObjects)
-        {
-            g.SetActive(true);
-        }
-        foreach(GameObject g in menuObjects)
         {
             g.SetActive(true);
         }
@@ -333,6 +336,20 @@ public class GameManager : MonoBehaviour
         }
         EventSystem.current.SetSelectedGameObject(audioObjects[0].transform.Find("Start_Button").gameObject);
     }
+
+
+    /// <summary>
+    /// Menu Function: Show the Main Menu
+    /// </summary>
+    public void showMainMenu() 
+    {
+        hider();
+        foreach(GameObject g in mainMenuObjects)
+        {
+            g.SetActive(true);
+        }
+        EventSystem.current.SetSelectedGameObject(mainMenuObjects[0].transform.Find("Start_Button").gameObject);
+    }
     
     public void hider()
     {
@@ -364,15 +381,12 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(false);
         }                   
-    }
-
-    public void hideMenuObjects(){
-        foreach(GameObject g in menuObjects) 
+        foreach(GameObject g in mainMenuObjects) 
         {
             g.SetActive(false);
         }                   
-
     }
+
 
     /// <summary>
     /// Return the currently stored reference to the player, or attempt to find a new one

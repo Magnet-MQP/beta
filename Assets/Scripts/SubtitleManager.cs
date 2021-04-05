@@ -55,15 +55,23 @@ public class SubtitleManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        // singleton insurance
+        if(Instance == null) {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+        else if(Instance != this) {
+            Destroy(gameObject);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
         GM = GameManager.getGameManager();
-            SetSubtitleSize();
-            SetSubtitleAlpha();
-            originalPos = transform.localPosition;
+        SetSubtitleSize();
+        SetSubtitleAlpha();
+        originalPos = transform.localPosition;
     }
     public static SubtitleManager getSubtitleManager() {
         return Instance;
