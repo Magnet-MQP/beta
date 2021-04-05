@@ -22,7 +22,8 @@ public class Menu_AudioSettings : MonoBehaviour
     /// <param name="masterVolume">[Optional] the new font size (defaults to current)</param>
     public void SetMasterVolume(float masterVolume = -1)
     {
-        masterMix.SetFloat("masterVolume", masterVolume);
+        AudioListener.volume = masterVolume;
+
     }
 
     /// <summary>
