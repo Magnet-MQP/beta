@@ -274,4 +274,9 @@ public class SubtitleManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void clearQueue() {
+        subtitleQueue.Clear();
+        RefreshSubtitle();
+    }
+
 }

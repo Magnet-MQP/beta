@@ -194,6 +194,7 @@ public class GameManager : MonoBehaviour
         enablePause = false;
         isPaused = false;
         DisableCamera();
+        SM.clearQueue();
         SM.unparent();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
@@ -225,8 +226,8 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             AudioListener.pause = false;
-            hidePauseMenu();
-            showSettingsMenu();
+            showPauseMenu(); // This is a hack, I labelled the epilepsy warning with "showOnPause" and simply have the pause menu deactivated in the main menu
+            //showSettingsMenu();
         }
         else if(isPaused)
         {
@@ -257,7 +258,6 @@ public class GameManager : MonoBehaviour
             g.SetActive(true);
         }
         EventSystem.current.SetSelectedGameObject(pauseObjects[0].transform.Find("Start_Button").gameObject);
-        
     }
 
     /// <summary>
