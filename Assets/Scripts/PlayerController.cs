@@ -278,6 +278,7 @@ public class PlayerController : MonoBehaviour
     public CutsceneData ActiveCutscene = null;
     [Tooltip("Whether the player is actively in a cutscene")]
     public bool InCutscene = false;
+    public bool CanMove = true;
     private float cutsceneTimer = 0f;
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
     private bool cutsceneEndEffect = false; // whether the end effect of the current cutscene has started
@@ -704,6 +705,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        if(!CanMove){
+            return;
+        }
         bool sliding = false;
 
         // Update boot target if landed

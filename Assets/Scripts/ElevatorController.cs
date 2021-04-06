@@ -75,6 +75,7 @@ public class ElevatorController : ARemoteControllable, IRemoteController
                     // carry the player
                     if (CarryPlayer)
                     {
+                        player.GetComponent<PlayerController>().CanMove = false;
                         player.transform.SetParent(transform);
                     }
                     // start the cutscene
