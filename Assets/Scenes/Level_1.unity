@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.000060352308, g: 0.00004553286, b: 0.00006103357, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 6d4dbf9c6d6fdf740a6a3bcb8f989f1b, type: 2}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 2857b356017d94492a8b0bfdc01afeb9, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1112,7 +1112,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -4908,7 +4908,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -9044,7 +9044,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -11943,7 +11943,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 14.1
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -13582,7 +13582,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -14370,7 +14370,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -15372,7 +15372,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -20049,7 +20049,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -22791,7 +22791,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 7.2
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 0
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -25085,7 +25085,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_LightDimmer: 1
-  m_VolumetricDimmer: 16
+  m_VolumetricDimmer: 9
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -25389,7 +25389,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -30342,7 +30342,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -34877,7 +34877,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 14.1
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -35453,7 +35453,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.45
+  m_VolumetricDimmer: 9
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -37274,7 +37274,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -51106,7 +51106,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_LightDimmer: 1
-  m_VolumetricDimmer: 16
+  m_VolumetricDimmer: 3
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -61919,7 +61919,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -73014,7 +73014,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -78826,7 +78826,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -82765,7 +82765,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -84202,7 +84202,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_LightDimmer: 1
-  m_VolumetricDimmer: 16
+  m_VolumetricDimmer: 3
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -86867,7 +86867,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -87022,7 +87022,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741132842}
   m_LocalRotation: {x: 0.35552377, y: 0.35552377, z: -0.6112307, w: -0.6112306}
-  m_LocalPosition: {x: 140.91824, y: 204.17464, z: 65.92245}
+  m_LocalPosition: {x: 138.75, y: 204.17464, z: 65.92245}
   m_LocalScale: {x: 2.0725002, y: 2.0725005, z: 2.0725002}
   m_Children: []
   m_Father: {fileID: 1825860408}
@@ -95412,7 +95412,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 14.1
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -96548,7 +96548,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_LightDimmer: 1
-  m_VolumetricDimmer: 16
+  m_VolumetricDimmer: 9
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -98344,7 +98344,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -99264,7 +99264,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -100298,7 +100298,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 10.7
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -101448,7 +101448,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 8
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -105942,7 +105942,7 @@ MonoBehaviour:
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 14.1
   m_LightDimmer: 1
-  m_VolumetricDimmer: 15.42
+  m_VolumetricDimmer: 9
   m_LightUnit: 0
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
