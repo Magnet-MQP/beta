@@ -16,10 +16,11 @@ public class GameManager : MonoBehaviour
     GameObject[] pauseObjects;
     GameObject[] crosshairObjects;
     GameObject[] controlsObjects;
-    GameObject[] subtitleObjects;
+    GameObject[] generalObjects;
     GameObject[] settingsObjects;
     GameObject[] graphicsObjects;
     GameObject[] audioObjects;
+    GameObject[] mainMenuObjects;
     public bool enablePause;
     public bool isPaused = false;
     private float pauseWait = 0;
@@ -50,7 +51,6 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SM = SubtitleManager.getSubtitleManager();
     }
 
     // called second
@@ -65,13 +65,20 @@ public class GameManager : MonoBehaviour
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         crosshairObjects = GameObject.FindGameObjectsWithTag("Crosshair");
         controlsObjects = GameObject.FindGameObjectsWithTag("Controls");
-        subtitleObjects = GameObject.FindGameObjectsWithTag("Subtitles");
+        generalObjects = GameObject.FindGameObjectsWithTag("General");
         settingsObjects = GameObject.FindGameObjectsWithTag("Settings");
         graphicsObjects = GameObject.FindGameObjectsWithTag("Graphics");
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
+        mainMenuObjects = GameObject.FindGameObjectsWithTag("Main_Menu");
         playerReference = GameObject.Find("Player");
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
+
+        SM = SubtitleManager.getSubtitleManager();
+        SM.menuParent = GameObject.FindGameObjectsWithTag("Menu")[0];
+        SM.defaultParent = GameObject.FindGameObjectsWithTag("Subtitles")[0];
+        SM.canvas = GameObject.Find("Canvas");
+        SM.moveSubtitlesToDefault();
 
         //Debug.Log(ES);
 
@@ -79,10 +86,8 @@ public class GameManager : MonoBehaviour
         updatePauseState();
     }
 
-    // Start is called before the first frame update
     void Awake()
     {
-
         m_PlayerInput = GetComponent<PlayerInput>();
 
         // singleton insurance
@@ -93,17 +98,20 @@ public class GameManager : MonoBehaviour
         else if(Instance != this) {
             Destroy(gameObject);
         }
-        
     }
+
+    // Start is called before the first frame update
     void Start() {
         // track the player
         playerReference = GameObject.Find("Player");
+
 
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
         scenenum = currScene.buildIndex;
         //pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         //toHideObjects = GameObject.FindGameObjectsWithTag("HideOnPause");
+        SM = SubtitleManager.getSubtitleManager();
         updatePauseState();
     }
 
@@ -121,7 +129,7 @@ public class GameManager : MonoBehaviour
     {   
         if (m_PlayerInput != null && m_PlayerInput.actions["Menu"].triggered )
         {
-            if (enablePause) {
+            if (enablePause && !playerReference.GetComponent<PlayerController>().InCutscene) {
                 switchPause();
             }
         }
@@ -147,7 +155,10 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex+1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
+        
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
 
     }
@@ -159,7 +170,9 @@ public class GameManager : MonoBehaviour
         int nextIndex = currScene.buildIndex-1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
     }
 
@@ -168,7 +181,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void reloadScene() {
         playerReference = null;
+        isPaused = false;
         DisableCamera();
+        SM.unparent();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
@@ -177,7 +192,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void mainMenu() {
         enablePause = false;
+        isPaused = false;
         DisableCamera();
+        SM.clearQueue();
+        SM.unparent();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
@@ -204,16 +222,19 @@ public class GameManager : MonoBehaviour
     {
         if (!enablePause)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            hidePauseMenu();
+            AudioListener.pause = false;
+            showPauseMenu(); // This is a hack, I labelled the epilepsy warning with "showOnPause" and simply have the pause menu deactivated in the main menu
+            //showSettingsMenu();
         }
         else if(isPaused)
         {
             Time.timeScale = 0; 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            AudioListener.pause = true;
             showPauseMenu();
         } 
         else 
@@ -221,6 +242,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            AudioListener.pause = false;
             hidePauseMenu();
         }
     }
@@ -236,7 +258,6 @@ public class GameManager : MonoBehaviour
             g.SetActive(true);
         }
         EventSystem.current.SetSelectedGameObject(pauseObjects[0].transform.Find("Start_Button").gameObject);
-        
     }
 
     /// <summary>
@@ -300,16 +321,15 @@ public class GameManager : MonoBehaviour
     public void showSubtitleMenu()
     {
         hider();
-        foreach(GameObject g in subtitleObjects)
+        foreach(GameObject g in generalObjects)
         {
             g.SetActive(true);
         }
-        EventSystem.current.SetSelectedGameObject(subtitleObjects[0].transform.Find("Start_Button").gameObject);
+        EventSystem.current.SetSelectedGameObject(generalObjects[0].transform.Find("Start_Button").gameObject);
         SM.moveSubtitlesForMenu();
         SM.QueueSubtitle(new SubtitleData("This is an example subtitle", 100000, 0.1f));
         isSubtitles = !isSubtitles;
-        Debug.Log(EventSystem.current);
-
+        //Debug.Log(EventSystem.current);
     }
 
     /// <summary>
@@ -324,8 +344,22 @@ public class GameManager : MonoBehaviour
         }
         EventSystem.current.SetSelectedGameObject(audioObjects[0].transform.Find("Start_Button").gameObject);
     }
+
+
+    /// <summary>
+    /// Menu Function: Show the Main Menu
+    /// </summary>
+    public void showMainMenu() 
+    {
+        hider();
+        foreach(GameObject g in mainMenuObjects)
+        {
+            g.SetActive(true);
+        }
+        EventSystem.current.SetSelectedGameObject(mainMenuObjects[0].transform.Find("Start_Button").gameObject);
+    }
     
-    private void hider()
+    public void hider()
     {
         foreach(GameObject g in pauseObjects) 
         {
@@ -347,7 +381,7 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(false);
         }
-        foreach(GameObject g in subtitleObjects) 
+        foreach(GameObject g in generalObjects) 
         {
             g.SetActive(false);
         }
@@ -355,7 +389,12 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(false);
         }                   
+        foreach(GameObject g in mainMenuObjects) 
+        {
+            g.SetActive(false);
+        }                   
     }
+
 
     /// <summary>
     /// Return the currently stored reference to the player, or attempt to find a new one

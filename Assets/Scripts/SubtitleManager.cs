@@ -40,6 +40,11 @@ public class SubtitleManager : MonoBehaviour
     // menu scaler
     private int subtitleScale = 1;
     private bool isSlow = false;
+    private Vector3 originalPos = new Vector3(0,0,0);
+
+    public GameObject menuParent;
+    public GameObject defaultParent;
+    public GameObject canvas;
 
     // Subtitle messages
     [Tooltip("Stores the queue of upcoming subtitles to display")]
@@ -50,15 +55,25 @@ public class SubtitleManager : MonoBehaviour
     // Initialize Instance to self
     void Awake()
     {
-        Instance = this;
+        //Instance = this;
+        // singleton insurance
+        if(Instance == null) {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
+        else if(Instance != this) {
+            Destroy(gameObject);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
         GM = GameManager.getGameManager();
-            SetSubtitleSize();
-            SetSubtitleAlpha();
+        SetSubtitleSize();
+        SetSubtitleAlpha();
+        moveSubtitlesToDefault();
+        originalPos = transform.localPosition;
     }
     public static SubtitleManager getSubtitleManager() {
         return Instance;
@@ -68,7 +83,7 @@ public class SubtitleManager : MonoBehaviour
     void Update()
     {
         // DEBUG - display test messages
-        /*
+        
         if (Keyboard.current.digit1Key.isPressed)
         {
             QueueSubtitle(new SubtitleData("This is a long subtitle test", 1000));
@@ -81,7 +96,7 @@ public class SubtitleManager : MonoBehaviour
         {
             QueueSubtitle(new SubtitleData("FEDOR: This is a ludicrously long dialogue test. Let's really force this to split some text yo!", 50, 6f));
         }
-        */
+        
 
         // update timers
         bool changed = false;
@@ -213,17 +228,23 @@ public class SubtitleManager : MonoBehaviour
     // only for menu subtitle move
     public void moveSubtitlesForMenu() 
     {
-
-        Vector2 newPosition = transform.position;
-        newPosition.y = 130;
-        transform.position = newPosition;
-        transform.SetAsLastSibling();
+        transform.SetParent(menuParent.transform);
+        transform.localPosition = new Vector3(0, 0, 0); 
     }
 
+    // Put subtitle in default position
+    public void moveSubtitlesToDefault() {
+        transform.SetParent(defaultParent.transform);
+        transform.localPosition = originalPos;
+    }
     // only for removing subtitle move
     public void removeSettingsSubtitle() {
         subtitleQueue.RemoveAt(0);
-        this.transform.SetSiblingIndex(4);
+        //transform.SetParent(canvas.transform);
+        transform.SetParent(defaultParent.transform);
+        transform.localPosition = originalPos;
+        transform.SetSiblingIndex(6);
+
         RefreshSubtitle();
     }
 
@@ -246,6 +267,16 @@ public class SubtitleManager : MonoBehaviour
             }
             subtitleScale = 1;
         }
+    }
+
+    public void unparent() {
+        transform.parent = null;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void clearQueue() {
+        subtitleQueue.Clear();
+        RefreshSubtitle();
     }
 
 }

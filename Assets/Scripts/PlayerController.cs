@@ -302,6 +302,7 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GM.getPlayerInput();
 
         CrosshairInteract.enabled = false; // start with the interact crosshair hidden
+        SM = SubtitleManager.getSubtitleManager();
 
         // automatically start assigned cutscene, if present
         if (ActiveCutscene != null)
