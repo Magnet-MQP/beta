@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
     private float armRestSpeed = 4f; // rate at which arms settle back into place when using magnets or not moving
     private float armLookX = 0f; // amount the arms lead the camera in the x direction
     private float armLookY = 0f; // amount the arms lead the camera in the y direction
-    private float armLookFactor = 0.06f; // ratio of look movement to arm leading
+    private float armLookFactor = 0.03f; // ratio of look movement to arm leading
     private float armLookSpeed = 2f; // rate at which arms settle back from leading
 
     // Movement and Orientation
@@ -192,6 +192,8 @@ public class PlayerController : MonoBehaviour
     private float lookAngle = 0;
     [Tooltip("The speed at which the player looks")]
     public float LookSpeed = 1f;
+
+    private Vector2 rotation;
 
     // Magnetism
     [Tooltip("The current polarity of the player's boots (-1, 0, or 1)")]
@@ -560,33 +562,42 @@ public class PlayerController : MonoBehaviour
             float dLookUp = 0.0f;
             if ( m_PlayerInput.currentControlScheme == "Gamepad")
             {
-                dLookRight = look.x * GM.lookSpeedX * 10;
-                dLookUp = look.y * GM.lookSpeedY * 10;
+                dLookRight = look.x * GM.lookSpeedControllerX;
+                dLookUp = look.y * GM.lookSpeedControllerY;
             }
             else 
             {
-                dLookRight = look.x * GM.lookSpeedX; 
-                dLookUp = look.y * GM.lookSpeedY; 
+                dLookRight = look.x * GM.lookSpeedMouseX; 
+                dLookUp = look.y * GM.lookSpeedMouseY; 
             }
 
 
-            //Look and change facing direction
-            transform.RotateAround(transform.position, transform.up, dLookRight);
-            float xAngle = lookAngle + dLookUp;
+            // //Look and change facing direction
+
+            // MainCamera.transform.Rotate(-dLookUp, 0, 0, Space.Self);
+            // lookAngle += dLookUp;
+
+            // transform.RotateAround(transform.position, transform.up, dLookRight);
+            float xAngle = rotation.y + dLookUp;
             if (xAngle > LookUpLimit)
             {
-                dLookUp = LookUpLimit - lookAngle;
+                dLookUp = LookUpLimit - rotation.y;
             }
             else if (xAngle < LookDownLimit)
             {
-                dLookUp = LookDownLimit - lookAngle;
+                dLookUp = LookDownLimit - rotation.y;
             }
-            MainCamera.transform.Rotate(-dLookUp, 0, 0, Space.Self);
-            lookAngle += dLookUp;
+
+            Vector2 wantedLook = new Vector2(dLookRight, dLookUp);
+            rotation += wantedLook * Time.deltaTime;
+
+
+            transform.localEulerAngles = new Vector3(-rotation.y, rotation.x, 0);
+
 
             // lead with hands
-            armLookX += dLookRight*armLookFactor;
-            armLookY += dLookUp*armLookFactor;
+            armLookX += dLookRight * armLookFactor;
+            armLookY += dLookUp * armLookFactor;
         }
         else 
         {
