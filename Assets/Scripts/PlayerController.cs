@@ -280,6 +280,7 @@ public class PlayerController : MonoBehaviour
     public CutsceneData ActiveCutscene = null;
     [Tooltip("Whether the player is actively in a cutscene")]
     public bool InCutscene = false;
+    public bool CanMove = true;
     private float cutsceneTimer = 0f;
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
     private bool cutsceneEndEffect = false; // whether the end effect of the current cutscene has started
@@ -304,6 +305,7 @@ public class PlayerController : MonoBehaviour
         m_PlayerInput = GM.getPlayerInput();
 
         CrosshairInteract.enabled = false; // start with the interact crosshair hidden
+        SM = SubtitleManager.getSubtitleManager();
 
         // automatically start assigned cutscene, if present
         if (ActiveCutscene != null)
@@ -445,11 +447,14 @@ public class PlayerController : MonoBehaviour
     void Interact() 
     {
         // DEBUG - Use F to flip a switch
-        SwitchController sc = ReticleTarget.GetComponent<SwitchController>();
-        if (sc != null  && targetDistance < INTERACT_RANGE)
+        if (ReticleTarget != null)
         {
-            sc.UseSwitch();
-            PlayInteractAnim();
+            SwitchController sc = ReticleTarget.GetComponent<SwitchController>();
+            if (sc != null  && targetDistance < INTERACT_RANGE)
+            {
+                sc.UseSwitch();
+                PlayInteractAnim();
+            }
         }
     }
 
@@ -714,6 +719,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        if(!CanMove){
+            return;
+        }
         bool sliding = false;
 
         // Update boot target if landed
