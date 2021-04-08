@@ -575,8 +575,6 @@ public class PlayerController : MonoBehaviour
             {
                 dLookRight = look.x * GM.lookSpeedMouseX * Time.deltaTime; 
                 dLookUp = look.y * GM.lookSpeedMouseY * Time.deltaTime; 
-                Debug.Log(dLookRight);
-                Debug.Log(dLookUp);
                 if(dLookRight > mouseSpeedClamp) 
                 {
                     dLookRight = mouseSpeedClamp;
