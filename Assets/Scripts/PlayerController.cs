@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
     private float armRestSpeed = 4f; // rate at which arms settle back into place when using magnets or not moving
     private float armLookX = 0f; // amount the arms lead the camera in the x direction
     private float armLookY = 0f; // amount the arms lead the camera in the y direction
-    private float armLookFactor = 0.03f; // ratio of look movement to arm leading
+    private float armLookFactor = 0.06f; // ratio of look movement to arm leading
     private float armLookSpeed = 2f; // rate at which arms settle back from leading
 
     // Movement and Orientation
@@ -192,6 +192,8 @@ public class PlayerController : MonoBehaviour
     private float lookAngle = 0;
     [Tooltip("The speed at which the player looks")]
     public float LookSpeed = 1f;
+    [Tooltip("Look speed limit")]
+    public float mouseSpeedClamp = 30f;
 
     private Vector2 rotation;
 
@@ -562,43 +564,41 @@ public class PlayerController : MonoBehaviour
             dForward = move.y;
             dRight = move.x;
 
-            // potentially have different look speed values for mouse and controller?
             float dLookRight = 0.0f;
             float dLookUp = 0.0f;
             if ( m_PlayerInput.currentControlScheme == "Gamepad")
             {
-                dLookRight = look.x * GM.lookSpeedControllerX;
-                dLookUp = look.y * GM.lookSpeedControllerY;
+                dLookRight = look.x * GM.lookSpeedControllerX * Time.deltaTime;
+                dLookUp = look.y * GM.lookSpeedControllerY * Time.deltaTime;
             }
             else 
             {
-                dLookRight = look.x * GM.lookSpeedMouseX; 
-                dLookUp = look.y * GM.lookSpeedMouseY; 
+                dLookRight = look.x * GM.lookSpeedMouseX * Time.deltaTime; 
+                dLookUp = look.y * GM.lookSpeedMouseY * Time.deltaTime; 
+                Debug.Log(dLookRight);
+                Debug.Log(dLookUp);
+                if(dLookRight > mouseSpeedClamp) 
+                {
+                    dLookRight = mouseSpeedClamp;
+                }
+                if (dLookUp > mouseSpeedClamp)
+                {
+                    dLookUp = mouseSpeedClamp;
+                }
             }
 
-
-            // //Look and change facing direction
-
-            // MainCamera.transform.Rotate(-dLookUp, 0, 0, Space.Self);
-            // lookAngle += dLookUp;
-
-            // transform.RotateAround(transform.position, transform.up, dLookRight);
-            float xAngle = rotation.y + dLookUp;
+            transform.RotateAround(transform.position, transform.up, dLookRight);
+            float xAngle = lookAngle + dLookUp;
             if (xAngle > LookUpLimit)
             {
-                dLookUp = LookUpLimit - rotation.y;
+                dLookUp = LookUpLimit - lookAngle;
             }
             else if (xAngle < LookDownLimit)
             {
-                dLookUp = LookDownLimit - rotation.y;
+                dLookUp = LookDownLimit - lookAngle;
             }
-
-            Vector2 wantedLook = new Vector2(dLookRight, dLookUp);
-            rotation += wantedLook * Time.deltaTime;
-
-
-            transform.localEulerAngles = new Vector3(-rotation.y, rotation.x, 0);
-
+            MainCamera.transform.Rotate(-dLookUp, 0, 0, Space.Self);
+            lookAngle += dLookUp;
 
             // lead with hands
             armLookX += dLookRight * armLookFactor;
