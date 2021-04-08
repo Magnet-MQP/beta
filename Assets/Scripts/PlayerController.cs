@@ -192,6 +192,10 @@ public class PlayerController : MonoBehaviour
     private float lookAngle = 0;
     [Tooltip("The speed at which the player looks")]
     public float LookSpeed = 1f;
+    [Tooltip("Look speed limit")]
+    public float mouseSpeedClamp = 30f;
+
+    private Vector2 rotation;
 
     // Magnetism
     [Tooltip("The current polarity of the player's boots (-1, 0, or 1)")]
@@ -560,22 +564,27 @@ public class PlayerController : MonoBehaviour
             dForward = move.y;
             dRight = move.x;
 
-            // potentially have different look speed values for mouse and controller?
             float dLookRight = 0.0f;
             float dLookUp = 0.0f;
             if ( m_PlayerInput.currentControlScheme == "Gamepad")
             {
-                dLookRight = look.x * GM.lookSpeedX * 10;
-                dLookUp = look.y * GM.lookSpeedY * 10;
+                dLookRight = look.x * GM.lookSpeedControllerX * Time.deltaTime;
+                dLookUp = look.y * GM.lookSpeedControllerY * Time.deltaTime;
             }
             else 
             {
-                dLookRight = look.x * GM.lookSpeedX; 
-                dLookUp = look.y * GM.lookSpeedY; 
+                dLookRight = look.x * GM.lookSpeedMouseX * Time.deltaTime; 
+                dLookUp = look.y * GM.lookSpeedMouseY * Time.deltaTime; 
+                if(dLookRight > mouseSpeedClamp) 
+                {
+                    dLookRight = mouseSpeedClamp;
+                }
+                if (dLookUp > mouseSpeedClamp)
+                {
+                    dLookUp = mouseSpeedClamp;
+                }
             }
 
-
-            //Look and change facing direction
             transform.RotateAround(transform.position, transform.up, dLookRight);
             float xAngle = lookAngle + dLookUp;
             if (xAngle > LookUpLimit)
@@ -590,8 +599,8 @@ public class PlayerController : MonoBehaviour
             lookAngle += dLookUp;
 
             // lead with hands
-            armLookX += dLookRight*armLookFactor;
-            armLookY += dLookUp*armLookFactor;
+            armLookX += dLookRight * armLookFactor;
+            armLookY += dLookUp * armLookFactor;
         }
         else 
         {

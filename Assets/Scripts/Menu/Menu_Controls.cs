@@ -22,24 +22,36 @@ public class Menu_Controls : MonoBehaviour
         manager.showControlsMenu();
     }
 
-    public void changeLookSpeedX(float value)
+    public void changeLookSpeedMouseX(float value)
     {
-        manager.lookSpeedX = value;
+        manager.lookSpeedMouseX = value;
     }
 
-    public void changeLookSpeedY(float value) 
+    public void changeLookSpeedMouseY(float value) 
     {
-        manager.lookSpeedY = value;
+        manager.lookSpeedMouseY = value;
+    }
+
+    public void changeLookSpeedControllerX(float value)
+    {
+        manager.lookSpeedControllerX = value;
+    }
+
+    public void changeLookSpeedControllerY(float value) 
+    {
+        manager.lookSpeedControllerY = value;
     }
 
     public void invertX()
     {
-        manager.lookSpeedX = manager.lookSpeedX * (-1.0f);  
+        manager.lookSpeedControllerX = manager.lookSpeedControllerX * (-1.0f);  
+        manager.lookSpeedMouseX = manager.lookSpeedMouseX * (-1.0f);  
     }
 
     public void invertY()
     {
-        manager.lookSpeedY = manager.lookSpeedY * (-1.0f);  
+        manager.lookSpeedControllerY = manager.lookSpeedControllerY * (-1.0f);  
+        manager.lookSpeedMouseY = manager.lookSpeedMouseY * (-1.0f);  
     }
 
     public void toggleHold()
