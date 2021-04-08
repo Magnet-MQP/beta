@@ -445,11 +445,14 @@ public class PlayerController : MonoBehaviour
     void Interact() 
     {
         // DEBUG - Use F to flip a switch
-        SwitchController sc = ReticleTarget.GetComponent<SwitchController>();
-        if (sc != null  && targetDistance < INTERACT_RANGE)
+        if (ReticleTarget != null)
         {
-            sc.UseSwitch();
-            PlayInteractAnim();
+            SwitchController sc = ReticleTarget.GetComponent<SwitchController>();
+            if (sc != null  && targetDistance < INTERACT_RANGE)
+            {
+                sc.UseSwitch();
+                PlayInteractAnim();
+            }
         }
     }
 

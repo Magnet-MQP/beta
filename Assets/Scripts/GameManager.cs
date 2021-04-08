@@ -136,6 +136,14 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Changes the resolution the game runs at
+    /// </summary>
+    public void ChangeResolution(int width, int height)
+    {
+        Screen.SetResolution(width, height, Screen.fullScreen);
+    }
+
+    /// <summary>
     /// Stops the camera from rendering anything else
     /// Used to prevent visual artifacts on reloading a scene
     /// </summary>
