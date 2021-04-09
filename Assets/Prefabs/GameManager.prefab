@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enablePause: 0
   isPaused: 0
-  lookSpeedMouseX: 70
-  lookSpeedMouseY: 70
+  lookSpeedMouseX: 50
+  lookSpeedMouseY: 50
   lookSpeedControllerX: 120
   lookSpeedControllerY: 120
   glovesIsHold: 0
