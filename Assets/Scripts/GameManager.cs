@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
     {   
         if (m_PlayerInput != null && m_PlayerInput.actions["Menu"].triggered )
         {
-            if (enablePause && !playerReference.GetComponent<PlayerController>().InCutscene) {
+            if (enablePause) {
                 switchPause();
             }
         }
