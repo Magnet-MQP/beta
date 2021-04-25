@@ -23,19 +23,10 @@ public class CityScroll : MonoBehaviour
     private float respawnWaitMax = 15f; // This determines how long the building takes to fade in and out
     private bool respawning = false;
     private bool spawned = false;
-    private Color baseEmissionColor;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
-        // initialize all window materials for emission adjustment
-        for (int i = 0; i < WindowMaterialIndexes.Length; i++)
-        {
-            BuildingModel.materials[WindowMaterialIndexes[i]].EnableKeyword("_EMISSION");
-        }
-        // store the initial emissive color
-        baseEmissionColor = BuildingModel.materials[WindowMaterialIndexes[0]].GetColor("_EmissiveColor");
     }
 
     // Resize the building and reposition accordingly
@@ -95,10 +86,10 @@ public class CityScroll : MonoBehaviour
         // adjust window emission based on wait (fade in and out at ends)
         if (respawnWait > 0)
         {
-            Color newEmissive = baseEmissionColor*(1-respawnWait/respawnWaitMax);
+            float newEmissiveScale = 1 - respawnWait/respawnWaitMax;
             for (int i = 0; i < WindowMaterialIndexes.Length; i++)
             {
-                BuildingModel.materials[WindowMaterialIndexes[i]].SetColor("_EmissiveColor", newEmissive);
+                BuildingModel.materials[WindowMaterialIndexes[i]].SetFloat("_EMISSIVE_SCALE", newEmissiveScale);
             }
         }
 
