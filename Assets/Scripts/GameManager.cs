@@ -328,7 +328,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Menu Function: display the subtitles options menu
     /// </summary>   
-    public void showSubtitleMenu()
+    public void showGeneralMenu()
     {
         hider();
         foreach(GameObject g in generalObjects)
