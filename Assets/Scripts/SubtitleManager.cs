@@ -84,6 +84,7 @@ public class SubtitleManager : MonoBehaviour
     {
         // DEBUG - display test messages
         
+        /*
         if (Keyboard.current.digit1Key.isPressed)
         {
             QueueSubtitle(new SubtitleData("This is a long subtitle test", 1000));
@@ -96,6 +97,7 @@ public class SubtitleManager : MonoBehaviour
         {
             QueueSubtitle(new SubtitleData("FEDOR: This is a ludicrously long dialogue test. Let's really force this to split some text yo!", 50, 6f));
         }
+        */
         
 
         // update timers
