@@ -22,14 +22,17 @@ public class Menu_PlayAudio : MonoBehaviour
     }
 
     public void play_scroll_first() {
+        UI_Source.Stop();
         UI_Source.clip = Scroll_First;
         UI_Source.Play();
     }
     public void play_scroll_next() {
+        UI_Source.Stop();
         UI_Source.clip = Scroll_Next;
         UI_Source.Play();
     }
     public void play_select() {
+        UI_Source.Stop();
         UI_Source.clip = Select;
         UI_Source.Play();
     }

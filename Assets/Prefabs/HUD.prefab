@@ -1567,6 +1567,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 240485189903622789}
+          m_TargetAssemblyTypeName: Menu_PlayAudio, Assembly-CSharp
+          m_MethodName: play_select
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &714121174336039359
 GameObject:
   m_ObjectHideFlags: 0
@@ -3268,9 +3284,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI_Source: {fileID: 5149436429485954903}
-  Scroll_First: {fileID: 8300000, guid: 9cb1923953fd88041bc4114d82898524, type: 3}
-  Scroll_Next: {fileID: 8300000, guid: f15024d5bb74f9e4ea4d278ef3743b24, type: 3}
-  Select: {fileID: 8300000, guid: 8e9081f3dde6b404886e5f0d4a3fbb64, type: 3}
+  Scroll_First: {fileID: 8300000, guid: 5176456fb8b4df14abcc508f46d0e5d1, type: 3}
+  Scroll_Next: {fileID: 8300000, guid: dcd53cb8f6e564342b49ec66fad84069, type: 3}
+  Select: {fileID: 8300000, guid: f85c57bc182aaf742af1892634fd453e, type: 3}
 --- !u!82 &5149436429485954903
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10252,6 +10268,22 @@ MonoBehaviour:
         - m_Target: {fileID: 240485189903622789}
           m_TargetAssemblyTypeName: Menu_PlayAudio, Assembly-CSharp
           m_MethodName: play_scroll_first
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 240485189903622789}
+          m_TargetAssemblyTypeName: Menu_PlayAudio, Assembly-CSharp
+          m_MethodName: play_select
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

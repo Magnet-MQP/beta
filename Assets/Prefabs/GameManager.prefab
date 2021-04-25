@@ -50,7 +50,7 @@ MonoBehaviour:
   lookSpeedMouseY: 10
   lookSpeedControllerX: 120
   lookSpeedControllerY: 120
-  glovesIsHold: 0
+  glovesIsHold: 1
   UseBootFade: 0
   currScene:
     m_Handle: 0
