@@ -19,6 +19,7 @@ TagManager:
   - Menu
   - HUD
   - General
+  - Background
   layers:
   - Default
   - TransparentFX
