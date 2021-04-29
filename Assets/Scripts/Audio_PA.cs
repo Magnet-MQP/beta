@@ -22,8 +22,8 @@ public class Audio_PA : MonoBehaviour
     IEnumerator PlaySound() {
         while(true) {
             float timeToWait = Random.Range(minWait, maxWait);
-            source.Play(0);
             yield return new WaitForSeconds(timeToWait);
+            source.Play(0);
 
         }
     }

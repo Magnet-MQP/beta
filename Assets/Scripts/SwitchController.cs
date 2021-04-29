@@ -10,6 +10,8 @@ public class SwitchController : ARemoteControllable, IRemoteController
 {
     [Tooltip("The set of control targets to activate when used")]
     public ARemoteControllable[] ControlTargets;
+    [Tooltip("The musiccontroller associated. Can be null.")]
+    public MusicController musicController;
     [Tooltip("The audio source for this object")]
     public AudioSource SoundPlayer;
     [Tooltip("Tracks whether the switch has been used")]
@@ -57,6 +59,9 @@ public class SwitchController : ARemoteControllable, IRemoteController
             Button.GetComponent<Renderer>().material = MatInactive;
             myText.Text = "";
             SoundPlayer.Play();
+            if(musicController != null){
+                musicController.PlayNextTrack();
+            }
         }
     }
 
