@@ -23,10 +23,15 @@ public class CityScroll : MonoBehaviour
     private float respawnWaitMax = 15f; // This determines how long the building takes to fade in and out
     private bool respawning = false;
     private bool spawned = false;
+    private float baseGradientOffset;
+    private Vector3 minTintRGB = new Vector3(0f, -0.3f, -0.3f);
+    private Vector3 maxTintRGB = new Vector3(0.125f, -0.1f, 0f);
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        baseGradientOffset = BuildingModel.materials[WindowMaterialIndexes[0]].GetFloat("_GRADIENT_OFFSET");
+        RandomizeColor();
     }
 
     // Resize the building and reposition accordingly
@@ -58,9 +63,10 @@ public class CityScroll : MonoBehaviour
         SetNewScale();
         // momentarily hide building
         BuildingModel.enabled = false;
-        // set state to respaning
+        // set state to respawning
         respawning = false;
         spawned = false;
+        RandomizeColor();
     }
 
     void FixedUpdate()
@@ -110,5 +116,30 @@ public class CityScroll : MonoBehaviour
         }
     }
  
+    /// <summary>
+    /// Randomly adjust the tint and gradient position
+    /// </summary>
+    void RandomizeColor()
+    {
+        // set random gradient offset and tint
+        float newGradientOffset = baseGradientOffset + RandomStep(-100,100,10);
+        Vector4 newTint = new Vector4(RandomStep(minTintRGB.x,maxTintRGB.x, 0.05f), 
+                                    RandomStep(minTintRGB.y,maxTintRGB.y, 0.05f),
+                                    RandomStep(minTintRGB.z,maxTintRGB.z, 0.05f), 0);
+        for (int i = 0; i < WindowMaterialIndexes.Length; i++)
+        {
+            BuildingModel.materials[WindowMaterialIndexes[i]].SetFloat("_GRADIENT_OFFSET", newGradientOffset);
+            BuildingModel.materials[WindowMaterialIndexes[i]].SetVector("_COLOR_OFFSET", newTint);
+        }
+    }
 
+    /// <summary>
+    /// Helper method to get a stepped random value
+    /// </summary>
+    float RandomStep(float min, float max, float step)
+    {
+        float stepCount = Mathf.Ceil((max-min)/step);
+        float stepValue = step * Mathf.Floor(Random.Range(0,stepCount));
+        return min + stepValue;
+    }
 }

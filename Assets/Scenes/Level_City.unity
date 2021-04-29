@@ -1768,7 +1768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: SettlePosition.x
-      value: 8.1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3694458112743146848, guid: 8888a5976ba4df245a6df15bedfbfc61, type: 3}
       propertyPath: SettlePosition.y

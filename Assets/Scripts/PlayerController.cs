@@ -934,6 +934,7 @@ public class PlayerController : MonoBehaviour
             {
                 sphereDistance = hit.distance;
             }
+            sphereDistance -= ReticleRadius;
             Physics.SphereCast(MainCamera.transform.position, ReticleRadius, MainCamera.transform.forward, out hit, sphereDistance, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore);
         }
         // - process hit
