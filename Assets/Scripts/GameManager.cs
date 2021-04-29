@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
         isPaused = false;
         DisableCamera();
         SM.unparent();
+        Destroy(GameObject.FindGameObjectWithTag("MusicManager"));
         
         SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
 

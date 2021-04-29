@@ -15,7 +15,7 @@ public class Menu_Master : MonoBehaviour
     GameManager manager;
     SubtitleManager SM;
     public AudioMixer masterMix;
-    public AudioMixer envMix;
+    public AudioMixer musicMix;
     public AudioMixer sfxMix;
     public AudioMixer uiMix;
     bool invert_x = false;
@@ -309,10 +309,10 @@ public class Menu_Master : MonoBehaviour
     /// Change the environment volume
     /// Calling without an argument just applies the current volume
     /// </summary>
-    /// <param name="environmentVolume">[Optional] the new font size (defaults to current)</param>
-    public void SetEnvironmentVolume(float environmentVolume = -1)
+    /// <param name="musicVolume">[Optional] the new font size (defaults to current)</param>
+    public void SetMusicVolume(float musicVolume = -1)
     {
-        envMix.SetFloat("environmentVolume", environmentVolume);
+        musicMix.SetFloat("musicVolume", musicVolume);
     }
 
     /// <summary>

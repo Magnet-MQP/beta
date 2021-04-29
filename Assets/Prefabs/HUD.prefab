@@ -2660,7 +2660,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 94cad191a19712048a12c274e5148fbd, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2757,7 +2757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterMix: {fileID: 24100000, guid: 45edad626e983574d8cb073975dc90c6, type: 2}
-  envMix: {fileID: 24100000, guid: da43cc214342c3b40bdedefbffaa0bb1, type: 2}
+  musicMix: {fileID: 24100000, guid: da43cc214342c3b40bdedefbffaa0bb1, type: 2}
   sfxMix: {fileID: 24100000, guid: c9f8557c5cb49bb4f8ee03e858fcc9e2, type: 2}
   uiMix: {fileID: 24100000, guid: 94cad191a19712048a12c274e5148fbd, type: 2}
 --- !u!1 &1506908893760345631
@@ -6708,7 +6708,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: UI Volume
+  m_Text: UI
 --- !u!1 &2973184436952823974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7346,7 +7346,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 6054163814431966759}
   m_HandleRect: {fileID: 2363452323841277058}
   m_Direction: 0
-  m_MinValue: -80
+  m_MinValue: -40
   m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
@@ -10209,10 +10209,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 6546234564164874161}
   m_HandleRect: {fileID: 5851424843880620068}
   m_Direction: 0
-  m_MinValue: -80
+  m_MinValue: -20
   m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: -40
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -11787,7 +11787,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Environment volume
+  m_Text: Music
 --- !u!1 &4755139851756420657
 GameObject:
   m_ObjectHideFlags: 0
@@ -12320,7 +12320,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Master Volume
+  m_Text: Master
 --- !u!1 &5178123899597291716
 GameObject:
   m_ObjectHideFlags: 0
@@ -12489,7 +12489,7 @@ GameObject:
   - component: {fileID: 4533350385551274957}
   - component: {fileID: 1049028818354069377}
   m_Layer: 0
-  m_Name: AudioEnvironment_Slider
+  m_Name: AudioMusic_Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12561,7 +12561,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 6422797824856385324}
   m_HandleRect: {fileID: 8231133644069275376}
   m_Direction: 0
-  m_MinValue: -80
+  m_MinValue: -40
   m_MaxValue: 0
   m_WholeNumbers: 0
   m_Value: 0
@@ -12570,7 +12570,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5891388358319306306}
         m_TargetAssemblyTypeName: Menu_Master, Assembly-CSharp
-        m_MethodName: SetEnvironmentVolume
+        m_MethodName: SetMusicVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14153,7 +14153,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SFX VOLUME
+  m_Text: SFX
 --- !u!1 &5868797452928832741
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class ActivationTrigger : MonoBehaviour, IRemoteController
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<PlayerController>().CanMove = false;
             foreach (ARemoteControllable rc in ControlTargets)
             {
                 rc.RemoteActivate(this);

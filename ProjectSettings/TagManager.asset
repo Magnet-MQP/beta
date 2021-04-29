@@ -20,6 +20,7 @@ TagManager:
   - HUD
   - General
   - Background
+  - MusicManager
   layers:
   - Default
   - TransparentFX
