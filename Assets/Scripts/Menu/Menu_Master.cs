@@ -27,6 +27,10 @@ public class Menu_Master : MonoBehaviour
         SM = SubtitleManager.getSubtitleManager();
     }
 
+    public void NextScene() {
+        manager.nextScene();
+    }
+
     // SHOWING DIFFERENT MENUS
     /// <summary>
     /// Unpause the game
@@ -269,6 +273,23 @@ public class Menu_Master : MonoBehaviour
     /// </summary>
     public void ToggleFade() {
         manager.toggleFade();
+    }
+
+    /// <summary>
+    /// Toggle high contrast UI
+    /// </summary>
+    public void ToggleHighContrastUI() {
+        manager.toggleHighContrast();
+    }
+
+    /// <summary>
+    /// Change the FOV
+    /// Calling without an argument just applies the current FOV
+    /// </summary>
+    /// <param name="fov">[Optional] the new alpha (defaults to current)</param>
+    public void SetFOV(float fov = -1)
+    {
+        manager.SetFOV(fov);
     }
 
     // AUDIO MENU OPTIONS

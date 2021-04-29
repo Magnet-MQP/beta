@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
@@ -11,8 +12,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance; // singleton
     private PlayerInput m_PlayerInput;
     private GameObject playerReference = null;
+    private Camera mainCamera;
 
     // Pause settings
+    GameObject HUD;
     GameObject[] pauseObjects;
     GameObject[] crosshairObjects;
     GameObject[] controlsObjects;
@@ -31,6 +34,9 @@ public class GameManager : MonoBehaviour
     public float lookSpeedControllerY = 1.0f;
     public bool glovesIsHold = false;
     public bool UseBootFade = false;
+    public bool highContrast = false;
+    public float MENU_ALPHA_DEFAULT = .88f;
+    public float MENU_ALPHA_HIGH_CONTRAST = 1f;
 
     // Scene changing
     public Scene currScene;
@@ -73,10 +79,11 @@ public class GameManager : MonoBehaviour
         audioObjects = GameObject.FindGameObjectsWithTag("Audio");
         mainMenuObjects = GameObject.FindGameObjectsWithTag("Main_Menu");
         playerReference = GameObject.Find("Player");
+        HUD = GameObject.FindGameObjectWithTag("HUD");
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
 
-        SM = SubtitleManager.getSubtitleManager();
+        //SM = SubtitleManager.getSubtitleManager();
         SM.menuParent = GameObject.FindGameObjectsWithTag("Menu")[0];
         SM.defaultParent = GameObject.FindGameObjectsWithTag("Subtitles")[0];
         SM.canvas = GameObject.Find("Canvas");
@@ -107,6 +114,7 @@ public class GameManager : MonoBehaviour
         // track the player
         playerReference = GameObject.Find("Player");
 
+        mainCamera = Camera.main;
 
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
@@ -155,6 +163,10 @@ public class GameManager : MonoBehaviour
         Camera.main.cullingMask = 0;
         Camera.main.clearFlags = CameraClearFlags.Nothing;
         */
+    }
+
+    public void SetFOV(float fov) {
+        mainCamera.fieldOfView = fov;
     }
 
     /// <summary>
@@ -266,6 +278,7 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in pauseObjects) 
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
         }
         EventSystem.current.SetSelectedGameObject(pauseObjects[0].transform.Find("Start_Button").gameObject);
     }
@@ -291,6 +304,7 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in settingsObjects)
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
         }
         if (isSubtitles) {
           isSubtitles = !isSubtitles;
@@ -308,7 +322,10 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in graphicsObjects)
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
+            
         }
+        GameObject.Find("Fullscreen_Button").GetComponent<Toggle>().SetIsOnWithoutNotify(Screen.fullScreen);
         EventSystem.current.SetSelectedGameObject(graphicsObjects[0].transform.Find("Start_Button").gameObject);
     }
 
@@ -321,6 +338,7 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in controlsObjects)
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
         }
         EventSystem.current.SetSelectedGameObject(controlsObjects[0].transform.Find("Start_Button").gameObject);
     }
@@ -334,6 +352,7 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in generalObjects)
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
         }
         EventSystem.current.SetSelectedGameObject(generalObjects[0].transform.Find("Start_Button").gameObject);
         SM.moveSubtitlesForMenu();
@@ -351,10 +370,10 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in audioObjects)
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
         }
         EventSystem.current.SetSelectedGameObject(audioObjects[0].transform.Find("Start_Button").gameObject);
     }
-
 
     /// <summary>
     /// Menu Function: Show the Main Menu
@@ -365,8 +384,18 @@ public class GameManager : MonoBehaviour
         foreach(GameObject g in mainMenuObjects)
         {
             g.SetActive(true);
+            AdjustChildUIValues(g);
         }
         EventSystem.current.SetSelectedGameObject(mainMenuObjects[0].transform.Find("Start_Button").gameObject);
+    }
+
+    /// <summary>
+    /// Mend Function: Toggle the opacity of the UI
+    /// </summary>
+    public void toggleHighContrast()
+    {
+        highContrast = !highContrast;
+        AdjustChildUIValues(HUD);
     }
     
     public void hider()
@@ -405,7 +434,6 @@ public class GameManager : MonoBehaviour
         }                   
     }
 
-
     /// <summary>
     /// Return the currently stored reference to the player, or attempt to find a new one
     /// </summary>
@@ -417,4 +445,23 @@ public class GameManager : MonoBehaviour
         }
         return playerReference;
     }
+
+    /// <summary>
+    /// Given a gameobject, set the opacity of the images with "Background" tags to the currently set value
+    /// </summary>
+    private void AdjustChildUIValues(GameObject g) {
+        Image[] menu_images = g.GetComponentsInChildren<Image>();
+        foreach(Image image in menu_images){
+            if(image.gameObject.CompareTag("Background")){
+                Color temp = image.color;
+                if(highContrast ){
+                    temp.a = MENU_ALPHA_HIGH_CONTRAST; 
+                }else {
+                    temp.a = MENU_ALPHA_DEFAULT; 
+                }
+                image.color = temp;
+            }
+        }
+    }
 }
+
