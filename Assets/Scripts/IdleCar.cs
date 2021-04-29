@@ -45,6 +45,9 @@ public class IdleCar : MonoBehaviour
     [SerializeField]
     private float proximityFactor = 0f;
     private GameObject playerReference = null;
+    public float minPitch;
+    public float maxPitch;
+    private AudioSource idleSound;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +71,8 @@ public class IdleCar : MonoBehaviour
         {
             SettlePosition = initialStartPos;
         }
+        idleSound = GetComponent<AudioSource>();
+        idleSound.pitch = Random.Range(maxPitch, minPitch);
         
         StartNewMove();
     }

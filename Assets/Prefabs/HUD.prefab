@@ -19257,7 +19257,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -100, y: 0.00002670288}
-  m_SizeDelta: {x: 250, y: 50}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8011028719775851915
 CanvasRenderer:
@@ -19300,7 +19300,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Boot Fade
+  m_Text: "reduced \ncamera motion"
 --- !u!1 &8206529022657428642
 GameObject:
   m_ObjectHideFlags: 0

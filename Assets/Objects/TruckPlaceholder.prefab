@@ -60,6 +60,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EndPosition: {x: -48.9, y: 193, z: -1.4}
+  CutsceneDelay: 8
+  Cutscene: {fileID: 0}
   SoundPlayer: {fileID: -3260635711748978736}
 --- !u!82 &-3260635711748978736
 AudioSource:
@@ -70,7 +72,7 @@ AudioSource:
   m_GameObject: {fileID: 6437555698033024989}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: da43cc214342c3b40bdedefbffaa0bb1, type: 2}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c9f8557c5cb49bb4f8ee03e858fcc9e2, type: 2}
   m_audioClip: {fileID: 8300000, guid: ad99cdd23e8bb724f9395b212a5b85d6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
