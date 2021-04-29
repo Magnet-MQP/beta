@@ -24,8 +24,8 @@ public class CityScroll : MonoBehaviour
     private bool respawning = false;
     private bool spawned = false;
     private float baseGradientOffset;
-    private Vector3 minTintRGB = new Vector3(0f, -0.3f, -0.3f);
-    private Vector3 maxTintRGB = new Vector3(0.125f, -0.1f, 0f);
+    private Vector3 minTintRGB = new Vector3(0f, -0.3f, -0.31f);
+    private Vector3 maxTintRGB = new Vector3(0.15f, -0.15f, 0f);
 
     void Start()
     {
