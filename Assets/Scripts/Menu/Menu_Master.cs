@@ -18,6 +18,7 @@ public class Menu_Master : MonoBehaviour
     public AudioMixer musicMix;
     public AudioMixer sfxMix;
     public AudioMixer uiMix;
+    public AudioMixer dialogMix;
     bool invert_x = false;
     bool invert_y = false;
     // Start is called before the first frame update
@@ -298,7 +299,7 @@ public class Menu_Master : MonoBehaviour
     /// Change the master volume
     /// Calling without an argument just applies the current volume
     /// </summary>
-    /// <param name="masterVolume">[Optional] the new font size (defaults to current)</param>
+    /// <param name="masterVolume">[Optional] the new volume (defaults to current)</param>
     public void SetMasterVolume(float masterVolume = -1)
     {
         AudioListener.volume = masterVolume;
@@ -309,7 +310,7 @@ public class Menu_Master : MonoBehaviour
     /// Change the environment volume
     /// Calling without an argument just applies the current volume
     /// </summary>
-    /// <param name="musicVolume">[Optional] the new font size (defaults to current)</param>
+    /// <param name="musicVolume">[Optional] the new volume (defaults to current)</param>
     public void SetMusicVolume(float musicVolume = -1)
     {
         musicMix.SetFloat("musicVolume", musicVolume);
@@ -319,7 +320,7 @@ public class Menu_Master : MonoBehaviour
     /// Change the sfx volume
     /// Calling without an argument just applies the current volume
     /// </summary>
-    /// <param name="sfxVolume">[Optional] the new font size (defaults to current)</param>
+    /// <param name="sfxVolume">[Optional] the new volume (defaults to current)</param>
     public void SetSfxVolume(float sfxVolume = -1)
     {
         sfxMix.SetFloat("sfxVolume", sfxVolume);
@@ -329,9 +330,19 @@ public class Menu_Master : MonoBehaviour
     /// Change the ui volume
     /// Calling without an argument just applies the current volume
     /// </summary>
-    /// <param name="uiVolume">[Optional] the new font size (defaults to current)</param>
+    /// <param name="uiVolume">[Optional] the new volume (defaults to current)</param>
     public void SetUiVolume(float uiVolume = -1)
     {
         uiMix.SetFloat("uiVolume", uiVolume);
+    }
+
+    /// <summary>
+    /// Change the dialog volume
+    /// Calling without an argument just applies the current volume
+    /// </summary>
+    /// <param name="dialogVolume">[Optional] the new volume (defaults to current)</param>
+    public void SetDialogVolume(float dialogVolume = -1)
+    {
+        dialogMix.SetFloat("dialogVolume", dialogVolume);
     }
 }
