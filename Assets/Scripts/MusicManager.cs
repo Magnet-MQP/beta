@@ -13,7 +13,6 @@ public class MusicManager : MonoBehaviour
         if(!source.isPlaying){
             source.Play(0);
         }
-        
     }
 
     // Update is called once per frame

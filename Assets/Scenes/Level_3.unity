@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000060352308, g: 0.00004553286, b: 0.00006103357, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -19597,7 +19597,7 @@ MonoBehaviour:
   ActivationTarget: {fileID: 1712224158}
   ActiveMessage: 'FyED-OR: "The elevator should be powered now!"'
   SoundSource: {fileID: 1218648202}
-  CompletionClip: {fileID: 8300000, guid: 4bd979f246531e34a87e3be824e4f32c, type: 3}
+  CompletionClip: {fileID: 8300000, guid: 142e09258ab45b14f8648baa7f43947a, type: 3}
 --- !u!82 &1218648202
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19608,7 +19608,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: c9f8557c5cb49bb4f8ee03e858fcc9e2, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 4bd979f246531e34a87e3be824e4f32c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 142e09258ab45b14f8648baa7f43947a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
