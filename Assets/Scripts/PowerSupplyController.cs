@@ -12,6 +12,10 @@ public class PowerSupplyController : MonoBehaviour, IRemoteController
     private bool powerActivated = false;
     [Tooltip("The message to display when fully activated")]
     public string ActiveMessage = "";
+    [Tooltip("Audio player for activation sound")]
+    public AudioSource SoundSource;
+    [Tooltip("Completion audio clip")]
+    public AudioClip CompletionClip;
 
     // Update is called once per frame
     void Update()
@@ -29,6 +33,7 @@ public class PowerSupplyController : MonoBehaviour, IRemoteController
         {
             powerActivated = true;
             ActivationTarget.RemoteActivate(this);
+            SoundSource.PlayDelayed(1.5f);
             if (ActiveMessage != "")
             {
                 SubtitleManager.Instance.QueueSubtitle(new SubtitleData(ActiveMessage, 5000));

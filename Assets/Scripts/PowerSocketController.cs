@@ -13,6 +13,8 @@ public class PowerSocketController : MonoBehaviour
     public GameObject MockPowerCell;
     [Tooltip("Whether the power socket is activated")]
     public bool Activated = false;
+    [Tooltip("Audio player for activation sound")]
+    public AudioSource SoundSource;
 
     void OnTriggerEnter(Collider other)
     {
@@ -28,6 +30,7 @@ public class PowerSocketController : MonoBehaviour
         {
             Activated = true;
             MockPowerCell.SetActive(true);
+            SoundSource.Play();
             otherPhysics.DeleteSelf();
         }
     }
