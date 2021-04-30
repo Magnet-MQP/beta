@@ -84,8 +84,10 @@ public class GameManager : MonoBehaviour
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
 
         SM = SubtitleManager.getSubtitleManager();
+
         SM.menuParent = GameObject.FindGameObjectWithTag("Menu");
         SM.defaultParent = GameObject.FindGameObjectWithTag("Subtitles");
+
         SM.canvas = GameObject.Find("Canvas");
         SM.moveSubtitlesToDefault();
 
@@ -463,6 +465,11 @@ public class GameManager : MonoBehaviour
                 image.color = temp;
             }
         }
+    }
+
+    public string getActionName(string name)
+    {
+        return m_PlayerInput.actions[name].GetBindingDisplayString();
     }
 }
 
