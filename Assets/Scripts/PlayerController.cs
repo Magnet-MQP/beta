@@ -955,6 +955,19 @@ public class PlayerController : MonoBehaviour
 
                 // DEBUG - show the normal of the surface with a magenta line
                 Debug.DrawRay(ReticleHitPosition, hit.normal*2f, Color.magenta,0f);
+
+                // Get and display target's subtitle data if present and within reading distance
+                // Negative distance = infinite
+                TextProperty tp = ReticleTarget.GetComponent<TextProperty>();
+                if (tp && (tp.ReadingDistance < 0 || tp.ReadingDistance >= targetDistance))
+                {
+                    string newText = tp.Text;
+                    if (tp.actionName != "")
+                    {
+                        newText = newText.Replace("_", m_PlayerInput.actions[tp.actionName].GetBindingDisplayString());
+                    }
+                    SM.QueueSubtitle(new SubtitleData(newText, 0));
+                }
             }
 
             // Case 2: The target is a moveable magnetic object
@@ -983,10 +996,15 @@ public class PlayerController : MonoBehaviour
 
             // Get and display target's subtitle data if present and within reading distance
             // Negative distance = infinite
-            TextProperty tp = ReticleTarget.GetComponent<TextProperty>();
-            if (tp && (tp.ReadingDistance < 0 || tp.ReadingDistance >= targetDistance))
+            TextProperty tp1 = ReticleTarget.GetComponent<TextProperty>();
+            if (tp1 && (tp1.ReadingDistance < 0 || tp1.ReadingDistance >= targetDistance))
             {
-                SM.QueueSubtitle(new SubtitleData(tp.Text, 0));
+                string newText = tp1.Text;
+                if (tp1.actionName != "")
+                {
+                    newText = newText.Replace("_", m_PlayerInput.actions[tp1.actionName].GetBindingDisplayString());
+                }
+                SM.QueueSubtitle(new SubtitleData(newText, 0));
             }
 
             // DEBUG - draw info at crosshair hit position
