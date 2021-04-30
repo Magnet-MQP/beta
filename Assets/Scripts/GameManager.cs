@@ -83,9 +83,9 @@ public class GameManager : MonoBehaviour
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
 
-        //SM = SubtitleManager.getSubtitleManager();
-        SM.menuParent = GameObject.FindGameObjectsWithTag("Menu")[0];
-        SM.defaultParent = GameObject.FindGameObjectsWithTag("Subtitles")[0];
+        SM = SubtitleManager.getSubtitleManager();
+        SM.menuParent = GameObject.FindGameObjectWithTag("Menu");
+        SM.defaultParent = GameObject.FindGameObjectWithTag("Subtitles");
         SM.canvas = GameObject.Find("Canvas");
         SM.moveSubtitlesToDefault();
 

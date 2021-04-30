@@ -11,10 +11,8 @@ public class MusicManager : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         if(!source.isPlaying){
-            Debug.Log("Play");
             source.Play(0);
         }
-        
     }
 
     // Update is called once per frame
