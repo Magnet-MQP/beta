@@ -21,6 +21,7 @@ TagManager:
   - General
   - Background
   - MusicManager
+  - Credits
   layers:
   - Default
   - TransparentFX

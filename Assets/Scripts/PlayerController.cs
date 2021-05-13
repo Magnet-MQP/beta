@@ -371,13 +371,29 @@ public class PlayerController : MonoBehaviour
         // - disable boots if without target
         else if (BootPolarity != Charge.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
+            /*
             nextBootPolarity = Charge.Neutral;
             nextBootMagnetTarget = null;
             nextBootTargetPosition = transform.position;
             nextTargetUpDirection = targetUpDirection;   // unchanged
             bootTargetChanged = true;
             CurrentPlayerState = PlayerState.Neutral;
+            */
+            Release();
         }
+    }
+
+    /// <summary>
+    /// Release player from currently held surface
+    /// </summary>
+    private void Release() {
+        nextBootPolarity = Charge.Neutral;
+        nextBootMagnetTarget = null;
+        nextBootTargetPosition = transform.position;
+        nextTargetUpDirection = targetUpDirection;   // unchanged
+        bootTargetChanged = true;
+        CurrentPlayerState = PlayerState.Neutral;
+
     }
 
     void Gloves(float value) 
@@ -490,7 +506,6 @@ public class PlayerController : MonoBehaviour
         {
             Gloves(gloves);
         }
-
 
         if (m_PlayerInput.actions["interact"].triggered) 
         {

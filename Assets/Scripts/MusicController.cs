@@ -28,10 +28,10 @@ public class MusicController : MonoBehaviour
             StartCoroutine(FadeOut(music[currentlyPlaying], fadeDir));
         }
         currentlyPlaying += 1;
-        StartCoroutine(FadeIn(music[currentlyPlaying], fadeDir));
+        StartCoroutine(FadeIn(music[currentlyPlaying], fadeDir, maxVolume));
     }
 
-    private IEnumerator FadeIn(AudioSource audioSource, float fadeTime) {
+    public static IEnumerator FadeIn(AudioSource audioSource, float fadeTime, float maxVolume) {
         
         while (audioSource.volume < maxVolume) {
             audioSource.volume += Time.deltaTime / fadeTime;
@@ -41,7 +41,7 @@ public class MusicController : MonoBehaviour
         audioSource.volume = maxVolume;
     }
 
-    private IEnumerator FadeOut(AudioSource audioSource, float fadeTime) {
+    public static IEnumerator FadeOut(AudioSource audioSource, float fadeTime) {
         float startVolume = audioSource.volume;
         
         while (audioSource.volume > 0) {

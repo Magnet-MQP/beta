@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     GameObject[] graphicsObjects;
     GameObject[] audioObjects;
     GameObject[] mainMenuObjects;
+    GameObject[] creditsObjects;
     public bool enablePause;
     public bool isPaused = false;
     private float pauseWait = 0;
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
         mainMenuObjects = GameObject.FindGameObjectsWithTag("Main_Menu");
         playerReference = GameObject.Find("Player");
         HUD = GameObject.FindGameObjectWithTag("HUD");
+        creditsObjects = GameObject.FindGameObjectsWithTag("Credits");
 
         ES = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
 
@@ -393,6 +395,22 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Menu Function: Show the Credits
+    /// </summary>
+    public void showCredits() 
+    {
+        hider();
+        foreach(GameObject g in creditsObjects)
+        {
+            g.SetActive(true);
+            AdjustChildUIValues(g);
+        }
+        EventSystem.current.SetSelectedGameObject(creditsObjects[0].transform.Find("Start_Button").gameObject);
+    }
+
+
+
+    /// <summary>
     /// Mend Function: Toggle the opacity of the UI
     /// </summary>
     public void toggleHighContrast()
@@ -435,6 +453,10 @@ public class GameManager : MonoBehaviour
         {
             g.SetActive(false);
         }                   
+        foreach(GameObject g in creditsObjects)
+        {
+            g.SetActive(false);
+        }
     }
 
     /// <summary>

@@ -100,6 +100,13 @@ public class Menu_Master : MonoBehaviour
     // PAUSE MENU OPTIONS
 
     /// <summary>
+    /// Reset the current level
+    /// </summary>
+    public void ResetLevel() {
+        manager.reloadScene();
+    }
+
+    /// <summary>
     /// Go back to the main menu from one of the game's levels
     /// </summary>
     public void ReturnToMain() {
@@ -112,6 +119,15 @@ public class Menu_Master : MonoBehaviour
     public void QuitGame() {
         Application.Quit();
     }
+
+    /// <summary>
+    /// Show the credits
+    /// </summary>
+    public void ShowCredits() {
+        manager.showCredits();
+    }
+
+
 
     // GENERAL MENU ACTIONS
 
