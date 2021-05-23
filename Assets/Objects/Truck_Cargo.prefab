@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 4.6099744, y: 0.9904114, z: 2.1204226}
   m_Children: []
   m_Father: {fileID: 5115281637713344004}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -180, y: 0, z: 90}
 --- !u!2083052967 &937620488013700175
 VisualEffect:
@@ -139,7 +139,7 @@ Transform:
   m_LocalScale: {x: 2.5, y: 2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 5115281637713344004}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!2083052967 &1661255691878715812
 VisualEffect:
@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 4945664974608846579}
   - component: {fileID: 3694458112743146848}
   - component: {fileID: 1111374957535261428}
+  - component: {fileID: 2055133915370041748}
   m_Layer: 9
   m_Name: Truck_Cargo
   m_TagString: Untagged
@@ -331,6 +332,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5599377963525289866}
+  - {fileID: 7700654295394319171}
   - {fileID: 5383585459184248973}
   - {fileID: 5641690140477217456}
   - {fileID: 529757612793065471}
@@ -557,6 +559,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!205 &2055133915370041748
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5599928309498195134}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0.21162987, z: 0.8127613}
+  m_Size: 49.850155
+  m_FadeMode: 1
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.34054154
+    fadeTransitionWidth: 0.1
+    renderers:
+    - renderer: {fileID: 1488654074762848348}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0.1
+    renderers:
+    - renderer: {fileID: 1247766177899096822}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &9026294829575321275
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,7 +615,7 @@ Transform:
   m_LocalScale: {x: 4.6099744, y: 0.9904114, z: 2.1204226}
   m_Children: []
   m_Father: {fileID: 5115281637713344004}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -180, y: 0, z: 90}
 --- !u!2083052967 &4879653000743655854
 VisualEffect:
@@ -666,3 +694,74 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1001 &7878063714315607208
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5115281637713344004}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -286975218973329826, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2ffc8eda342152c4e8b4f05f444b3b07, type: 2}
+    - target: {fileID: 919132149155446097, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+      propertyPath: m_Name
+      value: truck_cargo_lod_1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+--- !u!4 &7700654295394319171 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+  m_PrefabInstance: {fileID: 7878063714315607208}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1247766177899096822 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -286975218973329826, guid: d45cba04941466348875bcaaa8eb68ed, type: 3}
+  m_PrefabInstance: {fileID: 7878063714315607208}
+  m_PrefabAsset: {fileID: 0}

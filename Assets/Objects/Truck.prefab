@@ -284,15 +284,15 @@ LODGroup:
   m_LastLODIsBillboard: 0
   m_LODs:
   - screenRelativeHeight: 0.73927027
-    fadeTransitionWidth: 0
+    fadeTransitionWidth: 0.05
     renderers:
     - renderer: {fileID: 8483827374993841766}
   - screenRelativeHeight: 0.40395868
-    fadeTransitionWidth: 0
+    fadeTransitionWidth: 0.05
     renderers:
     - renderer: {fileID: 6026889374858971824}
   - screenRelativeHeight: 0
-    fadeTransitionWidth: 0
+    fadeTransitionWidth: 0.05
     renderers:
     - renderer: {fileID: 1842684378007081336}
   m_Enabled: 1

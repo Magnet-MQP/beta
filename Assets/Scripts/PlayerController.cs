@@ -360,11 +360,11 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Charge targetCharge = GetPolarity(ReticleTarget);
-        //
         Charge newCharge = Charge.Neutral;
         // - choose correct polarity and set target
         if (targetCharge != Charge.Neutral && ReticleTarget != null && ReticleTarget.CompareTag("MagnetTarget") && targetDistance < SELF_PULL_RANGE)
         {
+            // determine next polarity
             if (targetCharge == Charge.Negative)
             {
                 newCharge = Charge.Positive;
@@ -374,9 +374,16 @@ public class PlayerController : MonoBehaviour
                 newCharge = Charge.Negative;
             }
             nextBootPolarity = newCharge;
+
+            // update next target
             nextBootMagnetTarget = ReticleTarget;
-            nextBootTargetPosition = ReticleHitPosition;
-            nextTargetUpDirection = ReticleHitNormal;
+
+            // update target position and up direction
+            // adjust position and normal if targetting askew
+            Vector3 targetNormal = GetFaceNormal(ReticleTarget);
+            float shiftFactor = Vector3.Angle(ReticleHitNormal, targetNormal)/105f;
+            nextBootTargetPosition = Vector3.Lerp(ReticleHitPosition, ReticleTarget.transform.position+targetNormal.normalized*1.5f, shiftFactor);
+            nextTargetUpDirection = targetNormal;
             bootTargetChanged = true;
         }
         // - disable boots if without target
@@ -707,7 +714,7 @@ public class PlayerController : MonoBehaviour
         // Calculate distance to target and show error
         if (ReticleTarget != null)
         {
-            targetDistance = Vector3.Distance(transform.position, ReticleTarget.transform.position);
+            targetDistance = Vector3.Distance(MainCamera.transform.position, ReticleHitPosition); // ReticleTarget.transform.position);
 
             if (ReticleTarget.CompareTag("MagnetTarget"))
             {
@@ -975,7 +982,8 @@ public class PlayerController : MonoBehaviour
         // - process hit
         if (hit.collider)
         {
-            // return previous object to regular interactable
+            //Debug.Log(hit.collider.name);
+            // return previous object to regular interactable state
             if (ReticleTarget != null && ReticleTarget != hit.collider.gameObject && wasInteractable)
             {
                 Outliner outline = ReticleTarget.GetComponent<Outliner>();
@@ -984,14 +992,22 @@ public class PlayerController : MonoBehaviour
                     outline.OutlineTarget.layer = LayerMask.NameToLayer("Interactable");
                 }
             }
+            // update to new target
             ReticleTarget = hit.collider.gameObject;
+            // apply outline to target if in range
             if (ReticleTarget.layer != LayerMask.NameToLayer("Wall"))
             {
                 wasInteractable = true;
                 Outliner outline = ReticleTarget.GetComponent<Outliner>();
                 if (outline)
                 {
-                    outline.OutlineTarget.layer = LayerMask.NameToLayer(outline.OutlineLayerType); // mark as selected
+                    // determine if target is in range 
+                    string newLayer = outline.OutlineLayerType;
+                    if (hit.distance > SELF_PULL_RANGE || (!ReticleTarget.CompareTag("MagnetTarget") && hit.distance > PULL_RANGE))
+                    {
+                        newLayer = "Interactable";
+                    }
+                    outline.OutlineTarget.layer = LayerMask.NameToLayer(newLayer); // mark as selected
                 }
             }
             else
@@ -1194,6 +1210,23 @@ public class PlayerController : MonoBehaviour
         }
         return Charge.Neutral;
     }
+
+    /// <summary>
+    /// Returns the face normal of a polarized target
+    /// </summary>
+    Vector3 GetFaceNormal(GameObject target)
+    {   
+        if (target)
+        {
+            ChargeProperty targetCharge = target.GetComponent<ChargeProperty>();
+            if (targetCharge)
+            {
+                return target.transform.TransformVector(targetCharge.FaceNormal);
+            }
+        }
+        return Vector3.zero;
+    }
+
 
     /// <summary>
     /// Display a subtitle (other objects can call this)

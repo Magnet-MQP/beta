@@ -13,26 +13,36 @@ public class PopupText : MonoBehaviour
     public string actionName;
     public float MaxDelay = 0f;
     private float delay = 0f;
-    private bool touchingPlayer = false;
+    private GameObject touchingPlayer;
+    private float breakRadius;
     private GameManager GM;
     //private PlayerInput m_playerInput;
 
     void Start()
     {
         GM = GameManager.getGameManager();
+        breakRadius = Mathf.Max(transform.localScale.x, Mathf.Max(transform.localScale.y, transform.localScale.z));
     }
 
     void Update()
     {
-        if (touchingPlayer)
+        if (touchingPlayer != null)
         {
-            if (delay > MaxDelay)
+            // break contact if player is too far
+            if (Vector3.Distance(transform.position, touchingPlayer.transform.position) > 1.5f)
             {
-                DisplayMessage();
+                touchingPlayer = null;
             }
             else
             {
-                delay += Time.deltaTime;
+                if (delay > MaxDelay)
+                {
+                    DisplayMessage();
+                }
+                else
+                {
+                    delay += Time.deltaTime;
+                }
             }
         }
         else
@@ -45,15 +55,7 @@ public class PopupText : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            touchingPlayer = true;
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            touchingPlayer = false;
+            touchingPlayer = other.gameObject;
         }
     }
 

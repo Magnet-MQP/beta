@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Polarity: -1
+  FaceNormal: {x: 0, y: 0, z: -1}
 --- !u!65 &4254935248679768084
 BoxCollider:
   m_ObjectHideFlags: 0
