@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 5899116981028439657}
   - component: {fileID: 7102982899523123830}
   - component: {fileID: 7214791226841045766}
+  - component: {fileID: 7473128819405634066}
   m_Layer: 10
   m_Name: PolaritySurface
   m_TagString: MagnetTarget
@@ -185,6 +186,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Polarity: 1
+--- !u!114 &7473128819405634066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850674392589821771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69cd806ce504ef4f91de442f61dc39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OutlineTarget: {fileID: 4806748239640432549}
+  OutlineLayerType: FootInteractSelect
 --- !u!1001 &6756301985919411526
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4254935248679768091}
   - component: {fileID: 4254935248679768085}
   - component: {fileID: 4254935248679768084}
+  - component: {fileID: 100521771681373618}
   m_Layer: 10
   m_Name: PolarityPanel
   m_TagString: MagnetTarget
@@ -110,6 +111,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!114 &100521771681373618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4254935248679768087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69cd806ce504ef4f91de442f61dc39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OutlineTarget: {fileID: 4254935248679768087}
+  OutlineLayerType: FootInteractSelect
 --- !u!1001 &4254935249675200820
 PrefabInstance:
   m_ObjectHideFlags: 0

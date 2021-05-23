@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1828451244406400283}
   - component: {fileID: 1828451244406400280}
   - component: {fileID: 1828451244406400281}
+  - component: {fileID: 4678382790895320235}
   m_Layer: 10
   m_Name: Scaffolding
   m_TagString: Untagged
@@ -94,6 +95,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Polarity: -1
+--- !u!114 &4678382790895320235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828451244406400279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69cd806ce504ef4f91de442f61dc39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OutlineTarget: {fileID: 4364748484545224941}
+  OutlineLayerType: HandInteractSelect
 --- !u!1 &1828451245324293415
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,5 +340,10 @@ PrefabInstance:
 --- !u!4 &2272683204684691585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 11e89920eea0d7b4a994cf458c826ca2, type: 3}
+  m_PrefabInstance: {fileID: 1729531962836082538}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4364748484545224941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6588137646990983289, guid: 11e89920eea0d7b4a994cf458c826ca2, type: 3}
   m_PrefabInstance: {fileID: 1729531962836082538}
   m_PrefabAsset: {fileID: 0}

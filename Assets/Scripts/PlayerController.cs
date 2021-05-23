@@ -168,6 +168,7 @@ public class PlayerController : MonoBehaviour
                     break;
                 case PlayerState.Pulling:
                     enableCollider = false;
+                    pullTimer = 0;
                     break;
                 case PlayerState.Attached:
                     disableFieldCollision = false;
@@ -195,8 +196,6 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Look speed limit")]
     public float mouseSpeedClamp = 30f;
 
-    private Vector2 rotation;
-
     // Magnetism
     [Tooltip("The current polarity of the player's boots (-1, 0, or 1)")]
     [Header("Magnetism")]
@@ -220,6 +219,10 @@ public class PlayerController : MonoBehaviour
     private float bootResetTimerMax = 0.2f;
     [Tooltip("The detection radius of the player's targetting reticle")]
     public float ReticleRadius = 1f;
+    [Tooltip("The maximum amount of time a magnetic feet pull will last before automatically disengaging")]
+    // This is a preventative measure for cases when the player gets stuck
+    private float pullTimerMax = 4f;
+    private float pullTimer = 0f;
 
     // Targetting
     [Tooltip("The object the player currently is aiming at")]
@@ -240,6 +243,9 @@ public class PlayerController : MonoBehaviour
     public bool Landed = false;
     [Tooltip("The distance at which you can interact with an object (ex. a button)")]
     public const float INTERACT_RANGE = 10f;
+    private bool wasInteractable = false; // whether the current target was previously interactable
+    private int interactWallMask; // the layer mask for walls and all interactables
+    private int interactMask; // the layer mask for all interactables
     
     // RFDOLAN PICKUP CODE
     [Tooltip("Code for attracting and repelling objects")]
@@ -277,6 +283,7 @@ public class PlayerController : MonoBehaviour
     private float gloveChangeTimer = 0;
     private float gloveChangeTimerMax = 0.2f;
 
+    // Cuscenes
     [Tooltip("The current cutscene the player is in (if this is set, the player will immediately enter it on load)")]
     [Header("Cutscenes")]
     public CutsceneData ActiveCutscene = null;
@@ -287,6 +294,7 @@ public class PlayerController : MonoBehaviour
     private float cutsceneUnlockPoint = 0f; // how much time should be left on the clock when the player gains input
     private bool cutsceneEndEffect = false; // whether the end effect of the current cutscene has started
 
+    // Accessibility
     [Tooltip("Whether to show the fade out/in animation when pulling to a surface")]
     [Header("Accessibility Settings")]
     private float bootFade = 0f;
@@ -300,6 +308,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        interactWallMask = LayerMask.GetMask("Wall","Interactable","FootInteractSelect","HandInteractSelect","PressInteractSelect");
+        interactMask = LayerMask.GetMask("Interactable","FootInteractSelect","HandInteractSelect","PressInteractSelect");
+
         m_CameraTransform = GetComponentInChildren<Camera>().transform;
         RB = GetComponent<Rigidbody>();
         
@@ -808,35 +819,44 @@ public class PlayerController : MonoBehaviour
         // - apply gravity OR pull self along target path
         if (CurrentPlayerState == PlayerState.Pulling)
         {
-            // advance to next path node if at end
-            if (PullPath.Count > 0 && Vector3.Distance(transform.position, PullPath[0]) < Collider.radius)
+            // advance timer, and disengage if at end
+            pullTimer += Time.deltaTime;
+            if (pullTimer > pullTimerMax)
             {
-                PullPath.RemoveAt(0); 
+                Release();
             }
-            // if further nodes still present, pull towards next
-            if (PullPath.Count > 0)
-            {
-                gravityDirection = PullPath[0] - transform.position;
-                FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
-                // avoid obstacles via simple steering
-                float obstacleDistance = 10f;
-                for (int i = 0; i < 8; i++)
-                {
-                    float angle = Mathf.PI*i/4;
-                    Vector3 direction = gravityDirection + 3*transform.up*Mathf.Cos(angle) + 3*transform.right*Mathf.Sin(angle);
-                    RaycastHit obstacleHit;
-                    Physics.SphereCast(transform.position, Collider.radius, direction, out obstacleHit, obstacleDistance, LayerMask.GetMask("Wall"));
-                    if (obstacleHit.collider)
-                    {
-                        // apply force pushing player away from wall, which is stronger the closer they are to it
-                        RB.AddForce(-1.7f * Vector3.ProjectOnPlane(direction,-gravityDirection) * (1-(obstacleHit.distance/obstacleDistance)));
-                    }
-                }
-            }
-            // otherwise, attach to surface
             else
             {
-                CurrentPlayerState = PlayerState.Attached;
+                // advance to next path node if at end
+                if (PullPath.Count > 0 && Vector3.Distance(transform.position, PullPath[0]) < Collider.radius)
+                {
+                    PullPath.RemoveAt(0); 
+                }
+                // if further nodes still present, pull towards next
+                if (PullPath.Count > 0)
+                {
+                    gravityDirection = PullPath[0] - transform.position;
+                    FallSpeed = Mathf.Min(FallSpeed + MagnetBootIntensity, TerminalVelocity);
+                    // avoid obstacles via simple steering
+                    float obstacleDistance = 10f;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float angle = Mathf.PI*i/4;
+                        Vector3 direction = gravityDirection + 3*transform.up*Mathf.Cos(angle) + 3*transform.right*Mathf.Sin(angle);
+                        RaycastHit obstacleHit;
+                        Physics.SphereCast(transform.position, Collider.radius, direction, out obstacleHit, obstacleDistance, LayerMask.GetMask("Wall"));
+                        if (obstacleHit.collider)
+                        {
+                            // apply force pushing player away from wall, which is stronger the closer they are to it
+                            RB.AddForce(-1.7f * Vector3.ProjectOnPlane(direction,-gravityDirection) * (1-(obstacleHit.distance/obstacleDistance)));
+                        }
+                    }
+                }
+                // otherwise, attach to surface
+                else
+                {
+                    CurrentPlayerState = PlayerState.Attached;
+                }
             }
         }
         else
@@ -850,7 +870,7 @@ public class PlayerController : MonoBehaviour
         if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
             RaycastHit floorHit;
-            Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+            Physics.SphereCast(transform.position, Collider.radius, fallOffset*2, out floorHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable","InteractSelect"), QueryTriggerInteraction.Ignore);
             if (floorHit.collider)
             {
                 // if floor is metal or opposite polarity and within slope tolerance, stick to it
@@ -900,7 +920,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit fallHit;
         if (CurrentPlayerState == PlayerState.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
-            Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+            Physics.SphereCast(transform.position, Collider.radius, fallOffset, out fallHit, fallOffset.magnitude, interactWallMask, QueryTriggerInteraction.Ignore);
             if (fallHit.collider)
             {
                 fallOffset = fallOffset.normalized * (fallHit.distance-COLLISION_OFFSET);
@@ -909,7 +929,7 @@ public class PlayerController : MonoBehaviour
         RB.MovePosition(transform.position + fallOffset);
         // - pull out of floor
         RaycastHit antiClipCast;
-        Physics.Raycast(transform.position, -transform.up, out antiClipCast, Collider.radius, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+        Physics.Raycast(transform.position, -transform.up, out antiClipCast, Collider.radius, interactWallMask, QueryTriggerInteraction.Ignore);
         if (antiClipCast.collider)
         {
             RB.MovePosition(transform.position + transform.up*(Collider.radius-antiClipCast.distance));
@@ -939,9 +959,9 @@ public class PlayerController : MonoBehaviour
         // detects Wall and Interactable objects - must set the appropriate layer first!)
         float castDistance = 500f;
         RaycastHit hit;
-        Physics.Raycast(MainCamera.transform.position, MainCamera.transform.forward, out hit, castDistance, LayerMask.GetMask("Wall","Interactable"), QueryTriggerInteraction.Ignore);
+        Physics.Raycast(MainCamera.transform.position, MainCamera.transform.forward, out hit, castDistance, interactWallMask, QueryTriggerInteraction.Ignore);
         // - if no target found, try again with a spherecast that only detects interactables
-        if (hit.collider == null || hit.collider.gameObject.layer != LayerMask.NameToLayer("Interactable"))
+        if (hit.collider == null || !InteractableLayer(hit.collider.gameObject.layer))
         {
             // cast up to max distance or the hit distance
             float sphereDistance = castDistance;
@@ -950,12 +970,34 @@ public class PlayerController : MonoBehaviour
                 sphereDistance = hit.distance;
             }
             sphereDistance -= ReticleRadius;
-            Physics.SphereCast(MainCamera.transform.position, ReticleRadius, MainCamera.transform.forward, out hit, sphereDistance, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore);
+            Physics.SphereCast(MainCamera.transform.position, ReticleRadius, MainCamera.transform.forward, out hit, sphereDistance, interactMask, QueryTriggerInteraction.Ignore);
         }
         // - process hit
         if (hit.collider)
         {
+            // return previous object to regular interactable
+            if (ReticleTarget != null && ReticleTarget != hit.collider.gameObject && wasInteractable)
+            {
+                Outliner outline = ReticleTarget.GetComponent<Outliner>();
+                if (outline)
+                {
+                    outline.OutlineTarget.layer = LayerMask.NameToLayer("Interactable");
+                }
+            }
             ReticleTarget = hit.collider.gameObject;
+            if (ReticleTarget.layer != LayerMask.NameToLayer("Wall"))
+            {
+                wasInteractable = true;
+                Outliner outline = ReticleTarget.GetComponent<Outliner>();
+                if (outline)
+                {
+                    outline.OutlineTarget.layer = LayerMask.NameToLayer(outline.OutlineLayerType); // mark as selected
+                }
+            }
+            else
+            {
+                wasInteractable = false;
+            }
             ReticleHitNormal = hit.normal;
             ReticleHitPosition = hit.point;
             Color reticleColor = Color.white;
@@ -1041,6 +1083,15 @@ public class PlayerController : MonoBehaviour
         else
         {
             // no target found
+            // return previous object to regular interactable
+            if (ReticleTarget != null)
+            {
+                Outliner outline = ReticleTarget.GetComponent<Outliner>();
+                if (outline)
+                {
+                    outline.OutlineTarget.layer = LayerMask.NameToLayer("Interactable");
+                }
+            }
             ReticleTarget = null;
             ReticleHitNormal = Vector3.zero;
             ReticleHitPosition = transform.position;
@@ -1052,12 +1103,12 @@ public class PlayerController : MonoBehaviour
 
         Ray ray = new Ray(m_CameraTransform.position, m_CameraTransform.forward);
 
-        if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PICKUP_RANGE, LayerMask.GetMask("Interactable","InteractSelect")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract = true;
             m_CanInteract_Far = false;
         }
 
-        else if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
+        else if (Physics.SphereCast(ray, ReticleRadius, out m_RaycastFocus, PULL_RANGE, LayerMask.GetMask("Interactable","InteractSelect")) && m_RaycastFocus.collider.transform.tag == "Interactable") {
             m_CanInteract_Far = true;
             m_CanInteract = false;
             
@@ -1085,6 +1136,14 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+    }
+
+    /// <summary>
+    /// Determines whether the the target has an interactable layer
+    /// </summary>
+    bool InteractableLayer(int thisLayer)
+    {
+        return interactMask == (interactMask | (1 << thisLayer));
     }
 
     /// <summary>

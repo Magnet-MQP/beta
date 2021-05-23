@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
     /// Scene Function: Progress to the next scene numerically
     /// </summary>
     public void nextScene() {
-        //Debug.Log("GO");
+        //Debug.Log("LEAVING " + currScene.buildIndex);
         int nextIndex = currScene.buildIndex+1;
         if(nextIndex != 0) { enablePause = true;} 
         else { enablePause = false;}
