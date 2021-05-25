@@ -22,6 +22,8 @@ public class SwitchController : ARemoteControllable, IRemoteController
     [Tooltip("The switch's button")]
     [Header("Visuals")]
     public GameObject Button;
+    [Tooltip("The hinge for the switch's lever")]
+    public GameObject LeverHinge;
     [Tooltip("The material to use when powered")]
     public Material MatReady;
     [Tooltip("The material to use when pressed or de-powered")]
@@ -57,6 +59,7 @@ public class SwitchController : ARemoteControllable, IRemoteController
             }
             used = true;
             Button.GetComponent<Renderer>().material = MatInactive;
+            LeverHinge.transform.Rotate(new Vector3(100,0,0));
             myText.Text = "";
             SoundPlayer.Play();
             if(musicController != null){

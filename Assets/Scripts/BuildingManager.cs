@@ -12,6 +12,7 @@ public class BuildingManager : MonoBehaviour
     public int BuildingCount = 100;
     [Tooltip("The distance away at which to spawn buildings")]
     public float RespawnDistance = 1000f;
+    private float minRespawnDistance = 500f;
     [Tooltip("The set of buildings to use")]
     public GameObject[] BuildingTemplates;
     [Tooltip("The scene's player object")]
@@ -43,7 +44,7 @@ public class BuildingManager : MonoBehaviour
         CityScroll otherScript = other.GetComponent<CityScroll>();
         if (otherScript != null)
         {
-            otherScript.Respawn(RespawnDistance);
+            otherScript.Respawn(Mathf.Max(RespawnDistance, minRespawnDistance + other.transform.position.z-playerRef.transform.position.z ));
         }
     }
 

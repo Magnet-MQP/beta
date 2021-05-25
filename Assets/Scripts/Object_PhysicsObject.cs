@@ -12,6 +12,8 @@ public class Object_PhysicsObject : MonoBehaviour, IInteractable {
     private GameObject m_HoldObject = null;
     public Charge Obj_Polarity = Charge.Neutral;
     
+    [Tooltip("Whether the object is 'consumable', i.e. socketable in a power supply")]
+    public bool Consumable = false;
     [Tooltip("Marked as true when the object has been 'used up', ex. placed in a power supply")]
     public bool Consumed = false; 
     private PlayerController player;

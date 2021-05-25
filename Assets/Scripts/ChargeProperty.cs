@@ -9,4 +9,5 @@ using UnityEngine;
 public class ChargeProperty : MonoBehaviour
 {
     public Charge Polarity;
+    public Vector3 FaceNormal = new Vector3(0,0,0);
 }

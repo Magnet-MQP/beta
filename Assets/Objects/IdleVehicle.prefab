@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 320038930238082235}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!2083052967 &6195945249874674919
 VisualEffect:
@@ -139,7 +139,7 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 320038930238082235}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!2083052967 &6819860050318395846
 VisualEffect:
@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 5709235632871873248}
   - component: {fileID: 5709235632871873279}
   - component: {fileID: -6323184496341285233}
+  - component: {fileID: 8534059983328181429}
   m_Layer: 0
   m_Name: IdleVehicle
   m_TagString: Untagged
@@ -459,6 +460,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!205 &8534059983328181429
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5709235632871873278}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.019186497, y: 0.07969475, z: 3.4264357}
+  m_Size: 17.811226
+  m_FadeMode: 1
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.34566784
+    fadeTransitionWidth: 0.05
+    renderers:
+    - renderer: {fileID: 211026375999105427}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0.05
+    renderers:
+    - renderer: {fileID: 7828875668186021508}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &7576000257822163452
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +516,7 @@ Transform:
   m_LocalScale: {x: 19, y: 5, z: 3}
   m_Children: []
   m_Father: {fileID: 320038930238082235}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!2083052967 &2755179221125461053
 VisualEffect:
@@ -639,10 +666,89 @@ PrefabInstance:
       propertyPath: m_Name
       value: car_01a_1
       objectReference: {fileID: 0}
+    - target: {fileID: 6772884676618397744, guid: 2813e5144dd0fad4499331707f953bba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2813e5144dd0fad4499331707f953bba, type: 3}
 --- !u!4 &320038930238082235 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2813e5144dd0fad4499331707f953bba, type: 3}
   m_PrefabInstance: {fileID: 287026184923802448}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &211026375999105427 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -9145104858251771197, guid: 2813e5144dd0fad4499331707f953bba, type: 3}
+  m_PrefabInstance: {fileID: 287026184923802448}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2286767311188389582
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 320038930238082235}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_Name
+      value: car_lod_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625487504253769225, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_Name
+      value: lod_model
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293935273309818954, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b6d477ab614b47645b3e240f332e9861, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+--- !u!23 &7828875668186021508 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8293935273309818954, guid: 8bcd50f24188a5c4c8042733ea86949c, type: 3}
+  m_PrefabInstance: {fileID: 2286767311188389582}
   m_PrefabAsset: {fileID: 0}

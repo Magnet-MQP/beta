@@ -26,7 +26,7 @@ public class PowerSocketController : MonoBehaviour
 
         // destroy the object that was attached to it and display as attached
         Object_PhysicsObject otherPhysics = other.GetComponent<Object_PhysicsObject>();
-        if (otherPhysics != null && !otherPhysics.Consumed)
+        if (otherPhysics != null && otherPhysics.Consumable && !otherPhysics.Consumed)
         {
             Activated = true;
             MockPowerCell.SetActive(true);

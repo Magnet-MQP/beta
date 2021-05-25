@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4018569329127420260}
   - component: {fileID: 8523963353015983387}
   - component: {fileID: 769208151489717339}
+  - component: {fileID: -3366004115756418575}
   m_Layer: 10
   m_Name: Box_Positive
   m_TagString: Interactable
@@ -91,6 +92,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Held: 0
   Obj_Polarity: 1
+  Consumed: 0
+--- !u!114 &-3366004115756418575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654633089434073092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69cd806ce504ef4f91de442f61dc39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OutlineTarget: {fileID: 7609604238931271591}
+  OutlineLayerType: HandInteractSelect
 --- !u!1 &7609604238931271591
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7609604238931271591}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.65, z: 0}
+  m_LocalPosition: {x: 0, y: -0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3430887592546493118}

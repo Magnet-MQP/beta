@@ -38,9 +38,9 @@ TagManager:
   - MagnetField
   - Stopper
   - UI_3D
-  - 
-  - 
-  - 
+  - FootInteractSelect
+  - HandInteractSelect
+  - PressInteractSelect
   - 
   - 
   - 
