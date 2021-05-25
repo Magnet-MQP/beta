@@ -13760,7 +13760,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 240485189903622789}
           m_TargetAssemblyTypeName: Menu_PlayAudio, Assembly-CSharp
-          m_MethodName: play_scroll_first
+          m_MethodName: play_scroll_next
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -19607,7 +19607,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 240485189903622789}
           m_TargetAssemblyTypeName: Menu_PlayAudio, Assembly-CSharp
-          m_MethodName: play_scroll_first
+          m_MethodName: play_scroll_next
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
