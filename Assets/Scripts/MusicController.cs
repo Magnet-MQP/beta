@@ -63,6 +63,6 @@ public class MusicController : MonoBehaviour
             yield return null;
         }
         //Debug.Log("Faded.");
-        audioSource.volume = startVolume;
+        //audioSource.volume = startVolume;
     }
 }

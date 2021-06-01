@@ -285,8 +285,8 @@ public class PlayerController : MonoBehaviour
     private float gloveTargetVolume = 0;
     private float gloveChangeTimer = 0;
     private float gloveFadeTimerMax = 0.2f;
-    private IEnumerator glovesCoroutinePos = null;
-    private IEnumerator glovesCoroutineNeg = null;
+    private IEnumerator FadePos = null;
+    private IEnumerator FadeNeg = null;
 
     // Cuscenes
     [Tooltip("The current cutscene the player is in (if this is set, the player will immediately enter it on load)")]
@@ -411,12 +411,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     void Gloves(float value) 
     {
         if (GM.isPaused || (InCutscene && cutsceneTimer > cutsceneUnlockPoint) || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
+        IEnumerator FadeNeg = null;
+        IEnumerator FadePos = null;
+
 
         bool polarityChanged = false;
 
@@ -426,20 +430,17 @@ public class PlayerController : MonoBehaviour
         if (value == -1)
         {
             // Negative (Cyan)
+            // If toggle and the polarity is negative, switch to neutral and fade the audio
             if (!GM.glovesIsHold && GlovePolarity == Charge.Negative)
             {
-                Debug.Log("Neg");
                 GlovePolarity = Charge.Neutral;
-                glovesCoroutineNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax);
-                StartCoroutine(glovesCoroutineNeg);
+                StartCoroutine(FadeNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax));
             }
-            else if (AudioSourceGlovesNeg.volume == 0 || AudioSourceGlovesPos.volume == 0 || GlovePolarity == Charge.Positive)
+            else if (GlovePolarity == Charge.Positive || GlovePolarity == Charge.Neutral)
             {
                 GlovePolarity = Charge.Negative;
-                glovesCoroutineNeg = MusicController.FadeIn(AudioSourceGlovesNeg, gloveFadeTimerMax, 1f);
-                glovesCoroutinePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax);
-                StartCoroutine(glovesCoroutineNeg);
-                StartCoroutine(glovesCoroutinePos);
+                AudioSourceGlovesNeg.volume = 1f;
+                StartCoroutine(FadePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax));
             }
             polarityChanged = true;
         }
@@ -447,32 +448,29 @@ public class PlayerController : MonoBehaviour
         if (value == 1)
         {
             // Positive (Red)
+            // If toggle and the polarity is positive, switch to neutral and fade the audio
             if (!GM.glovesIsHold && GlovePolarity == Charge.Positive)
             {
-                Debug.Log("Pos");
                 GlovePolarity = Charge.Neutral;
-                glovesCoroutinePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax);
-                StartCoroutine(glovesCoroutinePos);
+                StartCoroutine(FadePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax));
             }
-            else if (AudioSourceGlovesNeg.volume == 0 || AudioSourceGlovesPos.volume == 0 ||  GlovePolarity == Charge.Negative)
+
+            else if (GlovePolarity == Charge.Negative || GlovePolarity == Charge.Neutral)
             {
                 GlovePolarity = Charge.Positive;
-                glovesCoroutinePos = MusicController.FadeIn(AudioSourceGlovesPos, gloveFadeTimerMax, 1f);
-                glovesCoroutineNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax);
-                StartCoroutine(glovesCoroutineNeg);
-                StartCoroutine(glovesCoroutinePos);
+                AudioSourceGlovesPos.volume = 1f;
+                StartCoroutine(FadeNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax));
             }
             polarityChanged = true;
         }
-        // No glove, head empty
-        if (value == 0 && GM.glovesIsHold && (glovesCoroutineNeg == null || glovesCoroutinePos == null))
+        // No gloves currently being held down
+        if (value == 0 && GM.glovesIsHold )
         {
-            Debug.Log("nuh");
+            if (AudioSourceGlovesNeg.volume > 0 || AudioSourceGlovesPos.volume > 0){
+                StartCoroutine(FadeNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax));
+                StartCoroutine(FadePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax));
+            }
             GlovePolarity = Charge.Neutral;
-            glovesCoroutineNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax);
-            glovesCoroutinePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax);
-            StartCoroutine(glovesCoroutineNeg);
-            StartCoroutine(glovesCoroutinePos);
             polarityChanged = true;
         }
 
@@ -527,6 +525,21 @@ public class PlayerController : MonoBehaviour
         else if (m_PlayerInput.actions["gloves"].triggered)
         {
             Gloves(gloves);
+        }
+        // Handle fading when gloves are toggled during a fade
+        if (!GM.glovesIsHold) {
+            if (GlovePolarity == Charge.Negative) {
+                if(FadeNeg != null) {
+                    StopCoroutine(FadeNeg);
+                }
+                AudioSourceGlovesNeg.volume = 1f;
+            }
+            if (GlovePolarity == Charge.Positive) {
+                if(FadePos != null) {
+                    StopCoroutine(FadePos);
+                }
+                AudioSourceGlovesPos.volume = 1f;
+            }
         }
 
         if (m_PlayerInput.actions["interact"].triggered) 

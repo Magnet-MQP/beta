@@ -80,6 +80,10 @@ public class Menu_Master : MonoBehaviour
         manager.showGeneralMenu();
     }
 
+    public void SettingsBack(){
+        manager.settingsBack();
+    }
+
     /// <summary>
     /// Show the pause menu
     /// Useful for going back to the pause menu from a sub-menu

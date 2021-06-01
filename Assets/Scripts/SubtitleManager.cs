@@ -230,6 +230,7 @@ public class SubtitleManager : MonoBehaviour
     // only for menu subtitle move
     public void moveSubtitlesForMenu() 
     {
+        Debug.Log("Movin to " + menuParent);
         transform.SetParent(menuParent.transform);
         transform.localPosition = new Vector3(0, 0, 0); 
     }
