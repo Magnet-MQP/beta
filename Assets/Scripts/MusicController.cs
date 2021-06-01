@@ -52,4 +52,17 @@ public class MusicController : MonoBehaviour
         audioSource.Stop();
         audioSource.volume = startVolume;
     }
+    public static IEnumerator FadeOutButKeepPlaying(AudioSource audioSource, float fadeTime) {
+        //Debug.Log("Fade start.");
+        float startVolume = audioSource.volume;
+        
+        while (audioSource.volume > 0) {
+            //Debug.Log("Fading.");
+            audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
+
+            yield return null;
+        }
+        //Debug.Log("Faded.");
+        //audioSource.volume = startVolume;
+    }
 }

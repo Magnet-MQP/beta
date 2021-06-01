@@ -276,12 +276,17 @@ public class PlayerController : MonoBehaviour
     public AudioSource AudioSourceBoots;
     public AudioClip AudioBootsOn;
     public AudioClip AudioBootsOff;
-    public AudioSource AudioSourceGloves;
+    public AudioSource AudioSourceGlovesPos;
+    public AudioSource AudioSourceGlovesNeg;
+    /*
     public AudioClip AudioGlovesNeg;
     public AudioClip AudioGlovesPos;
+    */
     private float gloveTargetVolume = 0;
     private float gloveChangeTimer = 0;
-    private float gloveChangeTimerMax = 0.2f;
+    private float gloveFadeTimerMax = 0.2f;
+    private IEnumerator FadePos = null;
+    private IEnumerator FadeNeg = null;
 
     // Cuscenes
     [Tooltip("The current cutscene the player is in (if this is set, the player will immediately enter it on load)")]
@@ -389,14 +394,6 @@ public class PlayerController : MonoBehaviour
         // - disable boots if without target
         else if (BootPolarity != Charge.Neutral || CurrentPlayerState == PlayerState.Attached)
         {
-            /*
-            nextBootPolarity = Charge.Neutral;
-            nextBootMagnetTarget = null;
-            nextBootTargetPosition = transform.position;
-            nextTargetUpDirection = targetUpDirection;   // unchanged
-            bootTargetChanged = true;
-            CurrentPlayerState = PlayerState.Neutral;
-            */
             Release();
         }
     }
@@ -414,12 +411,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     void Gloves(float value) 
     {
         if (GM.isPaused || (InCutscene && cutsceneTimer > cutsceneUnlockPoint) || CurrentPlayerState == PlayerState.Pulling) 
         {
             return;
         }
+        IEnumerator FadeNeg = null;
+        IEnumerator FadePos = null;
+
 
         bool polarityChanged = false;
 
@@ -429,46 +430,47 @@ public class PlayerController : MonoBehaviour
         if (value == -1)
         {
             // Negative (Cyan)
+            // If toggle and the polarity is negative, switch to neutral and fade the audio
             if (!GM.glovesIsHold && GlovePolarity == Charge.Negative)
             {
                 GlovePolarity = Charge.Neutral;
-                AudioSourceGloves.Stop();
+                StartCoroutine(FadeNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax));
             }
-            else if (!AudioSourceGloves.isPlaying || GlovePolarity == Charge.Positive)
+            else if (GlovePolarity == Charge.Positive || GlovePolarity == Charge.Neutral)
             {
                 GlovePolarity = Charge.Negative;
-                AudioSourceGloves.clip = AudioGlovesNeg;
-                gloveTargetVolume = 1;
-                AudioSourceGloves.Play();
+                AudioSourceGlovesNeg.volume = 1f;
+                StartCoroutine(FadePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax));
             }
-            gloveChangeTimer = 0;
             polarityChanged = true;
         }
         // Positive glove
         if (value == 1)
         {
             // Positive (Red)
+            // If toggle and the polarity is positive, switch to neutral and fade the audio
             if (!GM.glovesIsHold && GlovePolarity == Charge.Positive)
             {
                 GlovePolarity = Charge.Neutral;
-                AudioSourceGloves.Stop();
+                StartCoroutine(FadePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax));
             }
-            else if (!AudioSourceGloves.isPlaying || GlovePolarity == Charge.Negative)
+
+            else if (GlovePolarity == Charge.Negative || GlovePolarity == Charge.Neutral)
             {
                 GlovePolarity = Charge.Positive;
-                AudioSourceGloves.clip = AudioGlovesPos;
-                gloveTargetVolume = 1;
-                AudioSourceGloves.Play();
+                AudioSourceGlovesPos.volume = 1f;
+                StartCoroutine(FadeNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax));
             }
-            gloveChangeTimer = 0;
             polarityChanged = true;
         }
-        // No glove, head empty
-        if (value == 0 && GM.glovesIsHold)
+        // No gloves currently being held down
+        if (value == 0 && GM.glovesIsHold )
         {
+            if (AudioSourceGlovesNeg.volume > 0 || AudioSourceGlovesPos.volume > 0){
+                StartCoroutine(FadeNeg = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesNeg, gloveFadeTimerMax));
+                StartCoroutine(FadePos = MusicController.FadeOutButKeepPlaying(AudioSourceGlovesPos, gloveFadeTimerMax));
+            }
             GlovePolarity = Charge.Neutral;
-            AudioSourceGloves.Stop();
-            gloveChangeTimer = 0;
             polarityChanged = true;
         }
 
@@ -523,6 +525,21 @@ public class PlayerController : MonoBehaviour
         else if (m_PlayerInput.actions["gloves"].triggered)
         {
             Gloves(gloves);
+        }
+        // Handle fading when gloves are toggled during a fade
+        if (!GM.glovesIsHold) {
+            if (GlovePolarity == Charge.Negative) {
+                if(FadeNeg != null) {
+                    StopCoroutine(FadeNeg);
+                }
+                AudioSourceGlovesNeg.volume = 1f;
+            }
+            if (GlovePolarity == Charge.Positive) {
+                if(FadePos != null) {
+                    StopCoroutine(FadePos);
+                }
+                AudioSourceGlovesPos.volume = 1f;
+            }
         }
 
         if (m_PlayerInput.actions["interact"].triggered) 
@@ -585,12 +602,6 @@ public class PlayerController : MonoBehaviour
         }
         BootFadeOverlay.color = new Vector4(0,0,0, fadeOverlayAlpha);
 
-        // fade in/out gloves audio
-        if (gloveChangeTimer < gloveChangeTimerMax)
-        {
-            gloveChangeTimer = Mathf.Min(gloveChangeTimer + Time.deltaTime, gloveChangeTimerMax);
-            AudioSourceGloves.volume = Mathf.Lerp(AudioSourceGloves.volume, gloveTargetVolume, gloveChangeTimer/gloveChangeTimerMax);
-        }
 
         if (!GM.isPaused) 
         {
