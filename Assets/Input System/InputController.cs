@@ -65,6 +65,14 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Disengage"",
+                    ""type"": ""Button"",
+                    ""id"": ""daf40e56-22fc-41c5-a9c5-857573ad512d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -269,7 +277,7 @@ public class @InputController : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""692c86f2-93bf-4115-982e-205be15de4df"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -280,7 +288,7 @@ public class @InputController : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4d7dcb71-6608-4ffc-8ba1-de9171150aff"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -307,6 +315,28 @@ public class @InputController : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f8844986-3e0d-4794-898f-cb6ab72a7808"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Disengage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e829087-ab3f-453b-9aa8-755c51c4526a"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Disengage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -351,6 +381,7 @@ public class @InputController : IInputActionCollection, IDisposable
         m_player_Gloves = m_player.FindAction("Gloves", throwIfNotFound: true);
         m_player_Interact = m_player.FindAction("Interact", throwIfNotFound: true);
         m_player_Menu = m_player.FindAction("Menu", throwIfNotFound: true);
+        m_player_Disengage = m_player.FindAction("Disengage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -406,6 +437,7 @@ public class @InputController : IInputActionCollection, IDisposable
     private readonly InputAction m_player_Gloves;
     private readonly InputAction m_player_Interact;
     private readonly InputAction m_player_Menu;
+    private readonly InputAction m_player_Disengage;
     public struct PlayerActions
     {
         private @InputController m_Wrapper;
@@ -416,6 +448,7 @@ public class @InputController : IInputActionCollection, IDisposable
         public InputAction @Gloves => m_Wrapper.m_player_Gloves;
         public InputAction @Interact => m_Wrapper.m_player_Interact;
         public InputAction @Menu => m_Wrapper.m_player_Menu;
+        public InputAction @Disengage => m_Wrapper.m_player_Disengage;
         public InputActionMap Get() { return m_Wrapper.m_player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -443,6 +476,9 @@ public class @InputController : IInputActionCollection, IDisposable
                 @Menu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
                 @Menu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
                 @Menu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Disengage.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisengage;
+                @Disengage.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisengage;
+                @Disengage.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisengage;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -465,6 +501,9 @@ public class @InputController : IInputActionCollection, IDisposable
                 @Menu.started += instance.OnMenu;
                 @Menu.performed += instance.OnMenu;
                 @Menu.canceled += instance.OnMenu;
+                @Disengage.started += instance.OnDisengage;
+                @Disengage.performed += instance.OnDisengage;
+                @Disengage.canceled += instance.OnDisengage;
             }
         }
     }
@@ -495,5 +534,6 @@ public class @InputController : IInputActionCollection, IDisposable
         void OnGloves(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
+        void OnDisengage(InputAction.CallbackContext context);
     }
 }

@@ -391,11 +391,6 @@ public class PlayerController : MonoBehaviour
             nextTargetUpDirection = targetNormal;
             bootTargetChanged = true;
         }
-        // - disable boots if without target
-        else if (BootPolarity != Charge.Neutral || CurrentPlayerState == PlayerState.Attached)
-        {
-            Release();
-        }
     }
 
     /// <summary>
@@ -516,6 +511,10 @@ public class PlayerController : MonoBehaviour
         if (m_PlayerInput.actions["boots"].triggered)
         {
             Boots();
+        }
+        if (m_PlayerInput.actions["disengage"].triggered)
+        {
+            Release();
         }
 
         if (GM.glovesIsHold) 
