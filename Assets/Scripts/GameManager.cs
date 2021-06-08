@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         foreach(Transform child in Menu.GetComponentsInChildren<Transform>()){
             if(child.tag == "ShowOnPause"){
                 pauseMenu = child.gameObject;
-                Debug.Log(pauseMenu);
+                // Debug.Log(pauseMenu);
             }
             if(child.tag == "Controls")
                 controlsMenu = child.gameObject;

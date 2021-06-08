@@ -2939,11 +2939,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eeeafb1df685204b8000a95ed6876a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BC: {fileID: 8145954274012283292}
   masterMix: {fileID: 24100000, guid: 45edad626e983574d8cb073975dc90c6, type: 2}
   musicMix: {fileID: 24100000, guid: da43cc214342c3b40bdedefbffaa0bb1, type: 2}
   sfxMix: {fileID: 24100000, guid: c9f8557c5cb49bb4f8ee03e858fcc9e2, type: 2}
   uiMix: {fileID: 24100000, guid: 94cad191a19712048a12c274e5148fbd, type: 2}
   dialogMix: {fileID: 24100000, guid: 70fa6c703d36fc440a8d5ce3ddaf38d5, type: 2}
+  ResolutionOptions:
+  - {fileID: 6643053184450647696}
+  - {fileID: 2273206954758411213}
+  - {fileID: 1912075223869774908}
+  - {fileID: 8796263768753883870}
+  - {fileID: 7745325115850702201}
+  DefaultResolutions:
+  - width: 512
+    height: 288
+    refreshRate: 60
+  - width: 756
+    height: 432
+    refreshRate: 60
+  - width: 1024
+    height: 576
+    refreshRate: 60
+  - width: 1600
+    height: 900
+    refreshRate: 60
+  - width: 1920
+    height: 1080
+    refreshRate: 60
+  SelectedColor: {r: 1, g: 0.7529412, b: 0, a: 255}
 --- !u!82 &4278607027788147326
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3959,7 +3983,7 @@ GameObject:
   - component: {fileID: 4124537206094875777}
   - component: {fileID: 2348086185480473346}
   m_Layer: 5
-  m_Name: Res_1024x576
+  m_Name: Res_Option03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5288,7 +5312,7 @@ GameObject:
   - component: {fileID: 7774493942699406728}
   - component: {fileID: 2165297527668389751}
   m_Layer: 5
-  m_Name: Res_1600x900
+  m_Name: Res_Option02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13603,11 +13627,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eeeafb1df685204b8000a95ed6876a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BC: {fileID: 0}
   masterMix: {fileID: 24100000, guid: 45edad626e983574d8cb073975dc90c6, type: 2}
   musicMix: {fileID: 24100000, guid: da43cc214342c3b40bdedefbffaa0bb1, type: 2}
   sfxMix: {fileID: 24100000, guid: c9f8557c5cb49bb4f8ee03e858fcc9e2, type: 2}
   uiMix: {fileID: 24100000, guid: 94cad191a19712048a12c274e5148fbd, type: 2}
   dialogMix: {fileID: 24100000, guid: 70fa6c703d36fc440a8d5ce3ddaf38d5, type: 2}
+  ResolutionOptions: []
+  DefaultResolutions: []
+  SelectedColor: {r: 255, g: 192, b: 0, a: 255}
 --- !u!82 &109759173855145872
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17226,7 +17254,7 @@ GameObject:
   - component: {fileID: 4909687677483035946}
   - component: {fileID: 214760083149998344}
   m_Layer: 5
-  m_Name: Res_1920x1080
+  m_Name: Res_Option01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19133,7 +19161,7 @@ GameObject:
   - component: {fileID: 3973574819336828404}
   - component: {fileID: 5516387573428851520}
   m_Layer: 5
-  m_Name: Res_512x288
+  m_Name: Res_Option05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22221,7 +22249,7 @@ GameObject:
   - component: {fileID: 5272362120565836032}
   - component: {fileID: 8209173680510508521}
   m_Layer: 5
-  m_Name: Res_756x432
+  m_Name: Res_Option04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
