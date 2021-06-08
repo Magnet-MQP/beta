@@ -26,7 +26,6 @@ public class BootupController : MonoBehaviour
     private Vector3 rightStart;
     private float width;
     private float height;
-
     
     private float animDelay = 0f;
     private float timer = 0;
@@ -43,26 +42,13 @@ public class BootupController : MonoBehaviour
 
     void Start()
     {
-        width = Screen.width;
-        height = Screen.height;
-        
-        Vector2 screenSize = new Vector2(1600,900);
-        Vector3 center = new Vector3(width/2f,height/2f,0);
-        
-        topStart = center - Vector3.up*height/2f;
-        botStart = center + Vector3.up*height/2f;
-        leftStart = center - Vector3.right*width/2f;
-        rightStart = center + Vector3.right*width/2f;
+        RecenterPanels(Screen.width,Screen.height);
+        ResizePanels(1600, 900);
 
         PanelTop.transform.position = topStart;
         PanelBottom.transform.position = botStart;
         PanelLeft.transform.position = leftStart;
         PanelRight.transform.position = rightStart;
-        
-        PanelTop.rectTransform.sizeDelta = screenSize;
-        PanelBottom.rectTransform.sizeDelta = screenSize;
-        PanelLeft.rectTransform.sizeDelta = screenSize;
-        PanelRight.rectTransform.sizeDelta = screenSize;
 
         // initialize animation params
         yFinalSpeed = (1-pauseTime*yInitialSpeed)/(1-yResumeTime);
@@ -169,5 +155,32 @@ public class BootupController : MonoBehaviour
         PanelBottom.enabled = show;
         PanelLeft.enabled = show;
         PanelRight.enabled = show;
+    }
+
+    /// <summary>
+    /// Resize all vision panels
+    /// </summary>
+    private void ResizePanels(float screenWidth, float screenHeight)
+    {
+        width = screenWidth;
+        height = screenHeight;
+
+        Vector2 screenSize = new Vector2(width,height);
+        PanelTop.rectTransform.sizeDelta = screenSize;
+        PanelBottom.rectTransform.sizeDelta = screenSize;
+        PanelLeft.rectTransform.sizeDelta = screenSize;
+        PanelRight.rectTransform.sizeDelta = screenSize;
+    }
+
+    /// <summary>
+    /// Recenter all vision panels
+    /// </summary>
+    public void RecenterPanels(float width, float height)
+    {
+        Vector3 center = new Vector3(width/2f,height/2f,0);
+        topStart = center - Vector3.up*height/2f;
+        botStart = center + Vector3.up*height/2f;
+        leftStart = center - Vector3.right*width/2f;
+        rightStart = center + Vector3.right*width/2f;
     }
 }

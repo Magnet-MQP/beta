@@ -183,9 +183,9 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Changes the resolution the game runs at
     /// </summary>
-    public void ChangeResolution(int width, int height)
+    public void ChangeResolution(Resolution res)
     {
-        Screen.SetResolution(width, height, Screen.fullScreen);
+        Screen.SetResolution(res.width, res.height, Screen.fullScreen, res.refreshRate);
     }
 
     /// <summary>

@@ -1,31 +1,139 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
 
-public enum SupportedResolutions
+[System.Serializable]
+public class ResData
 {
-    RES_1920X1080 = 0,
-    RES_1600X900 = 1,
-    RES_1024X576 = 2,
-    RES_756X432 = 3,
-    RES_512X288 = 4,
+    public int width;
+    public int height;
+    public int refreshRate = 60;
 }
 
 public class Menu_Master : MonoBehaviour
 {
     GameManager manager;
     SubtitleManager SM;
+    [Tooltip("The HUD's bootup controller")]
+    public BootupController BC;
     public AudioMixer masterMix;
     public AudioMixer musicMix;
     public AudioMixer sfxMix;
     public AudioMixer uiMix;
     public AudioMixer dialogMix;
+    
+    [Tooltip("The set of resolution setting game objects")]
+    [Header("Resolution Settings")]
+    public GameObject[] ResolutionOptions;
+    [Tooltip("The set of default resolutions sizes to use if somehow none are supported. Format: ")]
+    public ResData[] DefaultResolutions;
+    [Tooltip("The set of default resolutions to use")]
+    Resolution[] defaultResolutions;
+    [Tooltip("The color to use when a resolution is selected")]
+    public Color SelectedColor = new Color(255,192,0,255);
+    [Tooltip("The list of supported resolutions")]
+    List<Resolution> supportedResolutions = new List<Resolution>();
+    [Tooltip("The currently-selected resolution ID")]
+    int currentResolutionIndex = 0;
+
     bool invert_x = false;
     bool invert_y = false;
+
     // Start is called before the first frame update
     void Start()
     {
         manager = GameManager.getGameManager();
         SM = SubtitleManager.getSubtitleManager();
+
+        // Initialize resolution settings
+        Resolution[] supportedResSet = Screen.resolutions;
+        int supportedResCount = supportedResSet.Length;
+        int resolutionOptionCount = ResolutionOptions.Length;
+        // 0. use default resolutions if none available
+        if (supportedResCount <= 0)
+        {
+            // initialize default resolutions
+            defaultResolutions = new Resolution[DefaultResolutions.Length];
+            for (int i = 0; i < DefaultResolutions.Length; i++)
+            {
+                defaultResolutions[i].width = DefaultResolutions[i].width;
+                defaultResolutions[i].height = DefaultResolutions[i].height;
+                defaultResolutions[i].refreshRate = DefaultResolutions[i].refreshRate;
+            }
+
+            supportedResSet = defaultResolutions;
+            supportedResCount = supportedResSet.Length;
+
+            Debug.Log("No supported resolutions detected. Using defaults...");
+        }
+        // 1. if fewer resolutions available, reduce options
+        if (resolutionOptionCount > supportedResCount)
+        {
+            for (int i = 0; i < ResolutionOptions.Length; i++)
+            {
+                if (i >= supportedResCount)
+                {
+                    ResolutionOptions[i].SetActive(false);
+                }
+            }
+            resolutionOptionCount = supportedResCount;
+        }
+        
+        // DEBUG
+        // list out suported resolutions
+        /*
+        Debug.Log("Supported Res Count: " + supportedResCount);
+        for (int i = 0; i < supportedResCount; i++)
+        {
+            Resolution res = supportedResSet[i];
+            Debug.Log("Resolution " + i + ": " + res.width + " x " + res.height + " (RR: " + res.refreshRate + ")");
+        }
+        */
+
+        // 2. take the highest resolution, lowest resolution, and a sampling in between
+        float resolutionIndexStep = (supportedResCount-1)/(resolutionOptionCount-1);
+        for (int i = 0; i < resolutionOptionCount-1; i++)
+        {
+            supportedResolutions.Add(supportedResSet[(int) (i*resolutionIndexStep)]);
+        }
+        supportedResolutions.Add(supportedResSet[supportedResCount-1]);
+        supportedResolutions.Reverse();
+        // 3. update resolution display options
+        for (int i = 0; i < resolutionOptionCount; i++)
+        {
+            Text optionText = ResolutionOptions[i].GetComponentInChildren<Text>();
+            if (optionText != null)
+            {
+                Resolution optionRes = supportedResolutions[i];
+                optionText.text = optionRes.width + " x " + optionRes.height;
+            }
+        }
+        // 4. apply current resolution
+        Resolution currentRes = Screen.currentResolution;
+        int currentIndex = supportedResolutions.FindIndex(0,supportedResolutions.Count-1, ResolutionMatchLambda(currentRes));
+        if (currentIndex >= 0)
+        {
+            currentResolutionIndex = currentIndex;
+        }
+        else
+        {
+            Debug.Log("Current resolution not in listing! Defaulting to highest...");
+        }
+        ChangeResolution(currentResolutionIndex);
+    }
+
+    /// <summary>
+    /// Returns a lambda function that evaluates whether a resolution matches another
+    /// </summary>
+    public Predicate<Resolution> ResolutionMatchLambda(Resolution compareTo)
+    {
+        Predicate<Resolution> resMatch = res =>
+        {
+            return res.width == compareTo.width && res.height == compareTo.height && res.refreshRate == compareTo.refreshRate;
+        };
+        return resMatch;
     }
 
     public void NextScene() {
@@ -250,9 +358,9 @@ public class Menu_Master : MonoBehaviour
     /// </summary>
     public void ChangeResolution(int res)
     {
-        int width = Screen.width;
-        int height = Screen.height;
+        Resolution newResolution = supportedResolutions[currentResolutionIndex];
 
+        /*
         switch ((SupportedResolutions) res)
         {
             case SupportedResolutions.RES_1920X1080:
@@ -278,8 +386,25 @@ public class Menu_Master : MonoBehaviour
             default:
                 break;
         }
+        */
+        
+        // remove highlight from previous resolution
+        Text oldText = ResolutionOptions[currentResolutionIndex].GetComponentInChildren<Text>();
+        oldText.color = Color.white;
 
-        manager.ChangeResolution(width, height);
+        // load new resolution size, if available
+        if (res >= 0 && res < supportedResolutions.Count)
+        {
+            currentResolutionIndex = res;
+            newResolution = supportedResolutions[currentResolutionIndex];
+            BC.RecenterPanels(newResolution.width, newResolution.height);
+        }
+
+        // update resolution selection
+        Text newText = ResolutionOptions[currentResolutionIndex].GetComponentInChildren<Text>();
+        newText.color = SelectedColor;
+
+        manager.ChangeResolution(newResolution);
     }
 
     /// <summary>
