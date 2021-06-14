@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Animate the opening sequence
@@ -39,6 +40,10 @@ public class BootupController : MonoBehaviour
     private float yResumeTime = 0.8f; // time at which vertical opening resumes
     private float yInitialSpeed = 1f; // Vertical opening speed in first animation phase
     private float yFinalSpeed; // calculated at start. Vertical opening speed in last animation phase
+    private AudioSource bootSource;
+    public AudioClip bootupClip;
+    public AudioClip bootupClipLong;
+    public AudioClip shutdownClip;
 
     void Start()
     {
@@ -54,6 +59,11 @@ public class BootupController : MonoBehaviour
         yFinalSpeed = (1-pauseTime*yInitialSpeed)/(1-yResumeTime);
 
         SetVisibility(StartVisible);
+
+    }
+    void Awake() {
+        bootSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -118,6 +128,12 @@ public class BootupController : MonoBehaviour
     /// </summary>
     public void StartBootupSequence(float length)
     {
+        Debug.Log("Brrr");
+        if(SceneManager.GetActiveScene().buildIndex == 1){
+            bootSource.PlayOneShot(bootupClipLong);
+        } else {
+            bootSource.PlayOneShot(bootupClip);
+        }
         invertAnimation = false;
         animDelay = bootupDelayFactor;
         UpdatePanels(0,0);
@@ -129,6 +145,8 @@ public class BootupController : MonoBehaviour
     /// </summary>
     public void StartShutdownSequence(float length)
     {
+
+        bootSource.PlayOneShot(shutdownClip);
         invertAnimation = true;
         animDelay = 0;
         UpdatePanels(1,1);
@@ -182,5 +200,12 @@ public class BootupController : MonoBehaviour
         botStart = center + Vector3.up*height/2f;
         leftStart = center - Vector3.right*width/2f;
         rightStart = center + Vector3.right*width/2f;
+    }
+
+    /// <summary>
+    /// Play the sound associated with the longer boot sequence
+    /// </summary>
+    public void PlayLongBootAudio(){
+        bootSource.PlayOneShot(bootupClipLong);
     }
 }
