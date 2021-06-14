@@ -317,7 +317,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7114681315453494732}
         m_TargetAssemblyTypeName: Menu_Master, Assembly-CSharp
-        m_MethodName: ShowMainMenu
+        m_MethodName: ShowSettingsMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
