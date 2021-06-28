@@ -48,7 +48,9 @@ public class GameManager : MonoBehaviour
     private SubtitleManager SM;
     private EventSystem ES;
     private float camFOV = 60;
+    private GameObject Blackout;
 
+    private bool cameFromOtherScene = false;
 
     public static GameManager getGameManager() {
         return Instance;
@@ -95,6 +97,7 @@ public class GameManager : MonoBehaviour
         mainMenuObject = GameObject.FindGameObjectWithTag("Main_Menu");
         credits = GameObject.FindGameObjectWithTag("Credits");
         warning = GameObject.FindGameObjectWithTag("Warning");
+        Blackout = GameObject.FindGameObjectWithTag("Blackout");
         mainCamera = Camera.main;
         mainCamera.fieldOfView = camFOV;
 
@@ -118,6 +121,9 @@ public class GameManager : MonoBehaviour
                 audioMenu = child.gameObject;
             if(child.tag == "Menu_Subtitle_Pos")
                 SM.menuParent = child.gameObject;
+        }
+        if(SceneManager.GetActiveScene().buildIndex == 0){
+            showMainMenu();
         }
 
         SM.defaultParent = GameObject.FindGameObjectWithTag("Subtitles");
@@ -205,10 +211,18 @@ public class GameManager : MonoBehaviour
         mainCamera.fieldOfView = fov;
     }
 
+    public void StartGame() {
+        hider();
+        Blackout.SetActive(true);
+        Blackout.GetComponent<Image>().color = Color.black;
+        nextScene();
+
+    }
     /// <summary>
     /// Scene Function: Progress to the next scene numerically
     /// </summary>
     public void nextScene() {
+        cameFromOtherScene = true;
         //Debug.Log("LEAVING " + currScene.buildIndex);
         int nextIndex = currScene.buildIndex+1;
         if(nextIndex != 0) { enablePause = true;} 
@@ -294,7 +308,11 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             AudioListener.pause = false;
-            showWarning();
+            if(cameFromOtherScene) {
+                showMainMenu();
+            }else {
+                showWarning();
+            }
         }
         else if(isPaused)
         {

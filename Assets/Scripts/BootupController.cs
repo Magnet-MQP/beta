@@ -44,6 +44,8 @@ public class BootupController : MonoBehaviour
     public AudioClip bootupClip;
     public AudioClip bootupClipLong;
     public AudioClip shutdownClip;
+    public AudioClip verticalBootClip;
+    private bool playedVertOpeningAudio = false;
 
     void Start()
     {
@@ -98,6 +100,12 @@ public class BootupController : MonoBehaviour
                 }
                 else if (progress >= yResumeTime)
                 {
+                    // Play sound associated with opening vertically all the way.
+                    if(playedVertOpeningAudio == false && SceneManager.GetActiveScene().buildIndex == 1){
+                        playedVertOpeningAudio = true;
+                        bootSource.PlayOneShot(verticalBootClip);
+                    }
+
                     progressY = pauseTime*yInitialSpeed+yFinalSpeed*(progress-yResumeTime);
                 }
                 
@@ -128,7 +136,7 @@ public class BootupController : MonoBehaviour
     /// </summary>
     public void StartBootupSequence(float length)
     {
-        Debug.Log("Brrr");
+        //`Debug.Log("Brrr");
         if(SceneManager.GetActiveScene().buildIndex == 1){
             bootSource.PlayOneShot(bootupClipLong);
         } else {

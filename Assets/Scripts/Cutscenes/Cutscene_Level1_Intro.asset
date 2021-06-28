@@ -15,26 +15,37 @@ MonoBehaviour:
   FullDuration: 17
   LockDuration: 13
   ShowBootup: 1
+  ShowShutdown: 0
+  ShutdownDuration: 1
   ExitAtEnd: 0
+  AdvanceAtEnd: 0
+  ReloadAtEnd: 0
   Dialogue:
   - message: '[ INITIALIZING SYSTEMS... ]'
     priority: 5000
     timer: 4
+    audio: {fileID: 0}
   - message: '[ UNIT ID: FyED-OR ]'
     priority: 4999
     timer: 8
+    audio: {fileID: 0}
   - message: '[ ELECTROMAGNETS: ACTIVE ]'
     priority: 4998
     timer: 12
+    audio: {fileID: 0}
   - message: '[ OCULAR CAMERA: ACTIVE ]'
     priority: 4997
     timer: 16
+    audio: {fileID: 8300000, guid: bc227bb311b30a84489e522c0220e933, type: 3}
   - message: 'FyED-OR: "Wait... where am I now?"'
     priority: 4996
     timer: 21
+    audio: {fileID: 0}
   - message: 'FyED-OR: "THE TRASH COMPACTOR!?"'
     priority: 4995
     timer: 25
+    audio: {fileID: 0}
   - message: 'FyED-OR: "I need to find a way out!"'
     priority: 4994
     timer: 29
+    audio: {fileID: 0}

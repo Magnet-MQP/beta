@@ -17,13 +17,16 @@ public class SubtitleData
     public float timer;
     [Tooltip("The position of the subtitle source, if applicable. null otherwise")]
     public Vector3? position;
+    [Tooltip("The sound to play with this line.")]
+    public AudioClip audio;
 
     // Constructor
-    public SubtitleData(string msg, int pr, float dur = -1f, Vector3? pos = null)
+    public SubtitleData(string msg, int pr, float dur = -1f, Vector3? pos = null, AudioClip sound = null)
     {
         // set priority and position directly
         priority = pr;
         position = pos; // if position is null, subtitle is non-directional
+        audio = sound;
         
         // automatically insert line breaks where needed into message
         string splitMessage = msg;

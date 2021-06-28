@@ -51,6 +51,7 @@ public class SubtitleManager : MonoBehaviour
     private List<SubtitleData> subtitleQueue = new List<SubtitleData>();
 
     GameManager GM;
+    AudioSource audioSource;
 
     // Initialize Instance to self
     void Awake()
@@ -74,6 +75,7 @@ public class SubtitleManager : MonoBehaviour
         SetSubtitleAlpha();
         moveSubtitlesToDefault();
         originalPos = transform.localPosition;
+        audioSource = GetComponent<AudioSource>();
     }
     public static SubtitleManager getSubtitleManager() {
         return Instance;
@@ -117,7 +119,8 @@ public class SubtitleManager : MonoBehaviour
         // update appearance if necessary
         if (changed)
         {
-            RefreshSubtitle();
+            Debug.Log("NEXT");
+            RefreshSubtitle(true);
         }
     }
 
@@ -127,7 +130,7 @@ public class SubtitleManager : MonoBehaviour
     /// <param name="sd">New subtitle data</param>
     public void QueueSubtitle(SubtitleData sd)
     {
-        SubtitleData scaledSub = new SubtitleData(sd.message,sd.priority,sd.timer*subtitleScale);
+        SubtitleData scaledSub = new SubtitleData(sd.message,sd.priority,sd.timer*subtitleScale, sound:sd.audio);
         sd = scaledSub;
         // Ignore if subtitle already queued
         if (subtitleQueue.Contains(sd))
@@ -148,7 +151,7 @@ public class SubtitleManager : MonoBehaviour
     /// <summary>
     /// Update the subtitle displayed
     /// </summary>
-    private void RefreshSubtitle()
+    private void RefreshSubtitle(bool isChange = false)
     {
         // Hide if queue empty
         if (subtitleQueue.Count <= 0)
@@ -172,6 +175,10 @@ public class SubtitleManager : MonoBehaviour
             
             // apply new text
             Text.text = newText;
+            if(isChange && subtitleQueue[0].audio != null) {
+                Debug.Log("Play audio");
+                audioSource.PlayOneShot(subtitleQueue[0].audio);
+            }
 
         }
     }

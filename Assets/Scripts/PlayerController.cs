@@ -397,6 +397,10 @@ public class PlayerController : MonoBehaviour
     /// Release player from currently held surface
     /// </summary>
     private void Release() {
+        if(CurrentPlayerState != PlayerState.Neutral){
+            AudioSourceBoots.clip = AudioBootsOff;
+            AudioSourceBoots.Play();
+        }
         nextBootPolarity = Charge.Neutral;
         nextBootMagnetTarget = null;
         nextBootTargetPosition = transform.position;
@@ -504,6 +508,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(!holding && m_HandTransform.GetComponent<FixedJoint>() != null) {
+            Destroy(m_HandTransform.GetComponent<FixedJoint>());
+        }
         var move = m_PlayerInput.actions["move"].ReadValue<Vector2>();
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
         var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
@@ -793,9 +800,6 @@ public class PlayerController : MonoBehaviour
             {
                 // Detach from surfaces
                 CurrentPlayerState = PlayerState.Neutral;
-                // Play boots disable sound
-                AudioSourceBoots.clip = AudioBootsOff;
-                AudioSourceBoots.Play();
             }
         }
 

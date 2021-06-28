@@ -66,7 +66,7 @@ public class Menu_Master : MonoBehaviour
             supportedResSet = defaultResolutions;
             supportedResCount = supportedResSet.Length;
 
-            Debug.Log("No supported resolutions detected. Using defaults...");
+            //Debug.Log("No supported resolutions detected. Using defaults...");
         }
         // 1. if fewer resolutions available, reduce options
         if (resolutionOptionCount > supportedResCount)
@@ -119,7 +119,7 @@ public class Menu_Master : MonoBehaviour
         }
         else
         {
-            Debug.Log("Current resolution not in listing! Defaulting to highest...");
+            //Debug.Log("Current resolution not in listing! Defaulting to highest...");
         }
         ChangeResolution(currentResolutionIndex);
     }
@@ -138,6 +138,10 @@ public class Menu_Master : MonoBehaviour
 
     public void NextScene() {
         manager.nextScene();
+    }
+
+    public void StartGame() {
+        manager.StartGame();
     }
 
     // SHOWING DIFFERENT MENUS

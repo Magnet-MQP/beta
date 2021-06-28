@@ -24,6 +24,7 @@ TagManager:
   - Credits
   - Menu_Subtitle_Pos
   - Warning
+  - Blackout
   layers:
   - Default
   - TransparentFX
