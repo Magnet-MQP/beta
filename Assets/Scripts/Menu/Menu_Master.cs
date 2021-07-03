@@ -3,6 +3,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class ResData
@@ -40,6 +41,8 @@ public class Menu_Master : MonoBehaviour
 
     bool invert_x = false;
     bool invert_y = false;
+    public GameObject ContinueButton;
+    public GameObject BackButton;
 
     // Start is called before the first frame update
     void Start()
@@ -193,6 +196,11 @@ public class Menu_Master : MonoBehaviour
     }
 
     public void SettingsBack(){
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            ContinueButton.SetActive(false);
+            BackButton.SetActive(true);
+        }
         manager.settingsBack();
     }
 
