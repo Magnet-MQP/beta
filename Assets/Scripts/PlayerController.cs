@@ -515,7 +515,7 @@ public class PlayerController : MonoBehaviour
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
         var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
 
-        if (m_PlayerInput.actions["boots"].triggered)
+        if (m_PlayerInput.actions["boots_1"].triggered)
         {
             Boots();
         }
@@ -1052,6 +1052,8 @@ public class PlayerController : MonoBehaviour
                     if (tp.actionName != "")
                     {
                         newText = newText.Replace("_", m_PlayerInput.actions[tp.actionName].GetBindingDisplayString());
+                        Debug.Log(m_PlayerInput.actions[tp.actionName].GetBindingDisplayString());
+                        Debug.Log(newText);
                     }
                     SM.QueueSubtitle(new SubtitleData(newText, 0));
                 }

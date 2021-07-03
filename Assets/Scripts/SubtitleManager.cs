@@ -119,7 +119,6 @@ public class SubtitleManager : MonoBehaviour
         // update appearance if necessary
         if (changed)
         {
-            Debug.Log("NEXT");
             RefreshSubtitle(true);
         }
     }

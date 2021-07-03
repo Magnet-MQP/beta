@@ -69,8 +69,6 @@ public class PopupText : MonoBehaviour
         }
         sd.message = newText;
         SubtitleManager.Instance.QueueSubtitle(sd);
-        //other.gameObject.GetComponent<PlayerController>().DisplaySubtitle(sd);
-        //Destroy(this.gameObject);
     }
 }
 
