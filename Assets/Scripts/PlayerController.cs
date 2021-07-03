@@ -515,7 +515,7 @@ public class PlayerController : MonoBehaviour
         var look = m_PlayerInput.actions["camera"].ReadValue<Vector2>();
         var gloves = m_PlayerInput.actions["gloves"].ReadValue<float>();
 
-        if (m_PlayerInput.actions["boots_1"].triggered)
+        if (m_PlayerInput.actions["boots"].triggered)
         {
             Boots();
         }
