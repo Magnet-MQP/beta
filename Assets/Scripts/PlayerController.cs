@@ -1052,8 +1052,6 @@ public class PlayerController : MonoBehaviour
                     if (tp.actionName != "")
                     {
                         newText = newText.Replace("_", m_PlayerInput.actions[tp.actionName].GetBindingDisplayString());
-                        Debug.Log(m_PlayerInput.actions[tp.actionName].GetBindingDisplayString());
-                        Debug.Log(newText);
                     }
                     SM.QueueSubtitle(new SubtitleData(newText, 0));
                 }
