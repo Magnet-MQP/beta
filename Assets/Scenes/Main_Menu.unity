@@ -228,6 +228,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1257850406888613997, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257850406888613997, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257850406888613997, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1257850406888613997, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1398998205848573672, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -843,6 +859,11 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+--- !u!1 &1427111603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5220882753722224957, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
+  m_PrefabInstance: {fileID: 699442252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1437705084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,6 +1053,11 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
+--- !u!1 &1485481714 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8770751825049224656, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
+  m_PrefabInstance: {fileID: 699442252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1691056424 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2997396001245250237, guid: 57587d45b0570bf4ca5562230706f010, type: 3}
@@ -1044,6 +1070,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1121917493824059976, guid: 268455ceef1dbf84591fa3c79fff762c, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1485481714}
+    - target: {fileID: 1121917493824059976, guid: 268455ceef1dbf84591fa3c79fff762c, type: 3}
+      propertyPath: menuParent
+      value: 
+      objectReference: {fileID: 1427111603}
     - target: {fileID: 6012389226931533284, guid: 268455ceef1dbf84591fa3c79fff762c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 540
