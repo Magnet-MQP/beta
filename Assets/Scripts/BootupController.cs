@@ -25,8 +25,7 @@ public class BootupController : MonoBehaviour
     private Vector3 botStart;
     private Vector3 leftStart;
     private Vector3 rightStart;
-    private float width;
-    private float height;
+    private float worldWidth, worldHeight; // canvas dimensions in world
     
     private float animDelay = 0f;
     private float timer = 0;
@@ -46,16 +45,13 @@ public class BootupController : MonoBehaviour
     public AudioClip shutdownClip;
     public AudioClip verticalBootClip;
     private bool playedVertOpeningAudio = false;
+    private int lastScreenWidth, lastScreenHeight; // screen dimensions in pixels
 
     void Start()
     {
-        RecenterPanels(Screen.width,Screen.height);
         ResizePanels(1600, 900);
-
-        PanelTop.transform.position = topStart;
-        PanelBottom.transform.position = botStart;
-        PanelLeft.transform.position = leftStart;
-        PanelRight.transform.position = rightStart;
+        RecenterPanels();
+        UpdatePanels(0,0);
 
         // initialize animation params
         yFinalSpeed = (1-pauseTime*yInitialSpeed)/(1-yResumeTime);
@@ -71,6 +67,12 @@ public class BootupController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (lastScreenWidth != Screen.width || lastScreenHeight != Screen.height)
+        {
+            Debug.Log("Screen changed from " + lastScreenWidth + "x" + lastScreenHeight + " to " + Screen.width + "x" + Screen.height);
+            RecenterPanels();
+        }
+
         if (PlayAnimation && timer < timerMax)
         {
             if (timer == 0)
@@ -125,10 +127,10 @@ public class BootupController : MonoBehaviour
     /// </summary>
     private void UpdatePanels(float progressX, float progressY)
     {
-        PanelTop.transform.position = topStart - Vector3.up*height*progressY/2f;
-        PanelBottom.transform.position = botStart + Vector3.up*height*progressY/2f;
-        PanelLeft.transform.position = leftStart - Vector3.right*width*progressX/2f;
-        PanelRight.transform.position = rightStart + Vector3.right*width*progressX/2f;
+        PanelTop.transform.position = topStart - Vector3.up*worldHeight*progressY/2f;
+        PanelBottom.transform.position = botStart + Vector3.up*worldHeight*progressY/2f;
+        PanelLeft.transform.position = leftStart - Vector3.right*worldWidth*progressX/2f;
+        PanelRight.transform.position = rightStart + Vector3.right*worldWidth*progressX/2f;
     }
 
     /// <summary>
@@ -153,7 +155,6 @@ public class BootupController : MonoBehaviour
     /// </summary>
     public void StartShutdownSequence(float length)
     {
-
         bootSource.PlayOneShot(shutdownClip);
         invertAnimation = true;
         animDelay = 0;
@@ -185,13 +186,14 @@ public class BootupController : MonoBehaviour
 
     /// <summary>
     /// Resize all vision panels
+    /// newWidth and  newHeight are in world units
     /// </summary>
-    private void ResizePanels(float screenWidth, float screenHeight)
+    private void ResizePanels(float newWidth, float newHeight)
     {
-        width = screenWidth;
-        height = screenHeight;
+        worldWidth = newWidth;
+        worldHeight = newHeight;
 
-        Vector2 screenSize = new Vector2(width,height);
+        Vector2 screenSize = new Vector2(newWidth,newHeight);
         PanelTop.rectTransform.sizeDelta = screenSize;
         PanelBottom.rectTransform.sizeDelta = screenSize;
         PanelLeft.rectTransform.sizeDelta = screenSize;
@@ -201,13 +203,18 @@ public class BootupController : MonoBehaviour
     /// <summary>
     /// Recenter all vision panels
     /// </summary>
-    public void RecenterPanels(float width, float height)
+    public void RecenterPanels()
     {
-        Vector3 center = new Vector3(width/2f,height/2f,0);
-        topStart = center - Vector3.up*height/2f;
-        botStart = center + Vector3.up*height/2f;
-        leftStart = center - Vector3.right*width/2f;
-        rightStart = center + Vector3.right*width/2f;
+        lastScreenWidth = Screen.width;
+        lastScreenHeight = Screen.height;
+        float hwidth = ((float)lastScreenWidth)/2f;
+        float hheight = ((float)lastScreenHeight)/2f;
+
+        Vector3 center = new Vector3(hwidth,hheight,0);
+        topStart = center - Vector3.up*hheight;
+        botStart = center + Vector3.up*hheight;
+        leftStart = center - Vector3.right*hwidth;
+        rightStart = center + Vector3.right*hwidth;
     }
 
     /// <summary>

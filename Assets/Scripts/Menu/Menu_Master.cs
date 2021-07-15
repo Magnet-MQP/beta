@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
@@ -24,7 +25,7 @@ public class Menu_Master : MonoBehaviour
     public AudioMixer sfxMix;
     public AudioMixer uiMix;
     public AudioMixer dialogMix;
-    
+  
     [Tooltip("The set of resolution setting game objects")]
     [Header("Resolution Settings")]
     public GameObject[] ResolutionOptions;
@@ -114,7 +115,7 @@ public class Menu_Master : MonoBehaviour
             }
         }
         // 4. apply current resolution
-        Resolution currentRes = Screen.currentResolution;
+        Resolution currentRes = manager.GetResolution();
         int currentIndex = supportedResolutions.FindIndex(0,supportedResolutions.Count-1, ResolutionMatchLambda(currentRes));
         if (currentIndex >= 0)
         {
@@ -370,6 +371,7 @@ public class Menu_Master : MonoBehaviour
     /// </summary>
     public void ChangeResolution(int res)
     {
+        //Debug.Log("Changing to resolution " + res);
         Resolution newResolution = supportedResolutions[currentResolutionIndex];
 
         /*
@@ -401,22 +403,34 @@ public class Menu_Master : MonoBehaviour
         */
         
         // remove highlight from previous resolution
-        Text oldText = ResolutionOptions[currentResolutionIndex].GetComponentInChildren<Text>();
-        oldText.color = Color.white;
-
-        // load new resolution size, if available
-        if (res >= 0 && res < supportedResolutions.Count)
+        if (ResolutionOptions.Length > 0)
         {
-            currentResolutionIndex = res;
-            newResolution = supportedResolutions[currentResolutionIndex];
-            BC.RecenterPanels(newResolution.width, newResolution.height);
+            Text oldText = ResolutionOptions[currentResolutionIndex].GetComponentInChildren<Text>();
+            oldText.color = Color.white;
+
+            // load new resolution size, if available
+            if (res >= 0 && res < supportedResolutions.Count)
+            {
+                currentResolutionIndex = res;
+                newResolution = supportedResolutions[currentResolutionIndex];
+                //Debug.Log("Changing to resolution: " + newResolution.width + "x" + newResolution.height);
+            }
+            else
+            {
+                //Debug.Log("Selected resolution unavailable!");
+            }
+
+            // update resolution selection
+            Text newText = ResolutionOptions[currentResolutionIndex].GetComponentInChildren<Text>();
+            newText.color = SelectedColor;
+        }
+        else
+        {
+            //Debug.Log("ERROR: NO RESOLUTION OPTIONS!");
         }
 
-        // update resolution selection
-        Text newText = ResolutionOptions[currentResolutionIndex].GetComponentInChildren<Text>();
-        newText.color = SelectedColor;
-
         manager.ChangeResolution(newResolution);
+        BC.RecenterPanels();
     }
 
     /// <summary>

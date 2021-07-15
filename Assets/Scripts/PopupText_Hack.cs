@@ -11,9 +11,9 @@ public class PopupText_Hack : MonoBehaviour
 {
     public SubtitleData sd;
     public string actionName;
-    public float MaxDelay = 0f;
-    private float delay = 0f;
-    private GameObject touchingPlayer;
+    //public float MaxDelay = 0f;
+    //private float delay = 0f;
+    //private GameObject touchingPlayer;
     private float breakRadius;
     private GameManager GM;
     //private PlayerInput m_playerInput;
@@ -45,6 +45,7 @@ public class PopupText_Hack : MonoBehaviour
             newText = newText.Replace("_", actionText);
         }
         sd.message = newText;
+        SubtitleManager.Instance.ClearSubtitles();
         SubtitleManager.Instance.QueueSubtitle(sd);
     }
 }

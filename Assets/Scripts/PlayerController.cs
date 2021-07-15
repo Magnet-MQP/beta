@@ -281,9 +281,9 @@ public class PlayerController : MonoBehaviour
     /*
     public AudioClip AudioGlovesNeg;
     public AudioClip AudioGlovesPos;
-    */
     private float gloveTargetVolume = 0;
     private float gloveChangeTimer = 0;
+    */
     private float gloveFadeTimerMax = 0.2f;
     private IEnumerator FadePos = null;
     private IEnumerator FadeNeg = null;

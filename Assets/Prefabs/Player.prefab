@@ -96,7 +96,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c8eb1c177a0fdd04295bab0fc4f7efdb, type: 3}
   - {fileID: 21300000, guid: e7fc39e781a17564eb83c16180b9a06d, type: 3}
   BootActiveReadout: {fileID: 8083881058036972281}
-  BootFadeOverlay: {fileID: 1925102077712841600}
+  BootFadeOverlay: {fileID: 3826703064972693963}
   PolarityColors:
   - {r: 0.3, g: 0.3, b: 1, a: 0.9019608}
   - {r: 0, g: 0, b: 0, a: 0}
@@ -2397,9 +2397,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1925102077712841600 stripped
+--- !u!114 &3826703064972693963 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5809974027413465736, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9155066603569774787, guid: ebba5cb711b98f9419aa6e84cdcd47c2, type: 3}
   m_PrefabInstance: {fileID: 5338589354829353224}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

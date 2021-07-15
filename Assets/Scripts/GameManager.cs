@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
     public bool highContrast = false;
     public float MENU_ALPHA_DEFAULT = .88f;
     public float MENU_ALPHA_HIGH_CONTRAST = 1f;
+    [Tooltip("Whether the game is loading a scene")]
+    private bool isLoading = false;
+    [Tooltip("The currently-selected resolution")]
+    private Resolution currentResolution;
 
     // Scene changing
     public Scene currScene;
@@ -155,7 +159,8 @@ public class GameManager : MonoBehaviour
     void Start() {
         // track the player
         playerReference = GameObject.Find("Player");
-
+        // get resolution
+        currentResolution = Screen.currentResolution;
 
         //SceneManager.sceneLoaded += onSceneLoad;
         currScene = SceneManager.GetActiveScene();
@@ -192,6 +197,15 @@ public class GameManager : MonoBehaviour
     public void ChangeResolution(Resolution res)
     {
         Screen.SetResolution(res.width, res.height, Screen.fullScreen, res.refreshRate);
+        currentResolution = res;
+    }
+
+    /// <summary>
+    /// Retrieves the currently-set resolution
+    /// </summary>
+    public Resolution GetResolution()
+    {
+        return currentResolution;
     }
 
     /// <summary>
@@ -215,13 +229,20 @@ public class GameManager : MonoBehaviour
         hider();
         Blackout.SetActive(true);
         Blackout.GetComponent<Image>().color = Color.black;
-        nextScene();
+        nextScene(true);
 
     }
     /// <summary>
     /// Scene Function: Progress to the next scene numerically
+    /// if async is provided and true, load the scene asynchronously
     /// </summary>
-    public void nextScene() {
+    public void nextScene(bool async=false) {
+        if (isLoading)
+        {
+            // early exit
+            return;
+        }
+
         cameFromOtherScene = true;
         //Debug.Log("LEAVING " + currScene.buildIndex);
         int nextIndex = currScene.buildIndex+1;
@@ -234,8 +255,30 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(Menu);
         Destroy(GameObject.FindGameObjectWithTag("MusicManager"));
         
-        SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
+        if (async)
+        {
+            StartCoroutine(LoadSceneCR(nextIndex));
+        }
+        else
+        {
+            SceneManager.LoadScene(nextIndex, LoadSceneMode.Single);
+        }
+    }
 
+    /// <summary>
+    /// Wait for the scene to load before changing scenes
+    /// </summary>
+    private IEnumerator LoadSceneCR(int nextSceneIndex)
+    {
+        isLoading = true;
+        yield return null;
+        AsyncOperation loadStatus = SceneManager.LoadSceneAsync(nextSceneIndex, LoadSceneMode.Single);
+        while (!loadStatus.isDone)
+        {
+            yield return null;
+        }
+        isLoading = false;
+        yield return null;
     }
 
     /// <summary>

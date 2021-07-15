@@ -42,8 +42,11 @@ public class SubtitleManager : MonoBehaviour
     private bool isSlow = false;
     private Vector3 originalPos = new Vector3(0,0,0);
 
+    [Tooltip("")]
     public GameObject menuParent;
+    [Tooltip("")]
     public GameObject defaultParent;
+    [Tooltip("The canvas to display UI on")]
     public GameObject canvas;
 
     // Subtitle messages
@@ -148,6 +151,14 @@ public class SubtitleManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Wipe all queued subtitles
+    /// </summary>
+    public void ClearSubtitles()
+    {
+        subtitleQueue.Clear();
+    }
+
+    /// <summary>
     /// Update the subtitle displayed
     /// </summary>
     private void RefreshSubtitle(bool isChange = false)
@@ -236,7 +247,7 @@ public class SubtitleManager : MonoBehaviour
     // only for menu subtitle move
     public void moveSubtitlesForMenu() 
     {
-        Debug.Log("Movin to " + menuParent);
+        //Debug.Log("Moving to " + menuParent);
         transform.SetParent(menuParent.transform);
         transform.localPosition = new Vector3(0, 0, 0); 
     }
