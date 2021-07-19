@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles all of the player's movement
@@ -19,24 +18,6 @@ public enum PlayerState
 
 public class PlayerController : MonoBehaviour
 {
-
-    /*
-    TODO
-    - player can sometimes clip through edges of magnet field
-    - fix collision issues
-    -> stuttery descent down sloped wall
-    -> fix floor clipping issues (to replicate: target adjacent wall & switch/disable polarity mid-flight)
-
-    NOTES FROM ADVISORS
-    - Explore mixing first and third person (maybe can choose one or the other)
-    - look into asset store & miximo for 3rd person animations/resources
-    - Think about how we want the object pickup/push to feel
-        + play with actual magnets and emulate the feel
-    
-    GAMES TO LOOK AT
-    - Destroy All Humans (ranged physical manipulation effects)
-    */
-
     // Main References
     [Tooltip("The player's Rigidbody component")]
     [Header("Main References")] // this has to be below the tooltip to draw correctly :/
@@ -1007,11 +988,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
             // update to new target
-            ReticleTarget = hit.collider.gameObject;
+            ReticleTarget = hit.collider.transform.gameObject;
             // apply outline to target if in range
             if (ReticleTarget.layer != LayerMask.NameToLayer("Wall"))
             {
                 wasInteractable = true;
+                //Debug.Log(hit.collider.name + " " + ReticleTarget.name);
                 Outliner outline = ReticleTarget.GetComponent<Outliner>();
                 if (outline)
                 {

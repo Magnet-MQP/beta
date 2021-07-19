@@ -706,6 +706,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6152178078777476206, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152178078777476206, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152178078777476206, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152178078777476206, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6153990986737162825, guid: 4d7e04c13b1acbb45ac72fff99d4e015, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
@@ -22934,6 +22950,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338764463}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1339018457 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4364748484545224941, guid: ba4b71acb0286cc4fa6da91466067816, type: 3}
+  m_PrefabInstance: {fileID: 1771626430}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1339018458
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339018457}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7, y: 3.4417284, z: 2.3420515}
+  m_Center: {x: -0.3, y: 1.2588563, z: -2.522072}
 --- !u!4 &1349161007 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 617604881522357392, guid: e0b549537cb72774a946331b47f06246, type: 3}
@@ -30579,7 +30613,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1828451244406400282, guid: ba4b71acb0286cc4fa6da91466067816, type: 3}
       propertyPath: m_Size.y
-      value: 1.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1828451244406400282, guid: ba4b71acb0286cc4fa6da91466067816, type: 3}
+      propertyPath: m_Center.y
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1828451245324293414, guid: ba4b71acb0286cc4fa6da91466067816, type: 3}
       propertyPath: m_LocalPosition.x

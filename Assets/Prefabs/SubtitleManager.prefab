@@ -299,7 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Text: {fileID: 414296305852165482}
   TextBack: {fileID: 8246199801870526518}
-  FontSize: 16
+  FontSize: 24
   BackAlpha: 1
   BackPaddingX: 16
   BackPaddingY: 16
