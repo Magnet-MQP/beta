@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Team FyED-OR
-  productName: Factory-Reset-0.6
+  productName: Factory-Reset-1.0
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -125,7 +125,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.6
+  bundleVersion: 1.0
   preloadedAssets:
   - {fileID: 11400000, guid: b8de60d1bcadb984d9199da3ed7ad866, type: 2}
   metroInputSource: 0
